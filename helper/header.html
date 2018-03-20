@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="css/main.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+</head>
+<body>
+
+	<nav>
+		<div class="container">
+			
+			<div class="row">
+			
+				<ul class="fl-left">
+					<li id="logo">weebo</li>
+				</ul>
+				<ul class="fl-right">
+					<a href="#"><li>anime shows</li></a>
+					<a href="#"><li>movies</li></a>
+					<a href="#"><li class="fas fa-bookmark">
+						<span class="added-items">1</span>
+						
+					</li></a>
+					<!-- <a href="#" ><li class="fas fa-search"></li></a> -->
+					<form action="" method="get" placeholder="search "value="">
+					<input type="search" name="searchQuery" >
+					</form>
+					<a href="#" ><li class="fas fa-ellipsis-v">
+					
+						
+					
+					
+					
+						<?php 
+						
+							$hostname = 'localhost';
+							$location = 'root';
+							$pass = 'root';
+							$dbname = 'anime_database';
+							$con = mysqli_connect($hostname,$location,$pass,$dbname);
+							
+							
+							if(!empty($searchQuery)){
+								$animeSearchQuery = 'SELECT * ';
+								$animeSearchQuery .= 'FROM anime_show ';
+								$animeSearchQuery .= 'WHERE anime_show = $textInput';
+									
+							}
+							
+							
+							$anime_info = "SELECT * FROM anime_show ORDER BY anime";	
+						
+							$result = mysqli_query($con,$anime_info);
+							while($row = mysqli_fetch_array($result)){
+							$id = $row['anime_id'];
+							$anime_name = $row["anime"];
+							$bg_img = $row['bg_img'];
+							$type = $row['Type'];
+							$preview = $row['preview'];
+							$rating = $row['review'];
+							$descript = $row['description'];
+						}
+						?>
+
+<!--
+						<span class="items">
+							<p>You're not logged in</p>
+						
+						</span>
+-->
+						
+					</li></a>
+				</ul>
+			
+			</div>
+		</div>
+
+		
+	</nav>
+	
