@@ -15,7 +15,7 @@
 			<div class="row">
 			
 				<ul class="fl-left">
-					<li id="logo">weebo</li>
+					<li id="logo">weebflix</li>
 				</ul>
 			
 				
