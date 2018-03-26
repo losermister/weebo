@@ -55,7 +55,7 @@
 						
 							$hostname = 'localhost';
 							$location = 'root';
-							$pass = 'root';
+							$pass = '';
 							$dbname = 'anime';
 							$db = mysqli_connect($hostname,$location,$pass,$dbname);
 							

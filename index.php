@@ -8,7 +8,7 @@
 		$location = 'root';
 		$pass = '	';
 */
-		$dbname = 'anime_database';
+		$dbname = 'anime';
 		$con = mysqli_connect($hostname,$location,$pass,$dbname);
 		$recent_anime = "SELECT * ";
 		$recent_anime .= "FROM anime_show ";

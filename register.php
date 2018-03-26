@@ -48,7 +48,7 @@
         if (!valid_username($username))
           echo "<li>Usernames can include only English characters and numbers</li>";
 
-        if ((strlen($username) < 3) || (strlen($password) > 24))
+        if ((strlen($username) < 3) || (strlen($username) > 24))
           echo "<li>Your username needs to be between 3 and 24 characters</li>";
 
         if ($password != $password2)
@@ -75,6 +75,6 @@
   add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
   add_textfield('password', 'Password: ');
   add_textfield('password2', 'Confirm password: ');
-  form_end('Log in');
+  form_end('Sign up');
 
 ?>
