@@ -26,7 +26,7 @@
 					<a href="#"><li>categories</li></a>
 -->	
 					<a href="#"><li>anime shows</li></a>
-					<a href="#"><li>movies</li></a>
+			<!-- 		<a href="#"><li>movies</li></a> -->
 					<a href="#"><li>categories</li></a>
 					
 					<a href="#"><li>sign up/login</li></a>
@@ -55,7 +55,7 @@
 						
 							$hostname = 'localhost';
 							$location = 'root';
-							$pass = '';
+							$pass = 'root';
 							$dbname = 'anime';
 							$db = mysqli_connect($hostname,$location,$pass,$dbname);
 							

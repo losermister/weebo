@@ -3,9 +3,11 @@
 
 
 
+/*
 		$hostname = 'localhost';
 		$location = 'root';
-		$pass = 'root';
+		$pass = '	';
+*/
 		$dbname = 'anime_database';
 		$con = mysqli_connect($hostname,$location,$pass,$dbname);
 		$recent_anime = "SELECT * ";
@@ -77,128 +79,142 @@
 
 	<div class="container content">
 		<div class="row content" >
-		
-		<div class="row">
-			<div class="col-12of12">
-				
-					<h3 class="cat"><span class="fas fa-upload"></span>recent uploads</h3> 
-		
-			</div>
-
-		</div>
-		
-		<div class="row">
-		
-				
-		<?php 
-		while($row = mysqli_fetch_array($result2)){
-		$id = $row['anime_id'];
-		$anime_name = $row['anime'];
-		$bg_img = $row['bg_img'];
-		$type = $row['Type'];
-		$preview = $row['preview'];
-		$rating = $row['review'];
-		$episode = $row['episode'];
-		$link = $row['link'];
-		
-		/* <span class='show-type'>Episode 1</span> */
-		
-		
-		/*
-
-		$anime_name = str_limit($anime_name, 100);
-*/
-		echo"
-		<div class='col-2of12'>
-			<div class='show-container'>
-				<div class='redirect'></div>
-				
-				<div class='show-img-container'><div class='show-img' style='background-image:url($bg_img)'></div></div>
-				<div class='show-info'>
-					
-					<div class='show-descript'>
-						<span class='show-title'>$anime_name</span>
-						<span class='show-episode'>Episode $episode</span>
+			<div class="col-3of12">
+			
+				<div class="row">
+					<div class="col-12of12">
+							<h3 class="cat">recent uploads</h3> 
 					</div>
-					
-					<div class='functions'>
-						<span class='save fas fa-bookmark'></span>
-					<!-- 	<span><span class='fas fa-comment'></span> 100</span> -->
-					</div>
-				
+		
 				</div>
+			
+			
 			</div>
-		</div>
-		";}
-		
-		?>		
-
-		</div>
-		
-		<row>
-		<a href="#" class="btn-small btn-primary center"><span class="fas fa-plus"></span>view more</a>
-		</row>		
-		
-		<div class="row">
-			<div class="col-12of12">
+			<div class="col-9of12">
+				<div class="row">
 				
-					<h3 class="cat">new Series</h3> 
-		
-			</div>
-			
-		
-			
-			
-		</div>
-		
-
-		
-		
-		<?php 
-		while($row = mysqli_fetch_array($result)){
-		$id = $row['anime_id'];
-		$anime_name = $row["anime"];
-		$bg_img = $row['bg_img'];
-		$type = $row['Type'];
-		$preview = $row['preview'];
-		$rating = $row['review'];
-		$descript = $row['description'];
-		
-		/* <span class='show-type'>Episode 1</span> */
-		
-		
-		/*
-
-		$anime_name = str_limit($anime_name, 100);
-*/
-		echo"
-		<div class='col-2of12'>
-			<div class='show-container'>
-				<div class='redirect'></div>
 				
-				<div class='show-img-container'><div class='show-img' style='background-image:url($bg_img)'></div></div>
-				<div class='show-info'>
-					
-					<div class='show-descript'>
-						<span class='show-title'>$anime_name</span>
+				
+					<div class="col-12of12">
 						
+							<h3 class="cat"><span class="fas fa-upload"></span>recommendation</h3> 
+				
+					</div>
+		
+				</div>
+				
+				<div class="row">
+				
+						
+				<?php 
+				while($row = mysqli_fetch_array($result2)){
+				$id = $row['anime_id'];
+				$anime_name = $row['anime'];
+				$bg_img = $row['bg_img'];
+				$type = $row['Type'];
+				$preview = $row['preview'];
+				$rating = $row['review'];
+				$episode = $row['episode'];
+				$link = $row['link'];
+				
+				/* <span class='show-type'>Episode 1</span> */
+				
+				
+				/*
+		
+				$anime_name = str_limit($anime_name, 100);
+		*/
+				echo"
+				<div class='col-2of12'>
+					<div class='show-container'>
+						<div class='redirect'></div>
+						
+						<div class='show-img-container'><div class='show-img' style='background-image:url($bg_img)'></div></div>
+						<div class='show-info'>
+							
+							<div class='show-descript'>
+								<span class='show-title'>$anime_name</span>
+								<span class='show-episode'>Episode $episode</span>
+							</div>
+							
+							<div class='functions'>
+								<span class='save fas fa-bookmark'></span>
+							<!-- 	<span><span class='fas fa-comment'></span> 100</span> -->
+							</div>
+						
+						</div>
+					</div>
+				</div>
+				";}
+				
+				?>		
+		
+				</div>
+				
+				<row>
+				<a href="#" class="btn-small btn-primary center"><span class="fas fa-plus"></span>view more</a>
+				</row>		
+				
+				<div class="row">
+					<div class="col-12of12">
+						
+							<h3 class="cat">new Series</h3> 
+				
 					</div>
 					
-					<div class='functions'>
-						<span class='save fas fa-bookmark'></span>
-					<!-- 	<span><span class='fas fa-comment'></span> 100</span> -->
-					</div>
 				
+					
+					
 				</div>
+				
+		
+				
+				
+				<?php 
+				while($row = mysqli_fetch_array($result)){
+				$id = $row['anime_id'];
+				$anime_name = $row["anime"];
+				$bg_img = $row['bg_img'];
+				$type = $row['Type'];
+				$preview = $row['preview'];
+				$rating = $row['review'];
+				$descript = $row['description'];
+				
+				/* <span class='show-type'>Episode 1</span> */
+				
+				
+				/*
+		
+				$anime_name = str_limit($anime_name, 100);
+		*/
+				echo"
+				<div class='col-2of12'>
+					<div class='show-container'>
+						<div class='redirect'></div>
+						
+						<div class='show-img-container'><div class='show-img' style='background-image:url($bg_img)'></div></div>
+						<div class='show-info'>
+							
+							<div class='show-descript'>
+								<span class='show-title'>$anime_name</span>
+								
+							</div>
+							
+							<div class='functions'>
+								<span class='save fas fa-bookmark'></span>
+							<!-- 	<span><span class='fas fa-comment'></span> 100</span> -->
+							</div>
+						
+						</div>
+					</div>
+				</div>
+				";}
+				
+				?>		
+	
+	
+			
 			</div>
-		</div>
-		";}
-		
-		?>		
-
-
-		
-
 		</div>
 	</div>
 	

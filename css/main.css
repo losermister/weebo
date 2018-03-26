@@ -355,6 +355,12 @@ nav ul.fl-left a:hover li{
 	width:50%;
 }
 
+
+.col-9of12{
+	width:75%;
+}
+
+
 .col-12of12{
 	width:100%;
 }
@@ -441,7 +447,7 @@ nav ul.fl-left a:hover li{
 
 
 .container{
-	max-width:80em;
+	max-width:90em;
 	margin:auto;
 
 }
