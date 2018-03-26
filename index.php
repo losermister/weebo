@@ -22,7 +22,7 @@
 		$recent_epi .= "FROM links ";
 		$recent_epi .= "LEFT JOIN shows ";
 		$recent_epi .= "ON links.show_id = shows.show_id ";
-		$recent_epi .= "ORDER BY show_id DESC ";
+		$recent_epi .= "ORDER BY shows.show_id DESC ";
 		$recent_epi .= "LIMIT 24";
 		
 		$anime_name = '';
