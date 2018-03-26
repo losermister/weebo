@@ -15,7 +15,7 @@
 			<div class="row">
 			
 				<ul class="fl-left">
-					<li id="logo">weebo</li>
+					<li id="logo">weebflix</li>
 				</ul>
 			
 				
@@ -55,7 +55,7 @@
 						
 							$hostname = 'localhost';
 							$location = 'root';
-							$pass = 'root';
+							$pass = '';
 							$dbname = 'anime';
 							$db = mysqli_connect($hostname,$location,$pass,$dbname);
 							
