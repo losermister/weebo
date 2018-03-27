@@ -1,4 +1,5 @@
-<?php include('helper/header.php')?>
+<?php include('helper/functions.php') ?>
+<?php include('helper/header.php') ?>
 <?php
 
 

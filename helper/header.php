@@ -11,30 +11,37 @@
 
 	<nav>
 		<div class="container">
-			
+
 			<div class="row">
-			
+
 				<ul class="fl-left">
-					<li id="logo">weebflix</li>
+					<a href="index.php"><li id="logo">weebflix</li></a>
 				</ul>
-			
-				
+
+
 				<ul class="fl-right">
 		<!--
 			<a href="#"><li>anime shows</li></a>
 					<a href="#"><li>movies</li></a>
 					<a href="#"><li>categories</li></a>
--->	
+-->
 					<a href="#"><li>anime shows</li></a>
 			<!-- 		<a href="#"><li>movies</li></a> -->
 					<a href="#"><li>categories</li></a>
-					
-					<a href="#"><li>sign up/login</li></a>
-					
+
+					<?php
+	          if (isset($_SESSION['valid_user'])) {
+	            echo " Logged in as " . $_SESSION['valid_user'];
+	            echo "<a href=\"logout.php\"><li>Logout</li></a>";
+	          } else {
+	            echo "<a href=\"login.php\"><li>sign up/login</li></a>";
+	          }
+			    ?>
+
 <!--
 					<a href="#"><li class="fas fa-bookmark">
 						<span class="added-items">1</span>
-						
+
 					</li></a>
 -->
 					<!-- <a href="#" ><li class="fas fa-search"></li></a> -->
@@ -45,44 +52,43 @@
 -->
 				<!--
 	<a href="#" ><li class="fas fa-ellipsis-v">
-					
+
 -->
-						
-					
-					
-					
-						<?php 
-						
+
+
+
+
+						<?php
+
 							$hostname = 'localhost';
 							$location = 'root';
 							$pass = '';
 							$dbname = 'anime';
 							$db = mysqli_connect($hostname,$location,$pass,$dbname);
-							
-							
-	
-							
-							
-							
-						
-	
+
+
+
+
+
+
+
+
 						?>
 
 <!--
 						<span class="items">
 							<p>You're not logged in</p>
-						
+
 						</span>
 -->
-						
-					
+
+
 				</ul>
-			
+
 			</div>
 		</div>
 
-		
+
 	</nav>
-	
+
 		<div class="nav-space"></div>
-	
