@@ -24,7 +24,7 @@
 		$recent_epi .= "LEFT JOIN shows ";
 		$recent_epi .= "ON links.show_id = shows.show_id ";
 		$recent_epi .= "ORDER BY shows.show_id DESC ";
-		$recent_epi .= "LIMIT 24";
+		$recent_epi .= "LIMIT 10";
 		
 		$anime_name = '';
 		$episode_num = '';
@@ -90,7 +90,7 @@
 					</div>
 		
 				</div>
-				<div class="row">
+				<div class="row" id="">
 								<?php 
 				while($row = mysqli_fetch_array($result2)){
 				$id = $row['show_id'];
@@ -99,8 +99,8 @@
 				$descript = $row['description'];
 
 				echo"
-				<div class='col-2of12'>
-					<div class='show-container'>
+				<div class='col-2of12' id='test-list'>
+					<div class='show-container''>
 						<div class='redirect'></div>
 						
 						<div class='show-img-container'><div class='show-img' style='background-image:url($bg_img)'></div></div>

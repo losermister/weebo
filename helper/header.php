@@ -19,7 +19,7 @@
 				</ul>
 
 
-				<ul class="fl-right">
+				<ul class="fl-left">
 		<!--
 			<a href="#"><li>anime shows</li></a>
 					<a href="#"><li>movies</li></a>
