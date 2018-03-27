@@ -403,4 +403,56 @@
     }
   }
 
+  function display_show_card($show_name, $show_img) {
+    // Trim show name if longer than 12 characters, for consistent card sizing
+    $show_name = strlen($show_name) > 12 ? substr($show_name, 0, 12)."..." : $show_name;
+    echo "
+      <div class='col-2of12'>
+        <div class='show-container'>
+          <div class='redirect'></div>
+
+          <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+
+          <div class='show-info'>
+            <div class='show-descript'>
+              <span class='show-title'>$show_name</span>
+            </div>
+            <div class='functions'>
+              <span class='save fas fa-bookmark'></span>
+              <!--  <span><span class='fas fa-comment'></span> 100</span> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    ";
+  }
+
+  function display_show_list($show_name, $episode_num, $show_img) {
+    // Trim show name if longer than 20 characters, for consistent sizing
+    $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
+    echo "
+      <div class='col-2of12' id='test-list'>
+        <div class='show-container''>
+          <div class='redirect'></div>
+
+          <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+          <div class='show-info'>
+
+            <div class='show-descript'>
+              <span class='show-title'>$show_name</span>
+              <span class='show-title'>Episode $episode_num</span>
+            </div>
+
+            <div class='functions'>
+              <span class='save fas fa-bookmark'></span>
+            <!--  <span><span class='fas fa-comment'></span> 100</span> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    ";
+  }
+
 ?>

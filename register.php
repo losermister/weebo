@@ -69,7 +69,7 @@
    *  2. Add all textfields with labels
    *  3. Close form, and add submit button with text
    */
-   
+
   echo "<div class='container'>";
   form_start('register.php', 'Create a new account');
   add_textfield('email', 'Email: ');
