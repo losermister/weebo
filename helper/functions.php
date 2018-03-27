@@ -80,6 +80,12 @@
     echo "</table>";
   }
 
+  function display_userprofile($username, $email, $fav_genre) {
+    echo "<h1>$username</h1>";
+    echo "<h2>Email: $email</h2>";
+    echo "<h2>Favourite genre: $fav_genre</h2>";
+  }
+
   /*
    *  Create opening form and fieldset tags, add legend
    *  @param  string  $url   URL to send the form data to after submission
@@ -366,6 +372,31 @@
    */
   function is_valid_product($code, $db) {
     if (in_array($code, all_productcodes_list($db))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function usernames_list($db) {
+    $query = "SELECT users.user_id "
+           . "FROM users "
+           . "ORDER BY users.user_id";
+    $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get usernames: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $usernames[] = $row["user_id"];
+    }
+    $results->free_result();
+    return $usernames;
+  }
+
+  function check_username_list($username, $db) {
+    if (in_array($username, usernames_list($db))) {
       return true;
     } else {
       return false;
