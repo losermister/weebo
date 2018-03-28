@@ -129,11 +129,12 @@
       $inputted_text = '';
     }
     echo "<label style=\"display: none\" for =\"$varname\">$label</label>";
+
     // If the textfield is for passwords, use the password input type to ensure typed characters are masked
     if (strpos($varname, 'password') !== false) {
-      echo "<input style=\"display: none\" type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+      echo "<input style=\"display: none\" autocomplete=\"off\" type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     } else {
-      echo "<input style=\"display: none\" type =\"text\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+      echo "<input style=\"display: none\" autocomplete=\"off\" type =\"text\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     }
     echo "<br>";
   }
@@ -460,7 +461,6 @@
   }
 
   function episodes_list($show_id, $db) {
-
     $query = "SELECT DISTINCT episode_num "
            . "FROM links "
            . "LEFT JOIN shows ON links.show_id = shows.show_id "
@@ -596,6 +596,23 @@
     return $showname;
     $name_stmt->free_result();
     $name_stmt->close();
+  }
+
+  function genres_list_from_id($show_id, $db) {
+    $query = "SELECT genre "
+           . "FROM genres "
+           . "WHERE show_id = $show_id";
+    $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get genres list for show: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $genres[] = $row["genre"];
+    }
+    $results->free_result();
+    return $genres;
   }
 
 ?>
