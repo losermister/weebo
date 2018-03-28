@@ -25,9 +25,11 @@
 					<a href="#"><li>movies</li></a>
 					<a href="#"><li>categories</li></a>
 -->
-					<a href="all-shows.php"><li>anime shows</li></a>
+
+					<a href="all-shows.php"><li>all shows</li></a>
+					<a href="#"><li>favourites</li></a>
 			<!-- 		<a href="#"><li>movies</li></a> -->
-					<a href="#"><li>categories</li></a>
+	<!-- 				<a href="#"><li>categories</li></a> -->
 
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
