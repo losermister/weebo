@@ -77,7 +77,8 @@
 				<div class='row'>
 					<div class='col-12of12'>
 					  <div class='info'>
-					  <p>Average rating: $avg_rating</p>
+					  <h4>Average rating:</h4>
+					  <p>$avg_rating</p>
 					   <p>Airing date: $airing_date</p>
 					   <p>Status: $status</p>
              <p>Genre: $genres</p>

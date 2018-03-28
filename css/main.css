@@ -44,6 +44,8 @@ h1{
 h2{
 	letter-spacing: 1px;
 /* 	color:rgba(255,255,255,0.7); */
+	text-transform: uppercase;
+	color:#FFFFFF;
 }
 
 h3{
@@ -504,8 +506,16 @@ legend{
 		padding-right:2.5px;
 	}
 	
-	
+		.col-3of12{
+	width:100%;
+	}
 	.col-6of12{
+	width:100%;
+	}
+	
+
+	
+	.col-9of12{
 	width:100%;
 	}
 	
@@ -521,6 +531,11 @@ legend{
 	.col-2of12{
 	width:33.3%;
 	}
+	.col-3of12{
+	width:25%;
+	}
+	
+
 }
 
 
@@ -533,6 +548,9 @@ legend{
 	.col-2of12{
 		width:25%;
 	}
+	.col-3of12{
+	width:25%;
+}
 }
 
 
@@ -545,6 +563,10 @@ legend{
 	.col-2of12{
 		width:16.66%;
 	}
+	
+	.col-3of12{
+	width:25%;
+}
 }
 
 
@@ -665,7 +687,7 @@ legend{
 
 .banner-details h2{
 	font-size:3rem;
-	
+	letter-spacing: 1px;
 	margin-bottom:0px;
 	font-weight:600;
 	text-transform: uppercase !important;
@@ -693,6 +715,12 @@ legend{
 	color:#b1acb4;
 	padding:1.5rem;
 	line-height:1.5;
+}
+
+.info h4{
+	margin: 0.4rem 0rem 0.4rem 0rem;
+	text-transform: uppercase;
+	font-size:1rem;
 }
 
 .info p{
@@ -740,7 +768,7 @@ legend{
 	color:#b1acb4;
 	background:#171423;
 	width:100%;
-	height:250px;
+	height:230px;
 	border-radius:3px;
 	overflow:hidden;
 	/* box-shadow: 0px 0px 3px rgba(0,0,0,0.5); */
@@ -767,7 +795,7 @@ legend{
 	display:inline-block;
 	position:relative;
 	width:100%;
-	height:280px;
+	height:220px;
 	background:black;
 	overflow: hidden;
 }
@@ -779,6 +807,7 @@ legend{
 	left:0;
 	bottom:0;
 	right:0;
+	
 	background-size:cover;
 	background-position:center center;
 }
@@ -808,6 +837,16 @@ span.show-title{
 	font-size:0.9rem;
 	text-transform: capitalize;
 }
+
+
+span.show-epi{
+	display:block;
+	font-size:0.5rem;
+	text-transform: capitalize;
+	padding-bottom:5px;
+	padding-top:5px;
+}
+
 
 
 

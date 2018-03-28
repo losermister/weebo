@@ -523,6 +523,7 @@
   }
 
   function display_video_card($show_id, $show_name, $episode_num, $show_img) {
+  	$show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
     echo "
       <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
         <div class='col-2of12'>
@@ -534,7 +535,7 @@
             <div class='show-info'>
               <div class='show-descript'>
                 <span class='show-title'>$show_name</span>
-                <span>Episode $episode_num</span>
+                <span class='show-epi'>Episode $episode_num</span>
               </div>
             </div>
 
