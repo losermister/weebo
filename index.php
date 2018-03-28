@@ -20,7 +20,7 @@
 				<div class="col-6of12">
 					<h2>kill la kill</h2>
 					<p>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.</p>
-					<a href="#" class="btn btn-primary"><!-- <span class="fas fa-play"></span> -->watch series</a>
+					<a href="http://localhost/weebo/show.php?id=17" class="btn btn-primary"><!-- <span class="fas fa-play"></span> -->watch series</a>
 					<a href="#" class="btn btn-secondary"><!-- <span class="fas fa-play"></span> --><span class='fas fa-bookmark'></span>bookmark</a>
 				</div>
 
@@ -50,7 +50,7 @@
 				</div>
 				<div class="row" id="">
 					<?php
-						$recents_query = "SELECT name, episode_num, bg_img "
+						$recents_query = "SELECT shows.show_id, name, episode_num, bg_img "
 						               . "FROM links "
 						               . "LEFT JOIN shows "
 						               . "ON links.show_id = shows.show_id "
@@ -58,10 +58,10 @@
 						               . "DESC LIMIT 10";
 						$recents_stmt = $db->prepare($recents_query);
 						$recents_stmt->execute();
-						$recents_stmt->bind_result($show_name, $episode_num, $show_img);
+						$recents_stmt->bind_result($show_id, $show_name, $episode_num, $show_img);
 
 						while ($recents_stmt->fetch()) {
-							display_show_list($show_name, $episode_num, $show_img);
+							display_show_list($show_id, $show_name, $episode_num, $show_img);
 						}
 
 					  $recents_stmt->free_result();
