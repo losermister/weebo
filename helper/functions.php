@@ -41,9 +41,10 @@
    *  @param   string  $dbname  Database name
    *  @return  mysqli
    */
-  $db = connect_to_db('localhost', 'root', '', 'classicmodels');
+  $db = connect_to_db('localhost', 'root', '', 'anime');
   function connect_to_db($dbhost, $dbuser, $dbpass, $dbname) {
     @$connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    $connection->set_charset("utf8");
     // Check database connection
     if ($connection->connect_errno) {
       printf("Database connection failed: %s\n", $connection->connect_error);
@@ -119,6 +120,23 @@
     echo "<br>";
   }
 
+  function add_honeypot_textfield($varname, $label) {
+    // If form was submitted, save inputted data and display again
+    if (isset($_POST[$varname])) {
+      $inputted_text = trim($_POST[$varname]);
+    } else {
+      $inputted_text = '';
+    }
+    echo "<label style=\"display: none\" for =\"$varname\">$label</label>";
+    // If the textfield is for passwords, use the password input type to ensure typed characters are masked
+    if (strpos($varname, 'password') !== false) {
+      echo "<input style=\"display: none\" type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+    } else {
+      echo "<input style=\"display: none\" type =\"text\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+    }
+    echo "<br>";
+  }
+
   /*
    *  Close fieldset and form tags, add submit button
    *  @param  string  $button_text  Text to display in button
@@ -134,12 +152,10 @@
    *  @param   array  $form_vars  List of variables, e.g. passed to current script via HTTP POST
    *  @return  boolean
    */
-  function filled_out($form_vars) {
-    // Test that each variable has a value
-    foreach ($form_vars as $key => $value) {
-      if ((!isset($key)) || ($value == '')) {
-        return false;
-      }
+  function honeypot_caught($input) {
+    // Check if that the variable has a value
+    if ((!isset($input)) || ($input == '')) {
+      return false;
     }
     return true;
   }
@@ -251,7 +267,7 @@
    *  @return  boolean
    */
   function registration_data_valid($email, $username, $fav_genre, $password, $password2, $db) {
-    if (filled_out($_POST) &&
+    if (!honeypot_caught($_POST) &&
         unique_email($email, $db) && valid_email($email) &&
         unique_username($username, $db) && valid_username($username, $db) && !((strlen($username) < 3) || (strlen($password) > 24)) &&
         ($password == $password2) && !((strlen($password) < 6) || (strlen($password) > 16)) && strong_password($password)) {
@@ -403,28 +419,55 @@
     }
   }
 
-  function display_show_card($show_name, $show_img) {
+  function shows_list($db) {
+    $query = "SELECT shows.show_id "
+           . "FROM shows "
+           . "ORDER BY shows.show_id";
+    $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get show IDs: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $shows[] = $row["show_id"];
+    }
+    $results->free_result();
+    return $shows;
+  }
+
+  function check_shows_list($show_id, $db) {
+    if (in_array($show_id, shows_list($db))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function display_show_card($show_id, $show_name, $show_img) {
     // Trim show name if longer than 12 characters, for consistent card sizing
     $show_name = strlen($show_name) > 12 ? substr($show_name, 0, 12)."..." : $show_name;
     echo "
-      <div class='col-2of12'>
-        <div class='show-container'>
-          <div class='redirect'></div>
+      <a href=\"show.php?id=" . $show_id . "\">" . "
+        <div class='col-2of12'>
+          <div class='show-container'>
+            <div class='redirect'></div>
 
-          <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
 
-          <div class='show-info'>
-            <div class='show-descript'>
-              <span class='show-title'>$show_name</span>
+            <div class='show-info'>
+              <div class='show-descript'>
+                <span class='show-title'>$show_name</span>
+              </div>
+              <div class='functions'>
+                <span class='save fas fa-bookmark'></span>
+                <!--  <span><span class='fas fa-comment'></span> 100</span> -->
+              </div>
             </div>
-            <div class='functions'>
-              <span class='save fas fa-bookmark'></span>
-              <!--  <span><span class='fas fa-comment'></span> 100</span> -->
-            </div>
+
           </div>
-
         </div>
-      </div>
+      </a>
     ";
   }
 
@@ -453,6 +496,19 @@
         </div>
       </div>
     ";
+  }
+
+  function username_from_email($db) {
+    $email = $_SESSION['valid_user'];
+    $name_query = "SELECT users.user_id FROM users WHERE users.email = ?";
+    $name_stmt = $db->prepare($name_query);
+    $name_stmt->bind_param('s', $email);
+    $name_stmt->execute();
+    $name_stmt->bind_result($username);
+    $name_stmt->fetch();
+    return $username;
+    $name_stmt->free_result();
+    $name_stmt->close();
   }
 
 ?>

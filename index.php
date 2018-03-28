@@ -86,16 +86,16 @@
 
 				<div class="row">
 				<?php
-					$shows_query = "SELECT name, bg_img "
+					$shows_query = "SELECT show_id, name, bg_img "
 					             . "FROM shows "
 					             . "ORDER BY show_id DESC "
 					             . "LIMIT 18";
 					$shows_stmt = $db->prepare($shows_query);
 					$shows_stmt->execute();
-					$shows_stmt->bind_result($show_name, $show_img);
+					$shows_stmt->bind_result($show_id, $show_name, $show_img);
 
 					while ($shows_stmt->fetch()) {
-						display_show_card($show_name, $show_img);
+						display_show_card($show_id, $show_name, $show_img);
 					}
 
 					$shows_stmt->free_result();
