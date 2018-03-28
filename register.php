@@ -6,12 +6,13 @@
 
   // If form submitted, store entered registration data from POST
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = trim($_POST['email']);
+    $email = trim($_POST['emailaddress']);
     $username = trim($_POST['username']);
     $fav_genre = trim($_POST['fav_genre']);
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
     $profile_img = '';
+    $honeypot = $_POST['email']; // hidden field to prevent spam
 
     // Check that all the entered data are complete and valid, then add to database
     if (registration_data_valid($email, $username, $fav_genre, $password, $password2, $db)) {
@@ -60,6 +61,9 @@
         if (!strong_password($password))
           echo "<li>Your password needs to contain at least 1 number, 1 uppercase character, and 1 lowercase character</li>";
 
+        if (honeypot_caught($honeypot))
+          echo "You filled out a field that doesn't exist!";
+
         echo "</ul>";
     }
   }
@@ -69,10 +73,11 @@
    *  2. Add all textfields with labels
    *  3. Close form, and add submit button with text
    */
-   
+
   echo "<div class='container'>";
   form_start('register.php', 'Create a new account');
-  add_textfield('email', 'Email: ');
+  add_honeypot_textfield('email', 'Email: ');
+  add_textfield('emailaddress', 'Email: ');
   add_textfield('username', 'Username: ');
   add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
   add_textfield('password', 'Password: ');

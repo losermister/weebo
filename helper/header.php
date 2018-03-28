@@ -31,7 +31,8 @@
 
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
-	            echo " Logged in as " . $_SESSION['valid_user'];
+	          	$username = username_from_email($db);
+	            echo "Welcome, $username";
 	            echo "<a href=\"logout.php\"><li>Logout</li></a>";
 	          } else {
 	            echo "<a href=\"login.php\"><li>sign up/login</li></a>";
@@ -55,25 +56,6 @@
 
 -->
 
-
-
-
-						<?php
-
-							$hostname = 'localhost';
-							$location = 'root';
-							$pass = '';
-							$dbname = 'anime';
-							$db = mysqli_connect($hostname,$location,$pass,$dbname);
-
-
-
-
-
-
-
-
-						?>
 
 <!--
 						<span class="items">
