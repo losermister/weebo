@@ -21,13 +21,88 @@
   $show_stmt->bind_result($show_name, $show_img, $description, $banner_img, $anime_trailer, $name_jp, $status, $airing_date, $avg_rating);
 
   while ($show_stmt->fetch()) {
-    echo "<img src=\"" . $banner_img . "\">";
+    
+    echo "
+    
+   	<div class='banner-container'> 
+	 	<div class='container'>
+	 		<div class='banner-details'>
+
+				<div class='col-6of12'>
+					<h2>$show_name</h2>
+					<p>$name_jp</p>
+					<a href='http://localhost/weebo/show.php?id=17' class='btn btn-primary'>play trailer</a>
+					<a href='#' class='btn btn-secondary'><span class='fas fa-bookmark'></span>bookmark</a>
+				</div>
+
+
+			</div>
+	 	</div>
+
+    <div class='banner-overlay'></div>
+
+		<div class='banner-img-container'>
+			<div class='show-img' style='background-image:url(\"" . $banner_img . "\")'></div>
+		</div>
+    
+    
+    </div>
+    ";
+    
+    
+    echo "
+    <div class='container'>
+	    <div class='col-3of12'>
+				<div class='row'>
+					<div class='col-12of12'>
+							<h3 class='cat'>sypnosis</h3>
+					</div>
+				</div>
+				
+					
+				<div class='row'>	
+					<div class='col-12of12'>
+					  <div class='info'>
+					   <p>$description</p>
+				   </div>
+			   </div>
+			   
+			   <div class='row'>
+					<div class='col-12of12'>
+							<h3 class='cat'>show info</h3>
+					</div>
+				</div>
+				
+				
+				<div class='row'>	
+					<div class='col-12of12'>
+					  <div class='info'>
+					  <p>Average rating: $avg_rating</p>
+					   <p>Airing date: $airing_date</p>
+					   <p>Status: $status</p>
+				   </div>
+			   </div>
+				
+				
+			   
+			   
+		    </div>
+		    
+	    </div>
+	   </div>
+	    
+	   
+    ";
+/*
     echo "<h1>$show_name</h1>";
     echo "<p>$name_jp</p>";
-    echo "<p>Airing date: $airing_date</p>";
+*/
+ /*
+   echo "<p>Airing date: $airing_date</p>";
     echo "<p>Status: $status</p>";
     echo "<p>Average rating: $avg_rating</p>";
-    echo "<p>$description</p>";
+    
+*/
     echo "​<iframe width=\"560\" height=\"315\" src=\"" . $anime_trailer . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
   }
 
@@ -45,11 +120,26 @@
   $episodes_stmt->bind_result($episode_num);
   $episodes_stmt->store_result();
 
-  echo "<h1>Episodes ($episodes_stmt->num_rows)</h1>";
-
+	
+  echo "
+   <div class='col-9of12'>
+   	<div class='row'>
+   		<div class='col-12of12'>
+			  <h3 class='cat'>videos ($episodes_stmt->num_rows)</h3>
+		  </div>
+	  </div>
+	  <div class='row'>
+  ";
+	
   while ($episodes_stmt->fetch()) {
     display_video_card($show_id, $show_name, $episode_num, $show_img);
   }
+	
+	echo "
+		</div>
+		</div>
+	</div>
+	";
 
 
   $episodes_stmt->free_result();

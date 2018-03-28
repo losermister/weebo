@@ -81,6 +81,6 @@
   add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
   add_textfield('password', 'Password: ');
   add_textfield('password2', 'Confirm password: ');
-  form_end('Sign up');
+  form_end('Sign up Now');
 
 ?>
