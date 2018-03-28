@@ -25,7 +25,7 @@
 					<a href="#"><li>movies</li></a>
 					<a href="#"><li>categories</li></a>
 -->
-					<a href="#"><li>anime shows</li></a>
+					<a href="all-shows.php"><li>anime shows</li></a>
 			<!-- 		<a href="#"><li>movies</li></a> -->
 					<a href="#"><li>categories</li></a>
 
