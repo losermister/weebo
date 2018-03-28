@@ -35,20 +35,20 @@
   $show_stmt->close();
 
 
-  $episodes_query = "SELECT episode_num, video_url "
-               . "FROM links "
-               . "WHERE show_id = ? "
-               . "ORDER BY episode_num";
+  $episodes_query = "SELECT DISTINCT episode_num "
+                  . "FROM links "
+                  . "WHERE show_id = ? "
+                  . "ORDER BY episode_num";
   $episodes_stmt = $db->prepare($episodes_query);
   $episodes_stmt->bind_param('i', $show_id);
   $episodes_stmt->execute();
-  $episodes_stmt->bind_result($episode_num, $video_url);
+  $episodes_stmt->bind_result($episode_num);
   $episodes_stmt->store_result();
 
   echo "<h1>Episodes ($episodes_stmt->num_rows)</h1>";
 
   while ($episodes_stmt->fetch()) {
-    display_video_card($show_name, $episode_num, $video_url, $show_img);
+    display_video_card($show_id, $show_name, $episode_num, $show_img);
   }
 
 

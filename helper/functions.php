@@ -436,6 +436,34 @@
     return $shows;
   }
 
+  function episodes_list($show_id, $db) {
+
+    $query = "SELECT DISTINCT episode_num "
+           . "FROM links "
+           . "LEFT JOIN shows ON links.show_id = shows.show_id "
+           . "WHERE links.show_id = $show_id "
+           . "ORDER BY episode_num ASC";
+    $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get episodes list: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $episodes[] = $row["episode_num"];
+    }
+    $results->free_result();
+    return $episodes;
+  }
+
+  function check_episodes_list($episode_num, $show_id, $db) {
+    if (in_array($episode_num, episodes_list($show_id, $db))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   function check_shows_list($show_id, $db) {
     if (in_array($show_id, shows_list($db))) {
       return true;
@@ -471,9 +499,9 @@
     ";
   }
 
-  function display_video_card($show_name, $episode_num, $video_url, $show_img) {
+  function display_video_card($show_id, $show_name, $episode_num, $show_img) {
     echo "
-      <a href=\"" . $video_url . "\">" . "
+      <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
         <div class='col-2of12'>
           <div class='show-container'>
             <div class='redirect'></div>
@@ -493,30 +521,32 @@
     ";
   }
 
-  function display_show_list($show_name, $episode_num, $show_img) {
+  function display_show_list($show_id, $show_name, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
     $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
     echo "
-      <div class='col-2of12' id='test-list'>
-        <div class='show-container''>
-          <div class='redirect'></div>
+      <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
+        <div class='col-2of12' id='test-list'>
+          <div class='show-container''>
+            <div class='redirect'></div>
 
-          <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
-          <div class='show-info'>
+            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+            <div class='show-info'>
 
-            <div class='show-descript'>
-              <span class='show-title'>$show_name</span>
-              <span class='show-title'>Episode $episode_num</span>
+              <div class='show-descript'>
+                <span class='show-title'>$show_name</span>
+                <span class='show-title'>Episode $episode_num</span>
+              </div>
+
+              <div class='functions'>
+                <span class='save fas fa-bookmark'></span>
+              <!--  <span><span class='fas fa-comment'></span> 100</span> -->
+              </div>
+
             </div>
-
-            <div class='functions'>
-              <span class='save fas fa-bookmark'></span>
-            <!--  <span><span class='fas fa-comment'></span> 100</span> -->
-            </div>
-
           </div>
         </div>
-      </div>
+      </a>
     ";
   }
 
@@ -529,6 +559,18 @@
     $name_stmt->bind_result($username);
     $name_stmt->fetch();
     return $username;
+    $name_stmt->free_result();
+    $name_stmt->close();
+  }
+
+  function showname_from_id($show_id, $db) {
+    $name_query = "SELECT shows.name FROM shows WHERE shows.show_id = ?";
+    $name_stmt = $db->prepare($name_query);
+    $name_stmt->bind_param('i', $show_id);
+    $name_stmt->execute();
+    $name_stmt->bind_result($showname);
+    $name_stmt->fetch();
+    return $showname;
     $name_stmt->free_result();
     $name_stmt->close();
   }
