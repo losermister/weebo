@@ -12,13 +12,13 @@
     exit;
   }
 
-  $show_query = "SELECT name, description, banner_img, anime_trailer, name_jp, status, airing_date, avg_rating "
+  $show_query = "SELECT name, bg_img, description, banner_img, anime_trailer, name_jp, status, airing_date, avg_rating "
                . "FROM shows "
                . "WHERE show_id = ?";
   $show_stmt = $db->prepare($show_query);
   $show_stmt->bind_param('i', $show_id);
   $show_stmt->execute();
-  $show_stmt->bind_result($show_name, $description, $banner_img, $anime_trailer, $name_jp, $status, $airing_date, $avg_rating);
+  $show_stmt->bind_result($show_name, $show_img, $description, $banner_img, $anime_trailer, $name_jp, $status, $airing_date, $avg_rating);
 
   while ($show_stmt->fetch()) {
     echo "<img src=\"" . $banner_img . "\">";
@@ -33,6 +33,27 @@
 
   $show_stmt->free_result();
   $show_stmt->close();
+
+
+  $episodes_query = "SELECT episode_num, video_url "
+               . "FROM links "
+               . "WHERE show_id = ? "
+               . "ORDER BY episode_num";
+  $episodes_stmt = $db->prepare($episodes_query);
+  $episodes_stmt->bind_param('i', $show_id);
+  $episodes_stmt->execute();
+  $episodes_stmt->bind_result($episode_num, $video_url);
+  $episodes_stmt->store_result();
+
+  echo "<h1>Episodes ($episodes_stmt->num_rows)</h1>";
+
+  while ($episodes_stmt->fetch()) {
+    display_video_card($show_name, $episode_num, $video_url, $show_img);
+  }
+
+
+  $episodes_stmt->free_result();
+  $episodes_stmt->close();
 
   $db->close();
 

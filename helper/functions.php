@@ -471,6 +471,28 @@
     ";
   }
 
+  function display_video_card($show_name, $episode_num, $video_url, $show_img) {
+    echo "
+      <a href=\"" . $video_url . "\">" . "
+        <div class='col-2of12'>
+          <div class='show-container'>
+            <div class='redirect'></div>
+
+            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+
+            <div class='show-info'>
+              <div class='show-descript'>
+                <span class='show-title'>$show_name</span>
+                <span>Episode $episode_num</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </a>
+    ";
+  }
+
   function display_show_list($show_name, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
     $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
