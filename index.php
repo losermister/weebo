@@ -89,7 +89,7 @@
 					$shows_query = "SELECT show_id, name, bg_img "
 					             . "FROM shows "
 					             . "ORDER BY show_id DESC "
-					             . "LIMIT 18";
+					             . "LIMIT 24";
 					$shows_stmt = $db->prepare($shows_query);
 					$shows_stmt->execute();
 					$shows_stmt->bind_result($show_id, $show_name, $show_img);

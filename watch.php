@@ -31,13 +31,19 @@
   $episode_stmt->bind_param('ii', $show_id, $ep_num);
   $episode_stmt->execute();
   $episode_stmt->bind_result($video_url);
+	echo "<div class='container'>";
 
-  echo "<h1>$show_name: Episode $ep_num</h1>";
 
   // TODO: embed video on page
+  
   while ($episode_stmt->fetch()) {
-    echo "$video_url";
+  	
+    echo "<iframe class='vid' src='$video_url' ></iframe>";
   }
+  
+  echo "<h2>$show_name - Episode $ep_num</h2>";
+
+	echo "</div>";
 
   $episode_stmt->free_result();
   $episode_stmt->close();

@@ -31,7 +31,7 @@
 				<div class='col-6of12'>
 					<h2>$show_name</h2>
 					<p>$name_jp</p>
-					<a href='http://localhost/weebo/show.php?id=17' class='btn btn-primary'>play trailer</a>
+				
 					<a href='#' class='btn btn-secondary'><span class='fas fa-bookmark'></span>bookmark</a>
 				</div>
 
@@ -55,10 +55,10 @@
 	    <div class='col-3of12'>
 				<div class='row'>
 					<div class='col-12of12'>
-							<h3 class='cat'>sypnosis</h3>
+							<h3 class='cat'>trailer</h3>
 					</div>
 				</div>
-				
+				  <iframe class='trailer' src=\"" . $anime_trailer . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>
 					
 				<div class='row'>	
 					<div class='col-12of12'>
@@ -103,7 +103,7 @@
     echo "<p>Average rating: $avg_rating</p>";
     
 */
-    echo "​<iframe width=\"560\" height=\"315\" src=\"" . $anime_trailer . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>";
+  
   }
 
   $show_stmt->free_result();
@@ -130,6 +130,7 @@
 	  </div>
 	  <div class='row'>
   ";
+  
 	
   while ($episodes_stmt->fetch()) {
     display_video_card($show_id, $show_name, $episode_num, $show_img);
