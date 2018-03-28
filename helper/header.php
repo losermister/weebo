@@ -32,7 +32,8 @@
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
-	            echo "Welcome, $username";
+	            echo "Welcome, <a href=\"user.php?id=$username\">$username</a>";
+	            echo "<a href=\"edit-profile.php\">Edit profile</a>";
 	            echo "<a href=\"logout.php\"><li>Logout</li></a>";
 	          } else {
 	            echo "<a href=\"login.php\"><li>sign up/login</li></a>";

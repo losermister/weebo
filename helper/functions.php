@@ -93,6 +93,7 @@
    *  @param  string  $text  Text to display in legend
    */
   function form_start($url, $text) {
+    echo "<div class='container'>";
     echo "<form action=\"$url\" method=\"post\">";
     echo "<fieldset>";
     echo "<legend>$text</legend>";
@@ -145,6 +146,7 @@
     echo "</fieldset>";
     echo "<input type=\"submit\" name=\"log in\" value=\"$button_text\">";
     echo "</form>";
+    echo "</div>";
   }
 
   /*
@@ -266,15 +268,36 @@
    *  @param   mysqli  $db         Connection between PHP and MySQL database
    *  @return  boolean
    */
-  function registration_data_valid($email, $username, $fav_genre, $password, $password2, $db) {
-    if (!honeypot_caught($_POST) &&
+  function registration_data_valid($honeypot, $email, $username, $fav_genre, $password, $password2, $db) {
+    if (!honeypot_caught($honeypot) &&
         unique_email($email, $db) && valid_email($email) &&
-        unique_username($username, $db) && valid_username($username, $db) && !((strlen($username) < 3) || (strlen($password) > 24)) &&
+        unique_username($username, $db) && valid_username($username, $db) && !((strlen($username) < 3) || (strlen($username) > 24)) &&
         ($password == $password2) && !((strlen($password) < 6) || (strlen($password) > 16)) && strong_password($password)) {
       return true;
     } else {
       return false;
     }
+  }
+
+  function updated_user_data_valid($username, $fav_genre, $password, $password2, $db) {
+    if (unique_username($username, $db) && valid_username($username, $db) && !((strlen($username) < 3) || (strlen($username) > 24)) &&
+        ($password == $password2) && !((strlen($password) < 6) || (strlen($password) > 16)) && strong_password($password)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function update($email, $username, $password, $fav_genre, $profile_img, $db) {
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    $query = "UPDATE users "
+           . "SET user_id = ?, hashed_password = ?, fav_genre = ?, profile_img = ? "
+           . "WHERE email = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('sssss', $username, $password, $fav_genre, $profile_img, $email);
+    $stmt->execute();
+    $stmt->free_result();
+    $stmt->close();
   }
 
   /*

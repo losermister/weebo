@@ -4,44 +4,37 @@
   require_ssl();
   require('helper/header.php');
 
+  if (!isset($_SESSION['valid_user'])) {
+    echo "Oops! You need to be logged in to edit your profile. ";
+    echo "<a href=\"login.php\">Log in</a>";
+    exit;
+  } else {
+      $email = $_SESSION['valid_user'];
+  }
+
+  if (isset($_SESSION['update_profile'])) {
+    echo "Successfully updated your profile!";
+    unset($_SESSION['update_profile']);
+  }
+
   // If form submitted, store entered registration data from POST
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = trim($_POST['emailaddress']);
     $username = trim($_POST['username']);
     $fav_genre = trim($_POST['fav_genre']);
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
     $profile_img = '';
-    $honeypot = $_POST['email']; // hidden field to prevent spam
 
     // Check that all the entered data are complete and valid, then add to database
-    if (registration_data_valid($honeypot, $email, $username, $fav_genre, $password, $password2, $db)) {
-      register($email, $username, $password, $fav_genre, $profile_img, $db);
-      $_SESSION['valid_user'] = $email;
-
-      // If there's a session variable for a new watchlist item, redirect back to addtowatchlist.php to finish adding the item
-      // if (isset($_SESSION['new_watchlist_item'])) {
-      //   $new_watchlist_item = $_SESSION['new_watchlist_item'];
-      //   $callback_url = "/ngmandyn/A4/addtowatchlist.php";
-      //   if (isset($_SESSION['callback_url'])) {
-      //     $callback_url = $_SESSION['callback_url'];
-      //   }
-      //   header("Location: http://" . $_SERVER['HTTP_HOST'] . $callback_url);
-      // } else {
-      //     header("Location: showmodels.php");
-      // }
-      header("Location: index.php");
+    if (updated_user_data_valid($username, $fav_genre, $password, $password2, $db)) {
+      update($email, $username, $password, $fav_genre, $profile_img, $db);
+      $_SESSION['update_profile'] = 'Success!';
+      header("Location: edit-profile.php");
 
     // If any of the entered data are incomplete or invalid, display the appropriate error
     } else {
-        echo "We couldn't process your registration. Please check the following: ";
+        echo "We couldn't update your profile. Please check the following: ";
         echo "<ul>";
-
-        if (!unique_email($email, $db))
-          echo "<li>An account already exists with the email <strong>" . $email . "</strong></li>";
-
-        if (!valid_email($email))
-          echo "<li>Please enter a valid email</li>";
 
         if (!unique_username($username, $db))
           echo "<li>An account already exists with the username <strong>" . $username . "</strong></li>";
@@ -61,9 +54,6 @@
         if (!strong_password($password))
           echo "<li>Your password needs to contain at least 1 number, 1 uppercase character, and 1 lowercase character</li>";
 
-        if (honeypot_caught($honeypot))
-          echo "You filled out a field that doesn't exist!";
-
         echo "</ul>";
     }
   }
@@ -74,13 +64,11 @@
    *  3. Close form, and add submit button with text
    */
 
-  form_start('register.php', 'Create a new account');
-  add_honeypot_textfield('email', 'Email: ');
-  add_textfield('emailaddress', 'Email: ');
+  form_start('edit-profile.php', 'Edit public profile: ' . $email);
   add_textfield('username', 'Username: ');
   add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
   add_textfield('password', 'Password: ');
   add_textfield('password2', 'Confirm password: ');
-  form_end('Sign up');
+  form_end('Update');
 
 ?>
