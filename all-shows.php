@@ -6,6 +6,8 @@
 
 	<div class="container content">
 
+		<h1>All Shows</h1>
+
 		<div class="row">
 			<?php
 				$shows_query = "SELECT show_id, name, bg_img "

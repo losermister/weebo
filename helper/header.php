@@ -27,7 +27,7 @@
 -->
 
 					<a href="all-shows.php"><li>all shows</li></a>
-					<a href="#"><li>favourites</li></a>
+					<a href="favourites.php"><li>favourites</li></a>
 			<!-- 		<a href="#"><li>movies</li></a> -->
 	<!-- 				<a href="#"><li>categories</li></a> -->
 
