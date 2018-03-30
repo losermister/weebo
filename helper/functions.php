@@ -615,4 +615,31 @@
     return $genres;
   }
 
+  function rated_shows_list($email, $db) {
+    $query = "SELECT oso_user_ratings.show_id "
+           . "FROM oso_user_ratings "
+           . "WHERE email = '$email'";
+    $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get ratings: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $rated_shows[] = $row["show_id"];
+    }
+    $results->free_result();
+    return $rated_shows;
+  }
+
+  function remove_already_rated($recs, $email, $db) {
+    $new_recs = array();
+    foreach ($recs as $rec) {
+      if (!in_array($rec, rated_shows_list($email, $db))) {
+        array_push($new_recs, $rec);
+      }
+    }
+    return $new_recs;
+  }
+
 ?>
