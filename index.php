@@ -112,6 +112,7 @@
 	</div>
 
 
+<!--
 	<footer>
 
 		<div class="container">
@@ -126,5 +127,6 @@
 
 
 </body>
+-->
 
 </html>

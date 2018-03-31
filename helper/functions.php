@@ -111,7 +111,7 @@
     } else {
       $inputted_text = '';
     }
-    /* echo "<label for =\"$varname\">$label</label>"; */
+    echo "<label for =\"$varname\">$label</label>";
     // If the textfield is for passwords, use the password input type to ensure typed characters are masked
     if (strpos($varname, 'password') !== false) {
       echo "<input type =\"password\" placeholder=\"$label\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";

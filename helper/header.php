@@ -45,9 +45,9 @@
 	            echo "<a id='user-click'><li class='user-act'>$username <span class='fas fa-caret-down'></span></li></a>";
 	      
 							echo "<div class='user-dropdown'>";
-							echo "<a href=\"user.php?id=$username\"><span class='fas fa-user'></span> my profile</a>";
-							echo "<a href=\"edit-profile.php\"><span class='fas fa-wrench'></span> Edit profile</a>";
-	            echo "<a href=\"logout.php\"><span class='fas fa-sign-out-alt'></span> Logout</a>";
+							echo "<a href=\"user.php?id=$username\">my profile</a>";
+							echo "<a href=\"edit-profile.php\">Edit profile</a>";
+	            echo "<a href=\"logout.php\">Logout</a>";
 							echo "</div>";
 	            
 	            

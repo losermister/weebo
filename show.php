@@ -60,10 +60,17 @@
 				</div>
 				  <iframe class='trailer' src=\"" . $anime_trailer . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>
 					
+					
+				 <div class='row'>
+					<div class='col-12of12'>
+							<h3 class='cat'>sypnosis</h3>
+					</div>
+				</div>
+	
 				<div class='row'>	
 					<div class='col-12of12'>
 					  <div class='info'>
-					   <p>$description</p>
+					   <p class='descript'>$description</p>
 				   </div>
 			   </div>
 
@@ -79,9 +86,12 @@
 					  <div class='info'>
 					  <h4>Average rating:</h4>
 					  <p>$avg_rating</p>
-					   <p>Airing date: $airing_date</p>
-					   <p>Status: $status</p>
-             <p>Genre: $genres</p>
+					  <h4>Airing date:</h4>
+					   <p>$airing_date</p>
+					   <h4>Status:</h4>
+					   <p>$status</p>
+					   <h4>Genre:</h4>
+             <p><a href='#'>$genres</a></p>
 				   </div>
 			   </div>
 

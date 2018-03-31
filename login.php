@@ -22,7 +22,12 @@
       $_SESSION['valid_user'] = $email;
       header("Location: index.php");
     } else {
-      echo "<mark>Incorrect email or password</mark>";
+    	echo "<div id='error' class='small-container'>";
+    	echo "<ul>";
+    	echo "<h4>Something went wrong</h4>";
+      echo "<li>Incorrect email or password</li>";
+      echo "</ul>";
+      echo "</div>";
     }
 
     // Release results and close prepared statement to free up memory space

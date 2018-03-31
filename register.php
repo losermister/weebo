@@ -34,7 +34,9 @@
 
     // If any of the entered data are incomplete or invalid, display the appropriate error
     } else {
-        echo "We couldn't process your registration. Please check the following: ";
+    		
+    		echo "<div id='error' class='small-container'>";
+        echo "<h4>We couldn't process your registration. Please check the following:</h4> ";
         echo "<ul>";
 
         if (!unique_email($email, $db))
@@ -65,6 +67,7 @@
           echo "You filled out a field that doesn't exist!";
 
         echo "</ul>";
+        echo "</div>";
     }
   }
 
@@ -74,13 +77,14 @@
    *  3. Close form, and add submit button with text
    */
 
-  form_start('register.php', 'Create a new account');
-  add_honeypot_textfield('email', 'Email: ');
+  form_start('register.php', 'Create a new weebflix account');
+  echo "<p>Get access to 100+ tv shows</p>";
+  add_honeypot_textfield('email', 'Email ');
   add_textfield('emailaddress', 'Email: ');
-  add_textfield('username', 'Username: ');
+  add_textfield('username', 'Username ');
   add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
-  add_textfield('password', 'Password: ');
-  add_textfield('password2', 'Confirm password: ');
+  add_textfield('password', 'Password ');
+  add_textfield('password2', 'Confirm password ');
   form_end('Sign up Now');
 
 ?>

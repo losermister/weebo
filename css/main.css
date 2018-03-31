@@ -78,7 +78,7 @@ iframe{
 }
 
 iframe.vid{
-	margin-top:2rem;
+	margin-top:2.5rem;
 	height:700px;
 }
 
@@ -392,7 +392,7 @@ input[type*="text"]{
 	padding:1.2rem;
 /* 	border-radius:3px; */
 	font-size:1rem;
-	
+	box-shadow: 0rem 0rem 1rem rgba(0,0,0,0.7);
 	width:100%;
 	border:none;
 	margin:1rem 0rem 1rem 0rem;
@@ -430,7 +430,7 @@ input[type*="submit"]{
 	margin-right:5px;
 	text-decoration: none;
 	text-transform: uppercase;
-	box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+	box-shadow: 0rem 0rem 0.5rem rgba(0,0,0,0.7);
 	float:right;
 	border:none;
 	font-weight:300;
@@ -448,8 +448,8 @@ input[type*="submit"]{
 label{
 	display:inline-block;
 	color:#D0CEE3;
-	width:15%;
-	text-align: right;
+	width:100%;
+
 	padding-right:10px;
 	font-size:1rem;
 	text-transform: capitalize;
@@ -460,7 +460,7 @@ label{
 legend{
 	padding-top:3rem;
 	display:block;
-	color:#D0CEE3;
+	color:#FFFFFF;
 	font-size:2rem;
 	font-weight:bold;
 	margin:1rem 0rem 0rem 0rem;
@@ -757,6 +757,7 @@ legend{
 }
 
 .info{
+	
 	background:#2E2B45;
 	color:#b1acb4;
 	padding:1.5rem;
@@ -942,6 +943,20 @@ span.show-type{
 }
 
 
+#error ul{
+	margin:0rem;
+}
+#error ul li{
+	color:rgb(252,52,73);	
+}
+
+#error h4{
+	padding-top:2rem;
+	color:#FFFFFF;
+	text-transform: capitalize;
+}
+
+
 #test-list.col-2of12{
 	padding:0.2rem 0.5rem 0.2rem 0.5rem;
 	width:100%;
@@ -998,6 +1013,7 @@ span.show-type{
 	
 
 }
+
 
 
 
