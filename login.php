@@ -38,10 +38,11 @@
    *  3. Add link to registration page
    *  4. Close form, and add submit button with text
    */
-  form_start('login.php', 'Log in now!');
-  add_textfield('email', 'Email: ');
-  add_textfield('password', 'Password: ');
-  echo "<a href=\"register.php\">Not registered yet? Register here.</a>";
+  form_start('login.php', 'Sign In');
+  echo "<p>Don't have an account?<a href=\"register.php\"> Create your account.</a></p>";
+  add_textfield('email', 'Email ');
+  add_textfield('password', 'Password ');
+ 
   form_end('Log in');
 
 ?>

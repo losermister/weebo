@@ -93,7 +93,7 @@
    *  @param  string  $text  Text to display in legend
    */
   function form_start($url, $text) {
-    echo "<div class='container'>";
+    echo "<div class='small-container'>";
     echo "<form action=\"$url\" method=\"post\">";
     echo "<fieldset>";
     echo "<legend>$text</legend>";
@@ -111,12 +111,12 @@
     } else {
       $inputted_text = '';
     }
-    echo "<label for =\"$varname\">$label</label>";
+    /* echo "<label for =\"$varname\">$label</label>"; */
     // If the textfield is for passwords, use the password input type to ensure typed characters are masked
     if (strpos($varname, 'password') !== false) {
-      echo "<input type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+      echo "<input type =\"password\" placeholder=\"$label\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     } else {
-      echo "<input type =\"text\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+      echo "<input type =\"text\" placeholder=\"$label\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     }
     echo "<br>";
   }
@@ -128,13 +128,13 @@
     } else {
       $inputted_text = '';
     }
-    echo "<label style=\"display: none\" for =\"$varname\">$label</label>";
+   /*  echo "<label style=\"display: none\" for =\"$varname\">$label</label>"; */
 
     // If the textfield is for passwords, use the password input type to ensure typed characters are masked
     if (strpos($varname, 'password') !== false) {
-      echo "<input style=\"display: none\" autocomplete=\"off\" type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+      echo "<input style=\"display: none\" autocomplete=\"off\" placeholder=\"$label\" type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     } else {
-      echo "<input style=\"display: none\" autocomplete=\"off\" type =\"text\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
+      echo "<input style=\"display: none\" autocomplete=\"off\" type =\"text\" placeholder=\"$varname\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     }
     echo "<br>";
   }

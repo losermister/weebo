@@ -6,6 +6,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -26,21 +27,43 @@
 					<a href="#"><li>categories</li></a>
 -->
 
-					<a href="all-shows.php"><li>all shows</li></a>
-					<a href="favourites.php"><li>favourites</li></a>
+					
+					
 			<!-- 		<a href="#"><li>movies</li></a> -->
+
 	<!-- 				<a href="#"><li>categories</li></a> -->
 
+				</ul>
+				<ul class="fl-right">
+					<a href="all-shows.php"><li>all shows</li></a>
+					<a href="favourites.php"><li>favourites</li></a>
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
-	            echo "Welcome, <a href=\"user.php?id=$username\">$username</a>";
-	            echo "<a href=\"edit-profile.php\">Edit profile</a>";
-	            echo "<a href=\"logout.php\"><li>Logout</li></a>";
+	          	
+	        /* href=\"user.php?id=$username\" */
+	            echo "<a id='user-click'><li class='user-act'>$username <span class='fas fa-caret-down'></span></li></a>";
+	      
+							echo "<div class='user-dropdown'>";
+							echo "<a href=\"user.php?id=$username\"><span class='fas fa-user'></span> my profile</a>";
+							echo "<a href=\"edit-profile.php\"><span class='fas fa-wrench'></span> Edit profile</a>";
+	            echo "<a href=\"logout.php\"><span class='fas fa-sign-out-alt'></span> Logout</a>";
+							echo "</div>";
+	            
+	            
 	          } else {
 	            echo "<a href=\"login.php\"><li>sign up/login</li></a>";
 	          }
 			    ?>
+
+					<script>
+						$('#user-click').click(function(){
+					
+							$('.user-dropdown').toggle();
+						});
+					
+					</script>
+
 
 <!--
 					<a href="#"><li class="fas fa-bookmark">

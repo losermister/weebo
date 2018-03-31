@@ -34,4 +34,5 @@
 
   echo $query;
 
+	var_dump($openslopeone->getRecommendedItemsByUser('mandy@sfu.ca', 10));
 ?>

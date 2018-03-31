@@ -24,10 +24,12 @@
 					<a href="#" class="btn btn-secondary"><!-- <span class="fas fa-play"></span> --><span class='fas fa-bookmark'></span>bookmark</a>
 				</div>
 
+
 			</div>
 		</div>
+		
+		
 		<div class="banner-overlay">
-
 		</div>
 
 		<div class="banner-img-container">
@@ -37,13 +39,16 @@
 	</div>
 
 
+
+
+
 	<div class="container content">
 		<div class="row content" >
 			<div class="col-3of12">
 
 				<div class="row">
 					<div class="col-12of12">
-						<h3 class=\"cat\">recent uploads</h3>
+							<h3 class="cat">recent uploads</h3>
 					</div>
 
 				</div>
@@ -75,63 +80,36 @@
 
 				<div class="row">
 					<div class="col-12of12">
-							<?php
-								if (isset($_SESSION['valid_user'])) {
-									$email = $_SESSION['valid_user'];
-									echo "<h3 class=\"cat\">Recommended for you</h3>";
-								} else {
-									echo "<h3 class=\"cat\">recent uploads</h3>";
-								}
-							?>
+
+							<h3 class="cat">show recommendation</h3>
+
 					</div>
+
 				</div>
+
 
 				<div class="row">
-					<?php
-						if (isset($_SESSION['valid_user'])) {
-							require './OpenSlopeOne.php';
-							$openslopeone = new OpenSlopeOne();
-							$openslopeone->initSlopeOneTable('MySQL');
-							$recs = $openslopeone->getRecommendedItemsByUser($email);
-              $recs = remove_already_rated($recs, $email, $db);
+				<?php
+					$shows_query = "SELECT show_id, name, bg_img "
+					             . "FROM shows "
+					             . "ORDER BY show_id DESC "
+					             . "LIMIT 18";
+					$shows_stmt = $db->prepare($shows_query);
+					$shows_stmt->execute();
+					$shows_stmt->bind_result($show_id, $show_name, $show_img);
 
-							foreach ($recs as $rec) {
-								$shows_query = "SELECT show_id, name, bg_img "
-								             . "FROM shows "
-								             . "WHERE show_id = $rec";
-								$shows_stmt = $db->prepare($shows_query);
-								$shows_stmt->execute();
-								$shows_stmt->bind_result($show_id, $show_name, $show_img);
+					while ($shows_stmt->fetch()) {
+						display_show_card($show_id, $show_name, $show_img);
+					}
 
-								while ($shows_stmt->fetch()) {
-									display_show_card($show_id, $show_name, $show_img);
-								}
-
-								$shows_stmt->free_result();
-							  $shows_stmt->close();
-							}
-
-						} else {
-							$shows_query = "SELECT show_id, name, bg_img "
-							             . "FROM shows "
-							             . "ORDER BY show_id DESC "
-							             . "LIMIT 24";
-							$shows_stmt = $db->prepare($shows_query);
-							$shows_stmt->execute();
-							$shows_stmt->bind_result($show_id, $show_name, $show_img);
-
-							while ($shows_stmt->fetch()) {
-								display_show_card($show_id, $show_name, $show_img);
-							}
-
-							$shows_stmt->free_result();
-						  $shows_stmt->close();
-						}
-					?>
-				</div>
+					$shows_stmt->free_result();
+				  $shows_stmt->close();
+				?>
 
 			</div>
+
 		</div>
+	</div>
 
 
 	<footer>
