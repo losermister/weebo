@@ -826,9 +826,15 @@ legend{
 }
 
 
+.show-container a{
+	color:#b1acb4;
+}
+
 .show-container:hover, .show-container:focus{
 	top:-3px;
 }
+
+
 
 
 /*
