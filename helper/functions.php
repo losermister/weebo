@@ -511,7 +511,7 @@
                 <span class='show-title'>$show_name</span>
               </div>
               <div class='functions'>
-                <span class='save fas fa-bookmark'></span>
+                <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a>
                 <!--  <span><span class='fas fa-comment'></span> 100</span> -->
               </div>
             </div>

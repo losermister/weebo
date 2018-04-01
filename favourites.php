@@ -10,10 +10,16 @@
 
 		<div class="row">
 			<?php
-				$shows_query = "SELECT show_id, name, bg_img "
-				             . "FROM shows "
-				             . "ORDER BY show_id";
+        if (isset($_SESSION['valid_user'])) {
+        	$email = $_SESSION['valid_user'];
+        }
+
+				$shows_query = "SELECT favourite_shows.show_id, shows.name, shows.bg_img "
+				             . "FROM favourite_shows "
+				             . "INNER JOIN shows ON favourite_shows.show_id = shows.show_id "
+				             . "WHERE email = ?";
 				$shows_stmt = $db->prepare($shows_query);
+				$shows_stmt->bind_param('s', $email);
 				$shows_stmt->execute();
 				$shows_stmt->bind_result($show_id, $show_name, $show_img);
 
