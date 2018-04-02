@@ -22,8 +22,9 @@
 			    	echo "Successfully added " . showname_from_id($new_favourite_id, $db) . " to your favourites!";
 			    } else if (!check_shows_list($new_favourite_id, $db)) {
 			    	echo "Not added: Invalid product code " . $new_favourite_id . " was submitted.";
-			    } else {
-			    	echo "Not added:" . showname_from_id($new_favourite_id, $db) . " is already in your favourites!";
+			    } else if (in_favourites_list($email, $new_favourite_id, $db)) {
+			    	remove_from_favourites($email, $new_favourite_id, $db);
+			    	echo "Removed " . showname_from_id($new_favourite_id, $db) . " from your favourites.";
 			    }
 
 			  }

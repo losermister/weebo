@@ -407,7 +407,17 @@
     $query = "INSERT INTO favourite_shows VALUES "
            . "(?, ?)";
     $stmt = $db->prepare($query);
-    $stmt->bind_param('ss', $email, $show_id);
+    $stmt->bind_param('si', $email, $show_id);
+    $stmt->execute();
+    $stmt->free_result();
+    $stmt->close();
+  }
+
+  function remove_from_favourites($email, $show_id, $db) {
+    $query = "DELETE FROM favourite_shows "
+           . "WHERE favourite_shows.email = ? AND favourite_shows.show_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('si', $email, $show_id);
     $stmt->execute();
     $stmt->free_result();
     $stmt->close();
@@ -545,7 +555,6 @@
                 <form action='favourites.php' class='save-btn' method='post'>
                   <input type='hidden' name='favourite_show' value='$show_id'>
                   <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
-                  <button type='submit' class='remove' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
                 </form>
                
            
