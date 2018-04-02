@@ -22,7 +22,7 @@
 					<p>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.</p>
 					<a href="http://localhost/weebo/show.php?id=17" class="btn btn-primary"><!-- <span class="fas fa-play"></span> -->watch series</a>
 <!-- 					<a href="#" class="btn btn-secondary"><span class="fas fa-play"></span><span class='fas fa-bookmark'></span>bookmark</a> -->
-					<form action='favourites.php' method='post'>
+					<form action='favourites.php' class='save-btn' method='post'>
             <input type='hidden' name='favourite_show' value='$show_id'>
             <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>bookmark</button>
 		      </form>
