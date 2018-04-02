@@ -511,6 +511,10 @@
                 <span class='show-title'>$show_name</span>
               </div>
               <div class='functions'>
+                <form action='favourites.php' method='post'>
+                  <input type='hidden' name='favourite_show' value='$show_id'>
+                  <input class='save fas fa-bookmark' type='submit' name='add_show_btn' value=''>
+                </form>
                 <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a>
                 <!--  <span><span class='fas fa-comment'></span> 100</span> -->
               </div>
