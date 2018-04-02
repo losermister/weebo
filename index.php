@@ -4,6 +4,11 @@
   require('helper/header.php');
 ?>
 
+	<div class='notify-msg-container'>
+		<span class='notify-text'>Some Message</span>
+	</div>
+
+
 	<div class="banner-container">
 
 		<div class="container">

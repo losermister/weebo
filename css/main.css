@@ -528,6 +528,8 @@ button.save[type*="submit"]{
 }
 
 
+
+
 button.save[type*="submit"] .fas{
 	margin:0px 2px 0px 2px;
 	
@@ -876,6 +878,52 @@ legend{
 	margin-bottom:65px;
 }
 
+.notify-msg-container{
+	position:absolute;
+	
+	display:inline-block;
+	
+	width:100%;
+	border-radius:0.25rem;
+	z-index:10;
+	height:100vh;
+	top:0;
+	top:50%;
+	bottom:50%;
+	bottom:0;
+	left:0;
+	right:0;
+	text-align: center;
+	opacity:0;
+	animation: notify-animate 3s ease-in-out;
+}
+
+.notify-text{
+	display:inline-block;
+	z-index: 10;
+	border-radius:0.25rem;
+	padding:1rem 2rem 1rem 2rem;
+	background: rgba(0,194,123,1);
+	text-align:center;
+	color:#FFFFFF;
+	text-transform:capitalize;
+	vertical-align: middle;
+	
+}
+
+
+@keyframes notify-animate{
+	from{
+		opacity:1;
+	}
+	
+	to{
+		opacity:0;
+	}
+	
+}
+
+
 .row{
 /* 	margin-top:15px; */
 /* 	margin-bottom:15px; */
@@ -889,6 +937,11 @@ legend{
 }
 
 
+.saved-state{
+	background:rgb(252,52,73) !important;
+	color:white !important;
+	opacity:1 !important;
+}
 
 
 .show-container{
