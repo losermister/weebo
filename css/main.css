@@ -230,6 +230,44 @@ nav ul.fl-right a:hover li{
 }
 
 
+#rate{
+	margin-bottom:7;
+}
+
+#rate button{
+	display:inline-block;
+	
+	width:30%;
+	border:none;
+	color:#FFFFFF;
+	background:rgb(252,52,73);
+	
+}
+
+#rate select{
+	appearance: none;
+	display:inline-block;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	float:left;
+		padding:0.5rem 1rem 0.5rem 1rem;
+	/* border-radius:5px; */
+	display:inline-block;
+	text-align: center;
+	font-weight:bold;
+	font-size:0.8rem;
+	border:none;
+	border-radius:0;
+	width:70%;
+	text-decoration: none;
+	text-transform: uppercase;
+	box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+	
+	
+}
+
+
+
 nav ul.fl-left{
 	margin-top:21px;
 	margin-bottom:21px;
@@ -930,9 +968,13 @@ legend{
 
 li.user-act{
 	text-transform: none;
-	color:#252338 !important;
+	color:#252338 ;
 	font-size:0.85rem;
 	
+}
+
+nav ul.fl-right a li:hover{
+	color:rgb(252,52,73);
 }
 
 .user-dropdown{

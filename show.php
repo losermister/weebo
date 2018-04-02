@@ -35,7 +35,7 @@
               <input type='hidden' name='favourite_show' value='$show_id'>
               <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>bookmark</button>
            </form>
-					
+					 
 				</div>
 
 
@@ -89,6 +89,15 @@
 					  <div class='info'>
 					  <h4>Average rating:</h4>
 					  <p>$avg_rating</p>
+					  <form id='rate'>
+					  	<select>
+					  		<option>Hello</option>
+					  	</select>
+					  	<button class='btn-small'>Rate</button>
+					  
+					  </form>
+					  
+					  
 					  <h4>Airing date:</h4>
 					   <p>$airing_date</p>
 					   <h4>Status:</h4>
