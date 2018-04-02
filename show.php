@@ -12,7 +12,19 @@
     exit;
   }
 
+  if (isset($_SESSION['valid_user'])) {
+    $email = $_SESSION['valid_user'];
+
+    if (isset($_POST['rating'])) {
+      $rating = $_POST['rating'];
+      update_rating($email, $show_id, $rating, $db);
+      display_notification_success("Thanks for rating " . showname_from_id($show_id, $db) . "!");
+    }
+  }
+
   $genres = implode(', ', genres_list_from_id($show_id, $db));
+
+  $avg_rating = (avg_show_rating($show_id, $db));
 
   $show_query = "SELECT name, bg_img, description, banner_img, anime_trailer, name_jp, status, airing_date, avg_rating "
               . "FROM shows "
@@ -21,21 +33,29 @@
   $show_stmt->bind_param('i', $show_id);
   $show_stmt->execute();
   $show_stmt->bind_result($show_name, $show_img, $description, $banner_img, $anime_trailer, $name_jp, $status, $airing_date, $avg_rating);
+  $result = $show_stmt->get_result();
+  $show_stmt->free_result();
+  $show_stmt->close();
 
-  while ($show_stmt->fetch()) {
+  $results_keys = array('show_name', 'show_img', 'description', 'banner_img', 'anime_trailer', 'name_jp', 'status', 'airing_date', 'avg_rating');
+
+  while ($row = $result->fetch_array(MYSQLI_NUM)) {
+
+    $results = array_combine($results_keys, $row);
+
     echo "
    	<div class='banner-container'>
 	 	<div class='container'>
 	 		<div class='banner-details'>
 
 				<div class='col-6of12'>
-					<h2>$show_name</h2>
-					<p>$name_jp</p>
+					<h2>". $results['show_name'] ."</h2>
+					<p>". $results['name_jp'] ."</p>
 					 <form action='favourites.php' class='save-btn' method='post'>
               <input type='hidden' name='favourite_show' value='$show_id'>
               <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>bookmark</button>
            </form>
-					 
+
 				</div>
 
 
@@ -45,7 +65,7 @@
     <div class='banner-overlay'></div>
 
 		<div class='banner-img-container'>
-			<div class='show-img' style='background-image:url(\"" . $banner_img . "\")'></div>
+			<div class='show-img' style='background-image:url(\"" . $results['banner_img'] . "\")'></div>
 		</div>
 
 
@@ -61,19 +81,19 @@
 							<h3 class='cat'>trailer</h3>
 					</div>
 				</div>
-				  <iframe class='trailer' src=\"" . $anime_trailer . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>
-					
-					
+				  <iframe class='trailer' src=\"" . $results['anime_trailer'] . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>
+
+
 				 <div class='row'>
 					<div class='col-12of12'>
 							<h3 class='cat'>sypnosis</h3>
 					</div>
 				</div>
-	
-				<div class='row'>	
+
+				<div class='row'>
 					<div class='col-12of12'>
 					  <div class='info'>
-					   <p class='descript'>$description</p>
+					   <p class='descript'>" . $results['description'] . "</p>
 				   </div>
 			   </div>
 
@@ -88,20 +108,19 @@
 					<div class='col-12of12'>
 					  <div class='info'>
 					  <h4>Average rating:</h4>
-					  <p>$avg_rating</p>
-					  <form id='rate'>
-					  	<select>
-					  		<option>Hello</option>
-					  	</select>
-					  	<button class='btn-small'>Rate</button>
-					  
-					  </form>
-					  
-					  
-					  <h4>Airing date:</h4>
-					   <p>$airing_date</p>
+					  <p>" . number_format($avg_rating * 10, 2) . "</p>";
+
+            if (isset($_SESSION['valid_user'])) {
+              echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
+              add_dropdown_num_range('rating', 1, 10);
+              echo "<button type='submit' form ='rate' value ='Submit' class='btn-small'>Rate</button>
+              </form>";
+           }
+
+					  echo "<h4>Airing date:</h4>
+					   <p>" . $results['airing_date'] . "</p>
 					   <h4>Status:</h4>
-					   <p>$status</p>
+					   <p>" . $results['status'] . "</p>
 					   <h4>Genre:</h4>
              <p><a href='#'>$genres</a></p>
 				   </div>
@@ -127,12 +146,8 @@
     echo "<p>Average rating: $avg_rating</p>";
 
 */
-  
-  }
 
-  $show_stmt->free_result();
-  $show_stmt->close();
-
+  // }
 
   $episodes_query = "SELECT DISTINCT episode_num "
                   . "FROM links "
@@ -156,7 +171,7 @@
   ";
 
   while ($episodes_stmt->fetch()) {
-    display_video_card($show_id, $show_name, $episode_num, $show_img);
+    display_video_card($show_id, $show_name, $episode_num, $row[1]);
   }
 
 	echo "
@@ -170,5 +185,5 @@
   $episodes_stmt->close();
 
   $db->close();
-
+      }
 ?>

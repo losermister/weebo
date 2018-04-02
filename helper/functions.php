@@ -121,6 +121,25 @@
     echo "<br>";
   }
 
+  function add_dropdown_num_range($varname, $min, $max) {
+    global $$varname;
+    if (isset($_POST['rating'])) $rating = $_POST['rating']; else $rating = '';
+    echo "<select name = '$varname'>";
+    echo "<option value = '' disabled selected>Rate out of 10</option>";
+    for ($i = $min; $i <= $max; $i++) {
+      add_dropdown_num_range_options($i, $varname);
+    }
+    echo "</select>";
+  }
+
+  function add_dropdown_num_range_options($i, $varname) {
+    global $$varname;
+    $fraction = $i / 10;
+    echo "<option value ='$fraction' ";
+    if ($$varname == $fraction) echo "selected";
+    echo ">$i</option>";
+  }
+
   function add_honeypot_textfield($varname, $label) {
     // If form was submitted, save inputted data and display again
     if (isset($_POST[$varname])) {
@@ -297,6 +316,22 @@
     $stmt = $db->prepare($query);
     $stmt->bind_param('sssss', $username, $password, $fav_genre, $profile_img, $email);
     $stmt->execute();
+    $stmt->free_result();
+    $stmt->close();
+  }
+
+  function update_rating($email, $show_id, $rating, $db) {
+    $query = "INSERT INTO oso_user_ratings(email, show_id, rating) "
+             . "VALUES (?, ?, ?) "
+             . "ON DUPLICATE KEY UPDATE rating = ?";
+    $stmt = $db->prepare($query);
+    if ( !$stmt ) {
+      printf('errno: %d, error: %s', $db->errno, $db->error);
+      die;
+    }
+    $stmt->bind_param('sidd', $email, $show_id, $rating, $rating);
+    $stmt->execute();
+    $stmt->store_result();
     $stmt->free_result();
     $stmt->close();
   }
@@ -712,6 +747,21 @@
     }
     $results->free_result();
     return $genres;
+  }
+
+  function avg_show_rating($show_id, $db) {
+    $query = "SELECT AVG(rating) as avg_rating "
+           . "FROM oso_user_ratings "
+           . "WHERE show_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $show_id);
+    $stmt->execute();
+    $stmt->bind_result($avg_rating);
+    $stmt->fetch();
+    $stmt->store_result();
+    $stmt->free_result();
+    $stmt->close();
+    return $avg_rating;
   }
 
   function rated_shows_list($email, $db) {
