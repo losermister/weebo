@@ -403,6 +403,16 @@
     $stmt->close();
   }
 
+  function add_to_favourites($email, $show_id, $db) {
+    $query = "INSERT INTO favourite_shows VALUES "
+           . "(?, ?)";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('ss', $email, $show_id);
+    $stmt->execute();
+    $stmt->free_result();
+    $stmt->close();
+  }
+
   /*
    *  Get a list of all valid product codes from database
    *  @param   mysqli  $db  Connection between PHP and MySQL database
@@ -535,6 +545,7 @@
                 <form action='favourites.php' class='save-btn' method='post'>
                   <input type='hidden' name='favourite_show' value='$show_id'>
                   <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
+                  <button type='submit' class='remove' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
                 </form>
                
            

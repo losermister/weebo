@@ -16,15 +16,16 @@
 
 			  if (isset($_POST['favourite_show'])) {
 			    $new_favourite_id = $_POST['favourite_show'];
-			    echo $new_favourite_id;
 
 			    if (check_shows_list($new_favourite_id, $db) && !in_favourites_list($email, $new_favourite_id, $db)) {
-			    	echo "can add!";
+			    	add_to_favourites($email, $new_favourite_id, $db);
+			    	echo "Successfully added " . showname_from_id($new_favourite_id, $db) . " to your favourites!";
 			    } else if (!check_shows_list($new_favourite_id, $db)) {
-			    	echo "Not added: Invalid product code " . $new_favourite_id . "was submitted.";
+			    	echo "Not added: Invalid product code " . $new_favourite_id . " was submitted.";
 			    } else {
-			    	echo "Not added:" . $new_favourite_id . "is already in your favourites!";
+			    	echo "Not added:" . showname_from_id($new_favourite_id, $db) . " is already in your favourites!";
 			    }
+
 			  }
 
 				$shows_query = "SELECT favourite_shows.show_id, shows.name, shows.bg_img "
