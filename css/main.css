@@ -975,6 +975,7 @@ li.user-act{
 
 nav ul.fl-right a li:hover{
 	color:rgb(252,52,73);
+	cursor: pointer;
 }
 
 .user-dropdown{
