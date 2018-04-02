@@ -31,8 +31,11 @@
 				<div class='col-6of12'>
 					<h2>$show_name</h2>
 					<p>$name_jp</p>
-				
-					<a href='#' class='btn btn-secondary'><span class='fas fa-bookmark'></span>bookmark</a>
+					 <form action='favourites.php' method='post'>
+              <input type='hidden' name='favourite_show' value='$show_id'>
+              <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>bookmark</button>
+           </form>
+					
 				</div>
 
 

@@ -462,6 +462,14 @@ input[type*="submit"]{
 	color:white;
 }
 
+
+button.btn[type*="submit"]{
+	border:0px;
+	font-weight:500;
+}
+
+
+
 button.save[type*="submit"]{
 	display:block;
 	margin:0px;
