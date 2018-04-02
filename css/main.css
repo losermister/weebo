@@ -444,6 +444,53 @@ input[type*="submit"]{
 }
 
 
+.save{
+
+	padding:8px 9px 8px 9px;
+	border-radius:100px;
+	background:#4A4574;
+	font-size:0.7rem;
+	opacity:0.7;
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.8);
+	transition:all 0.2s ease-in-out;
+	
+}
+
+.save:hover, .save:focus{
+	background:rgb(252,52,73);
+	opacity:1;
+	color:white;
+}
+
+button.save[type*="submit"]{
+	display:block;
+	margin:0px;
+	padding:8px 9px 8px 9px;
+	text-align: center;
+	border-radius:100px;
+	background:#4A4574;
+	font-size:0.7rem;
+	opacity:0.7;
+	border:none;
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.8);
+	transition:all 0.2s ease-in-out;
+	color:#b1acb4;
+}
+
+
+button.save[type*="submit"] .fas{
+	margin:0px 2px 0px 2px;
+	
+}
+
+
+button.save:hover[type*="submit"]{
+	background:rgb(252,52,73);
+	opacity:1;
+	color:white;
+
+}
+
 
 label{
 	display:inline-block;
@@ -791,23 +838,7 @@ legend{
     display: table;
 }
 
-.save{
 
-	padding:8px 9px 8px 9px;
-	border-radius:100px;
-	background:#4A4574;
-	font-size:0.7rem;
-	opacity:0.7;
-	box-shadow: 0px 0px 5px rgba(0,0,0,0.8);
-	transition:all 0.2s ease-in-out;
-	
-}
-
-.save:hover, .save:focus{
-	background:rgb(252,52,73);
-	opacity:1;
-	color:white;
-}
 
 
 .show-container{

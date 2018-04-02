@@ -494,7 +494,7 @@
       return false;
     }
   }
-
+/* 	 <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a> */
   function display_show_card($show_id, $show_name, $show_img) {
     // Trim show name if longer than 12 characters, for consistent card sizing
     $show_name = strlen($show_name) > 12 ? substr($show_name, 0, 12)."..." : $show_name;
@@ -513,10 +513,10 @@
               <div class='functions'>
                 <form action='favourites.php' method='post'>
                   <input type='hidden' name='favourite_show' value='$show_id'>
-                  <input class='save fas fa-bookmark' type='submit' name='add_show_btn' value=''>
+                  <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
                 </form>
-                <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a>
-                <!--  <span><span class='fas fa-comment'></span> 100</span> -->
+               
+           
               </div>
             </div>
 
@@ -549,6 +549,11 @@
     ";
   }
 
+
+/*
+ <span class='save fas fa-bookmark'></span>
+ <span><span class='fas fa-comment'></span> 100</span> 
+*/
   function display_show_list($show_id, $show_name, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
     $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
@@ -567,8 +572,7 @@
               </div>
 
               <div class='functions'>
-                <span class='save fas fa-bookmark'></span>
-              <!--  <span><span class='fas fa-comment'></span> 100</span> -->
+               
               </div>
 
             </div>
