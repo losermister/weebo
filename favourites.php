@@ -14,6 +14,19 @@
         	$email = $_SESSION['valid_user'];
         }
 
+			  if (isset($_POST['favourite_show'])) {
+			    $new_favourite_id = $_POST['favourite_show'];
+			    echo $new_favourite_id;
+
+			    if (check_shows_list($new_favourite_id, $db) && !in_favourites_list($email, $new_favourite_id, $db)) {
+			    	echo "can add!";
+			    } else if (!check_shows_list($new_favourite_id, $db)) {
+			    	echo "Not added: Invalid product code " . $new_favourite_id . "was submitted.";
+			    } else {
+			    	echo "Not added:" . $new_favourite_id . "is already in your favourites!";
+			    }
+			  }
+
 				$shows_query = "SELECT favourite_shows.show_id, shows.name, shows.bg_img "
 				             . "FROM favourite_shows "
 				             . "INNER JOIN shows ON favourite_shows.show_id = shows.show_id "

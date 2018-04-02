@@ -348,6 +348,27 @@
     $stmt->close();
   }
 
+  function in_favourites_list($email, $show_id, $db) {
+    $query = "SELECT * "
+           . "FROM favourite_shows "
+           . "WHERE favourite_shows.email = ? "
+           . "AND favourite_shows.show_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('si', $email, $show_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    if (!$result) {
+      echo "Oops! Couldn't execute query.";
+    }
+    if ($result->num_rows > 0) {
+      return true;
+    }
+    return false;
+    $stmt->free_result();
+    $stmt->close();
+  }
+
   /*
    *  Get a product's name from its product code
    *  @param   string  $code  The product's code
