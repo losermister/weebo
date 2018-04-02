@@ -466,8 +466,12 @@ input[type*="submit"]{
 button.btn[type*="submit"]{
 	border:0px;
 	font-weight:500;
+	
 }
 
+form.save-btn{
+	display:inline-block;
+}
 
 
 button.save[type*="submit"]{

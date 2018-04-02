@@ -532,7 +532,7 @@
                 <span class='show-title'>$show_name</span>
               </div>
               <div class='functions'>
-                <form action='favourites.php' method='post'>
+                <form action='favourites.php' class='save-btn' method='post'>
                   <input type='hidden' name='favourite_show' value='$show_id'>
                   <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
                 </form>
