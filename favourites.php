@@ -3,9 +3,7 @@
 	use_http();
   require('helper/header.php');
 ?>
-		<div class='notify-msg-container'>
-		<span class='notify-text'>Some Message</span>
-	</div>
+
 	<div class="container content">
 
 		<h1>My Favourite Shows</h1>
@@ -21,14 +19,17 @@
 
 			    if (check_shows_list($new_favourite_id, $db) && !in_favourites_list($email, $new_favourite_id, $db)) {
 			    	add_to_favourites($email, $new_favourite_id, $db);
-			    	echo "Successfully added " . showname_from_id($new_favourite_id, $db) . " to your favourites!";
+			    	display_notification_success("Successfully added " . showname_from_id($new_favourite_id, $db) . " to your favourites!");
 			    } else if (!check_shows_list($new_favourite_id, $db)) {
-			    	echo "Not added: Invalid product code " . $new_favourite_id . " was submitted.";
-			    } else if (in_favourites_list($email, $new_favourite_id, $db)) {
-			    	remove_from_favourites($email, $new_favourite_id, $db);
-			    	echo "Removed " . showname_from_id($new_favourite_id, $db) . " from your favourites.";
+			    	display_notification_error("Not added: Invalid show ID " . $new_favourite_id . " was submitted.");
 			    }
 
+			  } else if (isset($_POST['unfavourite_show'])) {
+			  	$unfavourite_id = $_POST['unfavourite_show'];
+			  	if (check_shows_list($unfavourite_id, $db) && in_favourites_list($email, $unfavourite_id, $db)) {
+			    	remove_from_favourites($email, $unfavourite_id, $db);
+			    	display_notification_success("Removed " . showname_from_id($unfavourite_id, $db) . " from your favourites.");
+			  	}
 			  }
 
 				$shows_query = "SELECT favourite_shows.show_id, shows.name, shows.bg_img "
@@ -39,13 +40,14 @@
 				$shows_stmt->bind_param('s', $email);
 				$shows_stmt->execute();
 				$shows_stmt->bind_result($show_id, $show_name, $show_img);
-
-				while ($shows_stmt->fetch()) {
-					display_show_card($show_id, $show_name, $show_img);
-				}
-
+				$result = $shows_stmt->get_result();
 				$shows_stmt->free_result();
 			  $shows_stmt->close();
+
+				while ($row = $result->fetch_array(MYSQLI_NUM)) {
+				   display_show_card($row[0], $row[1], $row[2], $db);
+				}
+
 			?>
 		</div>
 

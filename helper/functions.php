@@ -349,24 +349,44 @@
   }
 
   function in_favourites_list($email, $show_id, $db) {
+
     $query = "SELECT * "
            . "FROM favourite_shows "
-           . "WHERE favourite_shows.email = ? "
-           . "AND favourite_shows.show_id = ?";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('si', $email, $show_id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    if (!$result) {
-      echo "Oops! Couldn't execute query.";
-    }
-    if ($result->num_rows > 0) {
+           . "WHERE favourite_shows.email = '$email' "
+           . "AND favourite_shows.show_id = $show_id";
+    $results = $db->query($query);
+    if ($results->num_rows > 0) {
       return true;
+    } else {
+      return false;
     }
-    return false;
-    $stmt->free_result();
-    $stmt->close();
+    $results->free_result();
+
+
+
+    // $query = "SELECT * "
+    //        . "FROM favourite_shows "
+    //        . "WHERE favourite_shows.email = ? "
+    //        . "AND favourite_shows.show_id = ?";
+    // $stmt = $db->prepare($query);
+    // $stmt->bind_param('si', $email, $show_id);
+    // $stmt->execute();
+    // if (!$db->query($query)) {
+    //   print_r($db->error_list);
+    // }
+    // $result = $stmt->store_result();
+    // // $result = $stmt->get_result();
+    // $stmt->free_result();
+    // $stmt->close();
+    // if (!$result) {
+    //   echo "Oops! Couldn't execute query.";
+    // }
+    // if ($result->num_rows > 0) {
+    //   return true;
+    // }
+    // return false;
+    // // $stmt->free_result();
+    // // $stmt->close();
   }
 
   /*
@@ -421,6 +441,26 @@
     $stmt->execute();
     $stmt->free_result();
     $stmt->close();
+  }
+
+  function display_notification_success($text) {
+    echo "
+      <div class='notify-msg-container'>
+        <span class='notify-text-success'>"
+          . $text .
+        "</span>
+      </div>
+    ";
+  }
+
+  function display_notification_error($text) {
+    echo "
+      <div class='notify-msg-container'>
+        <span class='notify-text-error'>"
+          . $text .
+        "</span>
+      </div>
+    ";
   }
 
   /*
@@ -536,7 +576,7 @@
     }
   }
 /* 	 <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a> */
-  function display_show_card($show_id, $show_name, $show_img) {
+  function display_show_card($show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
     $show_name = strlen($show_name) > 12 ? substr($show_name, 0, 12)."..." : $show_name;
     echo "
@@ -552,12 +592,21 @@
                 <span class='show-title'>$show_name</span>
               </div>
               <div class='functions'>
-                <form action='favourites.php' class='save-btn' method='post'>
-                  <input type='hidden' name='favourite_show' value='$show_id'>
-                  <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
-                </form>
-               
-           
+                <form action='favourites.php' class='save-btn' method='post'>";
+                  $email = $_SESSION['valid_user'];
+                  if (in_favourites_list($email, $show_id, $db)) {
+                    echo "
+                      <input type='hidden' name='unfavourite_show' value='$show_id'>
+                      <button type='submit' class='save saved-state' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
+                    ";
+                  } else {
+                    echo "
+                      <input type='hidden' name='favourite_show' value='$show_id'>
+                      <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
+                    ";
+                  }
+                echo "</form>
+
               </div>
             </div>
 
@@ -593,7 +642,7 @@
 
 /*
  <span class='save fas fa-bookmark'></span>
- <span><span class='fas fa-comment'></span> 100</span> 
+ <span><span class='fas fa-comment'></span> 100</span>
 */
   function display_show_list($show_id, $show_name, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
@@ -613,7 +662,7 @@
               </div>
 
               <div class='functions'>
-               
+
               </div>
 
             </div>

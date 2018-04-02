@@ -103,9 +103,10 @@
 					$shows_stmt = $db->prepare($shows_query);
 					$shows_stmt->execute();
 					$shows_stmt->bind_result($show_id, $show_name, $show_img);
+					$shows_stmt->store_result();
 
 					while ($shows_stmt->fetch()) {
-						display_show_card($show_id, $show_name, $show_img);
+						display_show_card($show_id, $show_name, $show_img, $db);
 					}
 
 					$shows_stmt->free_result();
