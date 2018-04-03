@@ -12,6 +12,8 @@
     exit;
   }
 
+  $email = '';
+
   if (isset($_SESSION['valid_user'])) {
     $email = $_SESSION['valid_user'];
 

@@ -41,7 +41,7 @@
     echo "<iframe class='vid' src='$video_url' ></iframe>";
   }
   
-  echo "<h2><a href='#'>$show_name</a> - Episode $ep_num</h2>";
+  echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
 
 	echo "</div>";
 
