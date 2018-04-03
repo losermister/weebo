@@ -124,7 +124,7 @@
     $episodes_query = "SELECT DISTINCT episode_num "
                     . "FROM links "
                     . "WHERE show_id = ? "
-                    . "ORDER BY episode_num";
+                    . "ORDER BY episode_num DESC";
     $episodes_stmt = $db->prepare($episodes_query);
     $episodes_stmt->bind_param('i', $show_id);
     $episodes_stmt->execute();
