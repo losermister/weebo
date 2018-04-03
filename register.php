@@ -4,6 +4,12 @@
   require_ssl();
   require('helper/header.php');
 
+  static $num_of_avatars = 3;
+  $avatar_list = array();
+  for ($i = 0; $i < $num_of_avatars; $i++) {
+    array_push($avatar_list, 'avatar-' . $i);
+  }
+
   // If form submitted, store entered registration data from POST
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['emailaddress']);
@@ -11,8 +17,10 @@
     $fav_genre = $_POST['genre'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
-    $profile_img = '';
+    $profile_img = $_POST['avatar'];
     $honeypot = $_POST['email']; // hidden field to prevent spam
+
+    echo 'profile img: avatar/' . $profile_img . '.png';
 
     // Check that all the entered data are complete and valid, then add to database
     if (registration_data_valid($honeypot, $email, $username, $fav_genre, $password, $password2, $db)) {
@@ -68,9 +76,10 @@
   form_start('register.php', 'Create a new weebflix account');
   echo "<p>Get access to 100+ tv shows</p>";
   add_honeypot_textfield('email', 'Email ');
-  add_textfield('emailaddress', 'Email: ');
+  add_textfield('emailaddress', 'Email ');
   add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
+  add_radio_buttons('avatar', $avatar_list);
   add_textfield('password', 'Password ');
   add_textfield('password2', 'Confirm password ');
   form_end('Sign up Now');

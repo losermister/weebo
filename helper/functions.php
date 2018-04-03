@@ -121,11 +121,25 @@
     echo "<br>";
   }
 
+  function add_radio_buttons($varname, $options) {
+    $i = 0;
+    foreach($options as $opt) {
+      add_radio_options($varname, $opt, $i);
+      $i++;
+    }
+  }
+
+  function add_radio_options($varname, $opt, $i) {
+    echo "<label for='$opt'><img src='avatar/" . $opt . ".png'/></label>";
+    echo "<input type='radio' value='$opt' name='$varname' id='$opt' ";
+    if ($i == 0) echo "checked";
+    echo "/>";
+  }
+
   function add_dropdown($label, $varname, $options, $texts) {
     global $$varname;
     echo "<label>$label</label>";
     echo "<select name='$varname' id='$varname'>";
-    echo "<option value = '' disabled selected>Select genre</option>";
     $i = 0;
     foreach ($options as $opt)
       add_dropdown_options($texts[$i++], $varname, $opt);
@@ -364,6 +378,7 @@
    */
   function register($email, $username, $password, $fav_genre, $profile_img, $db) {
     $password = password_hash($password, PASSWORD_DEFAULT);
+    $profile_img = 'avatar/' . $profile_img . '.png';
     $query = "INSERT INTO users VALUES "
            . "(?, ?, ?, ?, ?)";
     $stmt = $db->prepare($query);
@@ -739,9 +754,22 @@
     $name_stmt->execute();
     $name_stmt->bind_result($username);
     $name_stmt->fetch();
-    return $username;
     $name_stmt->free_result();
     $name_stmt->close();
+    return $username;
+  }
+
+  function avatar_from_email($db) {
+    $email = $_SESSION['valid_user'];
+    $name_query = "SELECT users.profile_img FROM users WHERE users.email = ?";
+    $name_stmt = $db->prepare($name_query);
+    $name_stmt->bind_param('s', $email);
+    $name_stmt->execute();
+    $name_stmt->bind_result($avatar);
+    $name_stmt->fetch();
+    $name_stmt->free_result();
+    $name_stmt->close();
+    return $avatar;
   }
 
   function showname_from_id($show_id, $db) {
