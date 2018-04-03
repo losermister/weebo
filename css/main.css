@@ -624,6 +624,29 @@ legend{
 
 }
 
+span.avatar{
+	display:inline-block;
+	position:relative;
+	transform: translate(0px,-4px);
+	height:1.5rem;
+	width:1.5rem;
+	border-radius:0.25rem;
+	margin-right:0.5rem;
+	background:#333333;
+	float:left;
+	overflow: hidden;
+}
+
+span.avatar-img{
+	position:absolute;
+	top:0;
+	left:0;
+	bottom:0;
+	right:0;
+	background-size:cover;
+	background-position:center center;
+}
+
 .cat{
 	margin-bottom:0px;
 	color:#FFFFFF;

@@ -40,7 +40,7 @@
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
 	          	echo "<a href=\"favourites.php\"><li>favourites</li></a>";
-	            echo "<a id='user-click'><li class='user-act'>$username <span class='fas fa-caret-down'></span></li></a>";
+	            echo "<a id='user-click'><li class='user-act'><span class='avatar'><span class='avatar-img' style='background-image:url(https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?w=640&ssl=1)'></span></span>$username <span class='fas fa-caret-down'></span></li></a>";
 
 							echo "<div class='user-dropdown'>";
 							echo "<a href=\"user.php?id=$username\">my profile</a>";
