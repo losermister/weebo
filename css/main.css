@@ -229,10 +229,44 @@ nav ul.fl-right a:hover li{
 	text-transform: lowercase;
 }
 
+select#genre{
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	font-size:1rem;
+	width:100%;
+	padding:1.2rem;
+	border-radius:0px;
+	border:none;
+	margin:1rem 0rem 1rem 0rem;
+
+}
+
+select#genre:after{
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    width: 0; 
+    color:black;
+    background:black;
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #333;
+
+}
+
+
+select#genre:focus{
+	outline:none;
+}
+
 
 #rate{
 	margin-bottom:7;
 }
+
 
 #rate button{
 	display:inline-block;
@@ -241,6 +275,7 @@ nav ul.fl-right a:hover li{
 	border:none;
 	color:#FFFFFF;
 	background:rgb(252,52,73);
+	font-weight:500;
 
 }
 
@@ -262,10 +297,14 @@ nav ul.fl-right a:hover li{
 	text-decoration: none;
 	text-transform: uppercase;
 	box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+	font-weight:500;
 
 
 }
 
+#rate select:focus{
+	outline:none;
+}
 
 
 nav ul.fl-left{
@@ -494,9 +533,12 @@ input[type*="submit"]{
 
 }
 
+
+
 .save:hover, .save:focus{
 	background:rgb(252,52,73);
 	opacity:1;
+	outline:none;
 	color:white;
 }
 
@@ -504,8 +546,23 @@ input[type*="submit"]{
 button.btn[type*="submit"]{
 	border:0px;
 	font-weight:500;
+	transition:opacity 0.2s linear;
 
 }
+
+button.btn[type*="submit"]:hover{
+	opacity:0.8;
+	
+
+}
+
+button.btn[type*="submit"]:focus{
+	out	line:none;
+	
+
+}
+
+
 
 form.save-btn{
 	display:inline-block;
@@ -515,7 +572,7 @@ form.save-btn{
 button.save[type*="submit"]{
 	display:block;
 	margin:0px;
-	padding:8px 9px 8px 9px;
+	padding:8px 8px 8px 8px;
 	text-align: center;
 	border-radius:100px;
 	background:#4A4574;
@@ -703,7 +760,7 @@ legend{
 .container{
 	/* position:relative; */
 	display:block;
-	max-width:85em;
+	max-width:75em;
 	margin:auto;
 
 }
@@ -881,8 +938,7 @@ legend{
 .notify-msg-container{
 	position:absolute;
 
-	display: none;
-
+	visibility: hidden;
 	width:100%;
 	border-radius:0.25rem;
 	z-index:10;
@@ -921,6 +977,7 @@ legend{
 	color:#FFFFFF;
 	text-transform:capitalize;
 	vertical-align: middle;
+	
 }
 
 
@@ -929,10 +986,12 @@ legend{
 	from{
 		opacity:1;
 		display: block;
+		visibility: visible;
 	}
 
 	to{
 		opacity:0;
+		visibility: hidden;
 	}
 
 }
@@ -964,7 +1023,7 @@ legend{
 	color:#b1acb4;
 	background:#171423;
 	width:100%;
-	height:230px;
+	height:220px;
 	border-radius:3px;
 	overflow:hidden;
 	/* box-shadow: 0px 0px 3px rgba(0,0,0,0.5); */
@@ -997,7 +1056,7 @@ legend{
 	display:inline-block;
 	position:relative;
 	width:100%;
-	height:220px;
+	height:200px;
 	background:black;
 	overflow: hidden;
 }
