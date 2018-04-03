@@ -17,9 +17,17 @@
 				$shows_stmt->bind_result($show_id, $show_name, $show_img);
 				$shows_stmt->store_result();
 
+				$shows_count = '';
+
 				while ($shows_stmt->fetch()) {
 					display_show_card($show_id, $show_name, $show_img, $db);
+					$shows_count++;
 				}
+
+				$pages = '';
+				echo "count: ". $shows_count . "<br>";
+				$pages = ceil($shows_count / $shows_per_page);
+				echo "pages: " . $pages;
 
 				$shows_stmt->free_result();
 			 	$shows_stmt->close();

@@ -38,11 +38,57 @@
     echo "<iframe class='vid' src='$video_url' ></iframe>";
   }
 
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $comment_body = trim($_POST['comment']);
+    echo $comment_body;
+    $email = $_SESSION['valid_user'];
+    echo $email;
+    echo $video_url;
+    date_default_timezone_set('America/Los_Angeles');
+    $date = date('m/d/Y h:i:s a', time());
+    echo $date;
+    post_comment($email, $video_url, $comment_body, $date);
+  }
+
   echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
 	echo "</div>";
 
   $episode_stmt->free_result();
   $episode_stmt->close();
+
+  echo "<h3>Comments</h3>";
+
+  // TODO: Structure + style the comment form and login message
+  if (isset($_SESSION['valid_user'])) {
+    echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
+    echo "<fieldset>";
+    echo "<legend>Leave a comment</legend>";
+    echo "<textarea name='comment' rows='4' cols='50' placeholder='Type your comment...'></textarea>";
+    echo "</fieldset>";
+    echo "<input type=\"submit\" name=\"submit-comment\" value=\"add comment\">";
+    echo "</form>";
+  } else {
+    echo "Please <a href='login.php'> sign in </a> to comment on this episode!";
+  }
+
+  $comments_query = "SELECT users.user_id, users.profile_img, comment_body, date_added "
+                  . "FROM comments "
+                  . "INNER JOIN users ON comments.email = users.email "
+                  . "WHERE video_url = ? "
+                  . "ORDER BY date_added";
+  $comments_stmt = $db->prepare($comments_query);
+  $comments_stmt->bind_param('s', $video_url);
+  $comments_stmt->execute();
+  $comments_stmt->bind_result($username, $avatar, $comment, $date);
+
+  while ($comments_stmt->fetch()) {
+    // TODO: Structure + style each comment
+    echo $username;
+    echo "<img src=" . $avatar . ">";
+    echo $comment;
+    echo $date;
+    echo "<br>";
+  }
 
   $db->close();
 

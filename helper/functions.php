@@ -3,6 +3,7 @@
   session_start();
 
   static $num_of_avatars = 3;
+  static $shows_per_page = 12;
 
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
