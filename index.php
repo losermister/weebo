@@ -87,7 +87,7 @@
 				<div class="row">
 					<div class="col-12of12">
 
-							<h3 class="cat">show recommendation</h3>
+							<h3 class="cat">Recommended for you</h3>
 
 					</div>
 

@@ -628,7 +628,12 @@
               </div>
               <div class='functions'>
                 <form action='favourites.php' class='save-btn' method='post'>";
-                  $email = $_SESSION['valid_user'];
+                  if (isset($_SESSION['valid_user'])) {
+                    $email = $_SESSION['valid_user'];
+                  } else {
+                    $email = '';
+                  }
+
                   if (in_favourites_list($email, $show_id, $db)) {
                     echo "
                       <input type='hidden' name='unfavourite_show' value='$show_id'>
@@ -640,6 +645,7 @@
                       <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
                     ";
                   }
+
                 echo "</form>
 
               </div>

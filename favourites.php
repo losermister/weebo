@@ -12,6 +12,9 @@
 			<?php
         if (isset($_SESSION['valid_user'])) {
         	$email = $_SESSION['valid_user'];
+        } else {
+        	$_SESSION['require_login'] = 'You need to be logged in to do that!';
+        	header('Location: login.php');
         }
 
 			  if (isset($_POST['favourite_show'])) {

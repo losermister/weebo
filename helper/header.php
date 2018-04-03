@@ -27,8 +27,8 @@
 					<a href="#"><li>categories</li></a>
 -->
 
-					
-					
+
+
 			<!-- 		<a href="#"><li>movies</li></a> -->
 
 	<!-- 				<a href="#"><li>categories</li></a> -->
@@ -36,21 +36,19 @@
 				</ul>
 				<ul class="fl-right">
 					<a href="all-shows.php"><li>all shows</li></a>
-					<a href="favourites.php"><li>favourites</li></a>
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
-	          	
-	        /* href=\"user.php?id=$username\" */
+	          	echo "<a href=\"favourites.php\"><li>favourites</li></a>";
 	            echo "<a id='user-click'><li class='user-act'>$username <span class='fas fa-caret-down'></span></li></a>";
-	      
+
 							echo "<div class='user-dropdown'>";
 							echo "<a href=\"user.php?id=$username\">my profile</a>";
 							echo "<a href=\"edit-profile.php\">Edit profile</a>";
 	            echo "<a href=\"logout.php\">Logout</a>";
 							echo "</div>";
-	            
-	            
+
+
 	          } else {
 	            echo "<a href=\"login.php\"><li>sign up/login</li></a>";
 	          }
@@ -58,10 +56,10 @@
 
 					<script>
 						$('#user-click').click(function(){
-					
+
 							$('.user-dropdown').toggle();
 						});
-					
+
 					</script>
 
 
