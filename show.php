@@ -54,7 +54,7 @@
 					 <form action='favourites.php' class='save-btn' method='post'>";
               if (in_favourites_list($email, $show_id, $db)) {
                 echo "<input type='hidden' name='unfavourite_show' value='$show_id'>
-                <button type='submit' class='saved-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>remove</button>";
+                <button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
               } else {
                   echo "<input type='hidden' name='favourite_show' value='$show_id'>
                   <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>favourite</button>";

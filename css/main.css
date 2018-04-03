@@ -1010,11 +1010,17 @@ legend{
 }
 
 
+.bkmrk-state{
+	background:rgba(0,194,123,1) !important;
+	color:white !important;
+	opacity:1 !important;
+}
 .saved-state{
 	background:rgb(252,52,73) !important;
 	color:white !important;
 	opacity:1 !important;
 }
+
 
 
 .show-container{
