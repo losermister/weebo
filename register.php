@@ -4,7 +4,6 @@
   require_ssl();
   require('helper/header.php');
 
-  static $num_of_avatars = 3;
   $avatar_list = array();
   for ($i = 0; $i < $num_of_avatars; $i++) {
     array_push($avatar_list, 'avatar-' . $i);

@@ -53,7 +53,6 @@
   echo "<p>Don't have an account?<a href=\"register.php\"> Create your account.</a></p>";
   add_textfield('email', 'Email ');
   add_textfield('password', 'Password ');
- 
   form_end('Log in');
 
 ?>

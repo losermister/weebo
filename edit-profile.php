@@ -4,6 +4,11 @@
   require_ssl();
   require('helper/header.php');
 
+  $avatar_list = array();
+  for ($i = 0; $i < $num_of_avatars; $i++) {
+    array_push($avatar_list, 'avatar-' . $i);
+  }
+
   if (!isset($_SESSION['valid_user'])) {
     echo "Oops! You need to be logged in to edit your profile. ";
     echo "<a href=\"login.php\">Log in</a>";
@@ -23,11 +28,11 @@
     $fav_genre = $_POST['genre'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
-    $profile_img = '';
+    $profile_img = $_POST['avatar'];
 
     // Check that all the entered data are complete and valid, then add to database
     if (updated_user_data_valid($username, $fav_genre, $password, $password2, $db)) {
-      update($email, $username, $password, $fav_genre, $profile_img, $db);
+      update_profile($email, $username, $password, $fav_genre, $profile_img, $db);
       $_SESSION['update_profile'] = 'Success!';
       header("Location: edit-profile.php");
 
@@ -65,10 +70,11 @@
    */
 
   form_start('edit-profile.php', 'Edit public profile: ' . $email);
-  add_textfield('username', 'Username: ');
+  add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
-  add_textfield('password', 'Password: ');
-  add_textfield('password2', 'Confirm password: ');
+  add_radio_buttons('avatar', $avatar_list);
+  add_textfield('password', 'Password ');
+  add_textfield('password2', 'Confirm password ');
   form_end('Update');
 
 ?>

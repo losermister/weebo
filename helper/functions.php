@@ -2,6 +2,9 @@
 
   session_start();
 
+  static $num_of_avatars = 3;
+
+
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
    */
@@ -81,10 +84,11 @@
     echo "</table>";
   }
 
-  function display_userprofile($username, $email, $fav_genre) {
+  function display_userprofile($username, $email, $fav_genre, $profile_img) {
     echo "<h1>$username</h1>";
     echo "<h2>Email: $email</h2>";
     echo "<h2>Favourite genre: $fav_genre</h2>";
+    echo "<img src='$profile_img'>";
   }
 
   /*
@@ -340,8 +344,9 @@
     }
   }
 
-  function update($email, $username, $password, $fav_genre, $profile_img, $db) {
+  function update_profile($email, $username, $password, $fav_genre, $profile_img, $db) {
     $password = password_hash($password, PASSWORD_DEFAULT);
+    $profile_img = 'avatar/' . $profile_img . '.png';
     $query = "UPDATE users "
            . "SET user_id = ?, hashed_password = ?, fav_genre = ?, profile_img = ? "
            . "WHERE email = ?";
