@@ -21,10 +21,12 @@
   $profile_stmt->bind_param('s', $username);
   $profile_stmt->execute();
   $profile_stmt->bind_result($email, $fav_genre, $profile_img);
-
+  echo "<div class='container'>";
   while ($profile_stmt->fetch()) {
     display_userprofile($username, $email, $fav_genre, $profile_img);
   }
+  
+  echo "</div>";
 
   // Release results and close prepared statement to free up memory space
   $profile_stmt->free_result();

@@ -64,6 +64,13 @@ h3{
 	font-weight:200;
 }
 
+h4{
+	text-transform: uppercase;
+	color:#FFFFFF;
+	font-size:1rem;
+	font-weight:200;
+}
+
 
 p{
 /* 	margin:0.5rem 0rem 0.5rem 0rem; */
@@ -463,7 +470,7 @@ nav ul.fl-left a:hover li{
 
 
 .btn span.fas{
-	margin-right:0.5rem;
+	/* margin-right:0.5rem; */
 }
 
 fieldset{
@@ -675,7 +682,7 @@ span.avatar{
 	background:#333333;
 	float:left;
 	overflow: hidden;
-	box-shadow: 0rem 0rem 0.1rem rgba(0,0,0,0.5);
+	/* box-shadow: 0rem 0rem 0.1rem rgba(0,0,0,0.5); */
 }
 
 span.avatar-img{

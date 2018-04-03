@@ -52,9 +52,14 @@
    *  @param   string  $profile_img  Path to user's chosen avatar
    */
   function display_userprofile($username, $email, $fav_genre, $profile_img) {
-    echo "<h1>$username</h1>";
-    echo "<h2>Email: $email</h2>";
-    echo "<h2>Favourite genre: $fav_genre</h2>";
+  	echo "<h1>user profile</h1>";
+  	
+  	echo "<h4>username:</h4>";
+    echo "<p>$username</p>";
+    echo "<h4>email:</h4>";
+    echo "<p>$email</p>";
+    echo "<h4>favourite genre:</h4>";
+    echo "<p> $fav_genre</p>";
     echo "<img src='$profile_img'>";
   }
 
@@ -565,7 +570,7 @@
                   if (in_favourites_list($email, $show_id, $db)) {
                     echo "
                       <input type='hidden' name='unfavourite_show' value='$show_id'>
-                      <button type='submit' class='save saved-state' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
+                      <button type='submit' class='save saved-state' name='add_show_btn' value=''><span class='fas fa-check'></span></button>
                     ";
                   } else {
                     echo "
