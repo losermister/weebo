@@ -2,7 +2,7 @@
 
   session_start();
 
-  static $num_of_avatars = 3;
+  static $num_of_avatars = 4;
 
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
