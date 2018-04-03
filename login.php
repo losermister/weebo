@@ -40,7 +40,6 @@
     $login_stmt->close();
 
     $db->close();
-
   }
 
   /*  1. Create form with legend

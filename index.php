@@ -11,23 +11,17 @@
 ?>
 
 	<div class="banner-container">
-
 		<div class="container">
-
 			<div class="banner-text">
 				<div class="col-12of12">
 					<span>staff pick</span>
 				</div>
 			</div>
-
-
 			<div class="banner-details">
-
 				<div class="col-6of12">
 					<h2>kill la kill</h2>
 					<p>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.</p>
 					<a href="http://localhost/weebo/show.php?id=17" class="btn btn-primary"><!-- <span class="fas fa-play"></span> -->watch series</a>
-
 					<form action='favourites.php' class='save-btn' method='post'>
 						<?php
 							$featured_show = 17;
@@ -41,29 +35,21 @@
 						?>
 					</form>
 				</div>
-
 			</div>
 		</div>
-		<div class="banner-overlay">
-
-		</div>
-
+		<div class="banner-overlay"></div>
 		<div class="banner-img-container">
 			<div class="show-img" style="background-image:url('http://i0.kym-cdn.com/photos/images/original/000/686/177/af4.jpg')"></div>
 		</div>
-
 	</div>
-
 
 	<div class="container content">
 		<div class="row content" >
 			<div class="col-3of12">
-
 				<div class="row">
 					<div class="col-12of12">
 						<h3 class=\"cat\">recent uploads</h3>
 					</div>
-
 				</div>
 				<div class="row" id="">
 					<?php
@@ -82,17 +68,12 @@
 					  $recents_stmt->free_result();
 					  $recents_stmt->close();
 					 ?>
-
 				</div>
 			</div>
-
-
 			<div class="col-9of12">
-
 				<div class="row">
 					<div class="col-12of12">
 							<?php
-
 								if (isset($_SESSION['valid_user'])) {
 									$email = $_SESSION['valid_user'];
 								}
@@ -102,11 +83,9 @@
 								} else {
 									echo "<h3 class=\"cat\">Top rated</h3>";
 								}
-
 							?>
 					</div>
 				</div>
-
 				<div class="row">
 					<?php
 						if (isset($_SESSION['valid_user']) && sizeof(rated_shows_list($email, $db)) > 1) {
@@ -151,24 +130,17 @@
 							}
 					?>
 				</div>
-
 			</div>
 		</div>
 
-
-	<footer>
-
-		<div class="container">
-			<div class="row">
-				Footer text
+		<footer>
+			<div class="container">
+				<div class="row">
+					Footer text
+				</div>
 			</div>
+		</footer>
 
-		</div>
-
-
-	</footer>
-
-
-</body>
+	</body>
 
 </html>

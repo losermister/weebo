@@ -29,43 +29,41 @@
 
     // If any of the entered data are incomplete or invalid, display the appropriate error
     } else {
+  		echo "<div id='error' class='small-container'>";
+      echo "<h4>We couldn't process your registration. Please check the following:</h4> ";
+      echo "<ul>";
 
-    		echo "<div id='error' class='small-container'>";
-        echo "<h4>We couldn't process your registration. Please check the following:</h4> ";
-        echo "<ul>";
+      if (!unique_email($email, $db))
+        echo "<li>An account already exists with the email <strong>" . $email . "</strong></li>";
 
-        if (!unique_email($email, $db))
-          echo "<li>An account already exists with the email <strong>" . $email . "</strong></li>";
+      if (!valid_email($email))
+        echo "<li>Please enter a valid email</li>";
 
-        if (!valid_email($email))
-          echo "<li>Please enter a valid email</li>";
+      if (!unique_username($username, $db))
+        echo "<li>An account already exists with the username <strong>" . $username . "</strong></li>";
 
-        if (!unique_username($username, $db))
-          echo "<li>An account already exists with the username <strong>" . $username . "</strong></li>";
+      if (!valid_username($username))
+        echo "<li>Usernames can include only English characters and numbers</li>";
 
-        if (!valid_username($username))
-          echo "<li>Usernames can include only English characters and numbers</li>";
+      if ((strlen($username) < 3) || (strlen($username) > 24))
+        echo "<li>Your username needs to be between 3 and 24 characters</li>";
 
-        if ((strlen($username) < 3) || (strlen($username) > 24))
-          echo "<li>Your username needs to be between 3 and 24 characters</li>";
+      if ($password != $password2)
+        echo "<li>Passwords must match</li>";
 
-        if ($password != $password2)
-          echo "<li>Passwords must match</li>";
+      if ((strlen($password) < 6) || (strlen($password) > 16))
+        echo "<li>Your password needs to be between 6 and 16 characters</li>";
 
-        if ((strlen($password) < 6) || (strlen($password) > 16))
-          echo "<li>Your password needs to be between 6 and 16 characters</li>";
+      if (!strong_password($password))
+        echo "<li>Your password needs to contain at least 1 number, 1 uppercase character, and 1 lowercase character</li>";
 
-        if (!strong_password($password))
-          echo "<li>Your password needs to contain at least 1 number, 1 uppercase character, and 1 lowercase character</li>";
+      if (honeypot_caught($honeypot))
+        echo "You filled out a field that doesn't exist!";
 
-        if (honeypot_caught($honeypot))
-          echo "You filled out a field that doesn't exist!";
-
-        echo "</ul>";
-        echo "</div>";
+      echo "</ul>";
+      echo "</div>";
     }
   }
-
 
   /*  1. Create form with legend
    *  2. Add all textfields with labels

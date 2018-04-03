@@ -47,13 +47,12 @@
 
     echo "
    	<div class='banner-container'>
-	 	<div class='container'>
-	 		<div class='banner-details'>
-
-				<div class='col-6of12'>
-					<h2>". $results['show_name'] ."</h2>
-					<p>". $results['name_jp'] ."</p>
-					 <form action='favourites.php' class='save-btn' method='post'>";
+  	 	<div class='container'>
+  	 		<div class='banner-details'>
+  				<div class='col-6of12'>
+  					<h2>". $results['show_name'] ."</h2>
+  					<p>". $results['name_jp'] ."</p>
+  					<form action='favourites.php' class='save-btn' method='post'>";
               if (in_favourites_list($email, $show_id, $db)) {
                 echo "<input type='hidden' name='unfavourite_show' value='$show_id'>
                 <button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
@@ -61,24 +60,15 @@
                   echo "<input type='hidden' name='favourite_show' value='$show_id'>
                   <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>favourite</button>";
               }
-           echo "</form>
-
-				</div>
-
-
-			</div>
-	 	</div>
-
-    <div class='banner-overlay'></div>
-
-		<div class='banner-img-container'>
-			<div class='show-img' style='background-image:url(\"" . $results['banner_img'] . "\")'></div>
-		</div>
-
-
-    </div>
-    ";
-
+            echo "</form>
+  				</div>
+  			</div>
+	 	  </div>
+      <div class='banner-overlay'></div>
+  		<div class='banner-img-container'>
+  			<div class='show-img' style='background-image:url(\"" . $results['banner_img'] . "\")'></div>
+  		</div>
+    </div>";
 
     echo "
     <div class='container'>
@@ -88,109 +78,79 @@
 							<h3 class='cat'>trailer</h3>
 					</div>
 				</div>
-				  <iframe class='trailer' src=\"" . $results['anime_trailer'] . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>
-
-
-				 <div class='row'>
-					<div class='col-12of12'>
-							<h3 class='cat'>sypnosis</h3>
-					</div>
-				</div>
-
+				<iframe class='trailer' src=\"" . $results['anime_trailer'] . "\" frameborder=\"0\" allow=\"autoplay; encrypted-media\" allowfullscreen></iframe>
+			  <div class='row'>
+				  <div class='col-12of12'>
+						<h3 class='cat'>sypnosis</h3>
+			 	  </div>
+			  </div>
 				<div class='row'>
 					<div class='col-12of12'>
 					  <div class='info'>
-					   <p class='descript'>" . $results['description'] . "</p>
-				   </div>
-			   </div>
-
-			   <div class='row'>
+					 <p class='descript'>" . $results['description'] . "</p>
+				  </div>
+			  </div>
+			  <div class='row'>
 					<div class='col-12of12'>
 							<h3 class='cat'>show info</h3>
 					</div>
 				</div>
-
-
 				<div class='row'>
 					<div class='col-12of12'>
 					  <div class='info'>
-					  <h4>Average rating:</h4>
-					  <p>" . number_format($avg_rating * 10, 2) . "</p>";
+  					  <h4>Average rating:</h4>
+  					  <p>" . number_format($avg_rating * 10, 2) . "</p>";
 
-            if (isset($_SESSION['valid_user'])) {
-              echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
-              add_dropdown_num_range('rating', 1, 10);
-              echo "<button type='submit' form ='rate' value ='Submit' class='btn-small'>Rate</button>
-              </form>";
-           }
+              if (isset($_SESSION['valid_user'])) {
+                echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
+                add_dropdown_num_range('rating', 1, 10);
+                echo "<button type='submit' form ='rate' value ='Submit' class='btn-small'>Rate</button>
+                </form>";
+              }
 
-					  echo "<h4>Airing date:</h4>
-					   <p>" . $results['airing_date'] . "</p>
-					   <h4>Status:</h4>
-					   <p>" . $results['status'] . "</p>
-					   <h4>Genre:</h4>
-             <p><a href='#'>$genres</a></p>
-				   </div>
-			   </div>
+  					  echo "
+              <h4>Airing date:</h4>
+					    <p>" . $results['airing_date'] . "</p>
+					    <h4>Status:</h4>
+					    <p>" . $results['status'] . "</p>
+					    <h4>Genre:</h4>
+              <p><a href='#'>$genres</a></p>
+			      </div>
+		      </div>
+	      </div>
+      </div>
+    </div>";
 
+    $episodes_query = "SELECT DISTINCT episode_num "
+                    . "FROM links "
+                    . "WHERE show_id = ? "
+                    . "ORDER BY episode_num";
+    $episodes_stmt = $db->prepare($episodes_query);
+    $episodes_stmt->bind_param('i', $show_id);
+    $episodes_stmt->execute();
+    $episodes_stmt->bind_result($episode_num);
+    $episodes_stmt->store_result();
 
+    echo "
+    <div class='col-9of12'>
+     	<div class='row'>
+     		<div class='col-12of12'>
+  			  <h3 class='cat'>videos ($episodes_stmt->num_rows)</h3>
+  		  </div>
+  	  </div>
+	    <div class='row'>";
 
+        while ($episodes_stmt->fetch()) {
+          display_video_card($show_id, $results['show_name'], $episode_num, $results['show_img']);
+        }
 
-		    </div>
+      	echo "
+      	</div>
+    	</div>
+  	</div>";
 
-	    </div>
-	   </div>
-
-
-    ";
-/*
-    echo "<h1>$show_name</h1>";
-    echo "<p>$name_jp</p>";
-*/
- /*
-   echo "<p>Airing date: $airing_date</p>";
-    echo "<p>Status: $status</p>";
-    echo "<p>Average rating: $avg_rating</p>";
-
-*/
-
-  // }
-
-  $episodes_query = "SELECT DISTINCT episode_num "
-                  . "FROM links "
-                  . "WHERE show_id = ? "
-                  . "ORDER BY episode_num";
-  $episodes_stmt = $db->prepare($episodes_query);
-  $episodes_stmt->bind_param('i', $show_id);
-  $episodes_stmt->execute();
-  $episodes_stmt->bind_result($episode_num);
-  $episodes_stmt->store_result();
-
-
-  echo "
-   <div class='col-9of12'>
-   	<div class='row'>
-   		<div class='col-12of12'>
-			  <h3 class='cat'>videos ($episodes_stmt->num_rows)</h3>
-		  </div>
-	  </div>
-	  <div class='row'>
-  ";
-
-  while ($episodes_stmt->fetch()) {
-    display_video_card($show_id, $show_name, $episode_num, $row[1]);
+    $episodes_stmt->free_result();
+    $episodes_stmt->close();
+    $db->close();
   }
-
-	echo "
-		</div>
-		</div>
-	</div>
-	";
-
-
-  $episodes_stmt->free_result();
-  $episodes_stmt->close();
-
-  $db->close();
-      }
 ?>

@@ -4,7 +4,6 @@
 
   static $num_of_avatars = 3;
 
-
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
    */
@@ -23,17 +22,6 @@
       header("Location: http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
       exit();
     }
-  }
-
-  /*
-   *  Create hyperlink from a given URL, code, and display text
-   *  @param  string  $url   Base URL
-   *  @param  string  $id    Code, e.g. product code
-   *  @param  string  $text  Text to display, e.g. product name
-   */
-  function format_text_as_link($url, $id, $text) {
-    $text = iconv("UTF-8", "ISO-8859-1//IGNORE", $text);
-    echo "<a href=\"$url?code=$id\">$text</a>";
   }
 
   /*
@@ -57,33 +45,12 @@
   }
 
   /*
-   *  Display a product's details as a table
-   *  @param  string  $name         productName
-   *  @param  string  $code         productCode
-   *  @param  string  $line         productLine
-   *  @param  string  $scale        productScale
-   *  @param  string  $vendor       productVendor
-   *  @param  string  $description  productDescription
-   *  @param  int     $quantity     quantityInStock
-   *  @param  double  $price        buyPrice
-   *  @param  double  $msrp         MSRP
+   *  HTML to display a user's profile details
+   *  @param   string  $userame      User's chosen display name
+   *  @param   string  $email        User's email address
+   *  @param   string  $fav_genre    User's selected favourite genre
+   *  @param   string  $profile_img  Path to user's chosen avatar
    */
-  function display_modeldetails($name, $code, $line, $scale, $vendor, $description, $quantity, $price, $msrp) {
-    $name = iconv("UTF-8", "ISO-8859-1//IGNORE", $name);
-    $description = iconv("UTF-8", "ISO-8859-1//IGNORE", $description);
-    echo "<table class=\"results-table\">";
-    echo "<th colspan=\"2\"><h1>$name</h1></th>";
-    echo "<tr><td>Product code</td><td>$code</td></tr>";
-    echo "<tr><td>Product line</td><td>$line</td></tr>";
-    echo "<tr><td>Scale</td><td>$scale</td></tr>";
-    echo "<tr><td>Vendor</td><td>$vendor</td></tr>";
-    echo "<tr><td>Description</td><td>$description</td></tr>";
-    echo "<tr><td>Quantity in stock</td><td>$quantity</td></tr>";
-    echo "<tr><td>MSRP</td><td>$msrp</td></tr>";
-    echo "<tr><td>Our price</td><td>$price</td></tr>";
-    echo "</table>";
-  }
-
   function display_userprofile($username, $email, $fav_genre, $profile_img) {
     echo "<h1>$username</h1>";
     echo "<h2>Email: $email</h2>";
@@ -125,6 +92,11 @@
     echo "<br>";
   }
 
+  /*
+   *  Create a group of radio buttons
+   *  @param  string  $varname  Name attribute of the input element
+   *  @param  array   $options  Values/ids of each option
+   */
   function add_radio_buttons($varname, $options) {
   	echo "<label for =\"$varname\">$varname</label>";
     $i = 0;
@@ -134,8 +106,13 @@
     }
   }
 
+  /*
+   *  Create each radio button
+   *  @param  string  $varname  Name attribute of the input element
+   *  @param  array   $opt      Values/ids of each option
+   *  @param  int     $i        Index of each option
+   */
   function add_radio_options($varname, $opt, $i) {
-  	
   	echo "<div class='col-4of12'>";
     echo "<label for='$opt'><img class='img-responsive' src='avatar/" . $opt . ".png'/></label>";
     echo "<input type='radio' value='$opt' name='$varname' id='$opt' ";
@@ -144,6 +121,13 @@
     echo"</div>";
   }
 
+  /*
+   *  Create a dropdown menu for text
+   *  @param  string   $label    Label text to display
+   *  @param  string   $varname  Name attribute of the input element
+   *  @param  array    $options  Values of each option
+   *  @param  array    $text     Text to display for each option
+   */
   function add_dropdown($label, $varname, $options, $texts) {
     global $$varname;
     echo "<label>$label</label>";
@@ -154,6 +138,25 @@
     echo "</select>";
   }
 
+  /*
+   *  Create each option for the text dropdown
+   *  @param  string  $text     Text to display for each option
+   *  @param  string  $varname  Name attribute of the input element
+   *  @param  string  $opt      Value of each option
+   */
+  function add_dropdown_options($text, $varname, $opt) {
+    global $$varname;
+    echo "<option value = '$opt'" ;
+    if ($opt == $$varname) echo "selected";
+    echo ">$text</option>";
+  }
+
+  /*
+   *  Create a dropdown menu for a range of numbers
+   *  @param  string  $varname  Name attribute of the input element
+   *  @param  int     $min      Lowest value to choose from
+   *  @param  int     $max      Highest value to choose from
+   */
   function add_dropdown_num_range($varname, $min, $max) {
     global $$varname;
     if (isset($_POST['rating'])) $rating = $_POST['rating']; else $rating = '';
@@ -165,13 +168,11 @@
     echo "</select>";
   }
 
-  function add_dropdown_options($text, $varname, $opt) {
-    global $$varname;
-    echo "<option value = '$opt'" ;
-    if ($opt == $$varname) echo "selected";
-    echo ">$text</option>";
-  }
-
+  /*
+   *  Create each option for the number range dropdown
+   *  @param  int     $i        Index of each option in the range
+   *  @param  string  $varname  Name attribute of the input element
+   */
   function add_dropdown_num_range_options($i, $varname) {
     global $$varname;
     $fraction = $i / 10;
@@ -180,6 +181,11 @@
     echo ">$i</option>";
   }
 
+  /*
+   *  Create a hidden textfield with generic name to catch spam bots
+   *  @param  string  $varname  Name attribute of the input element
+   *  @param  string  $label    Placeholder text
+   */
   function add_honeypot_textfield($varname, $label) {
     // If form was submitted, save inputted data and display again
     if (isset($_POST[$varname])) {
@@ -187,8 +193,6 @@
     } else {
       $inputted_text = '';
     }
-   /*  echo "<label style=\"display: none\" for =\"$varname\">$label</label>"; */
-
     // If the textfield is for passwords, use the password input type to ensure typed characters are masked
     if (strpos($varname, 'password') !== false) {
       echo "<input style=\"display: none\" autocomplete=\"off\" placeholder=\"$label\" type =\"password\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
@@ -210,8 +214,8 @@
   }
 
   /*
-   *  Check if a form has been filled out completely
-   *  @param   array  $form_vars  List of variables, e.g. passed to current script via HTTP POST
+   *  Check if the hidden text field was filled out
+   *  @param   string   $input  Input from the honeypot text field
    *  @return  boolean
    */
   function honeypot_caught($input) {
@@ -220,20 +224,6 @@
       return false;
     }
     return true;
-  }
-
-  /*
-   *  Check if user left one of the name fields blank, or inputted spaces only
-   *  @param   string  $firstname  First name as entered
-   *  @param   string  $lastname   Last name as entered
-   *  @return  boolean
-   */
-  function incomplete_name($firstname, $lastname) {
-    if (trim($firstname) == '' || trim($lastname) == '') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   /*
@@ -274,6 +264,11 @@
     $stmt->close();
   }
 
+  /*
+   *  Check if the user provided a username that meets the character requirements
+   *  @param   string   $username  Username as entered
+   *  @return  boolean
+   */
   function valid_username($username) {
     if (preg_match("/^[ \w]+$/", $username)) {
       return true;
@@ -282,6 +277,12 @@
     }
   }
 
+  /*
+   *  Check if user inputted a username that's not already in the database
+   *  @param   string  $username  Username as entered
+   *  @param   mysqli  $db        Connection between PHP and MySQL database
+   *  @return  boolean
+   */
   function unique_username($username, $db) {
     $query = "SELECT * "
            . "FROM users "
@@ -319,13 +320,14 @@
   }
 
   /*
-   *  Check if all the registration data entered meets the checks above
-   *  @param   string  $firstname  First name address as entered
-   *  @param   string  $lastname   Last name as entered
-   *  @param   string  $email      Email address as entered
-   *  @param   string  $password   Password as entered
-   *  @param   string  $password2  Password (again) as entered
-   *  @param   mysqli  $db         Connection between PHP and MySQL database
+   *  Check if all the registration data entered meets the checks
+   *  @param   string   $honeypot   Any text entered in the hidden input field
+   *  @param   string   $email      Email address as entered
+   *  @param   string   $username   Username as entered
+   *  @param   string   $fav_genre  User's favourite genre as entered
+   *  @param   string   $password   Password  as entered
+   *  @param   string   $password2  Password (again) as entered
+   *  @param   mysqli   $db         Connection between PHP and MySQL database
    *  @return  boolean
    */
   function registration_data_valid($honeypot, $email, $username, $fav_genre, $password, $password2, $db) {
@@ -339,6 +341,15 @@
     }
   }
 
+  /*
+   *  Check if all the user's updated profile data entered meets the checks
+   *  @param   string   $username   Username as entered
+   *  @param   string   $fav_genre  User's favourite genre as entered
+   *  @param   string   $password   Password  as entered
+   *  @param   string   $password2  Password (again) as entered
+   *  @param   mysqli   $db         Connection between PHP and MySQL database
+   *  @return  boolean
+   */
   function updated_user_data_valid($username, $fav_genre, $password, $password2, $db) {
     if (unique_username($username, $db) && valid_username($username, $db) && !((strlen($username) < 3) || (strlen($username) > 24)) &&
         ($password == $password2) && !((strlen($password) < 6) || (strlen($password) > 16)) && strong_password($password)) {
@@ -397,36 +408,7 @@
     $stmt->close();
   }
 
-  /*
-   *  Check if an item already exists in a user's watchlist
-   *  @param   string  $email        User's email address
-   *  @param   string  $productCode  Product code of the item
-   *  @param   mysqli  $db           Connection between PHP and MySQL database
-   *  @return  boolean
-   */
-  function not_already_in_watchlist($email, $productcode, $db) {
-    $query = "SELECT * "
-           . "FROM watchlist_items "
-           . "WHERE watchlist_items.email = ? "
-           . "AND watchlist_items.productCode = ?";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('ss', $email, $productcode);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    if (!$result) {
-      echo "Oops! Couldn't execute query.";
-    }
-    if ($result->num_rows > 0) {
-      return false;
-    }
-    return true;
-    $stmt->free_result();
-    $stmt->close();
-  }
-
   function in_favourites_list($email, $show_id, $db) {
-
     $query = "SELECT * "
            . "FROM favourite_shows "
            . "WHERE favourite_shows.email = '$email' "
@@ -438,66 +420,6 @@
       return false;
     }
     $results->free_result();
-
-
-
-    // $query = "SELECT * "
-    //        . "FROM favourite_shows "
-    //        . "WHERE favourite_shows.email = ? "
-    //        . "AND favourite_shows.show_id = ?";
-    // $stmt = $db->prepare($query);
-    // $stmt->bind_param('si', $email, $show_id);
-    // $stmt->execute();
-    // if (!$db->query($query)) {
-    //   print_r($db->error_list);
-    // }
-    // $result = $stmt->store_result();
-    // // $result = $stmt->get_result();
-    // $stmt->free_result();
-    // $stmt->close();
-    // if (!$result) {
-    //   echo "Oops! Couldn't execute query.";
-    // }
-    // if ($result->num_rows > 0) {
-    //   return true;
-    // }
-    // return false;
-    // // $stmt->free_result();
-    // // $stmt->close();
-  }
-
-  /*
-   *  Get a product's name from its product code
-   *  @param   string  $code  The product's code
-   *  @param   mysqli  $db    Connection between PHP and MySQL database
-   *  @return  string
-   */
-  function get_productname_from_code($code, $db) {
-    $name_query = "SELECT productName FROM products WHERE productCode = ?";
-    $name_stmt = $db->prepare($name_query);
-    $name_stmt->bind_param('s', $code);
-    $name_stmt->execute();
-    $name_stmt->bind_result($productname);
-    $name_stmt->fetch();
-    return $productname;
-    $name_stmt->free_result();
-    $name_stmt->close();
-  }
-
-  /*
-   *  Add a user's watchlist item to the database
-   *  @param   string  $email        User's email address
-   *  @param   string  $productcode  Product code of the item to add
-   *  @param   mysqli  $db           Connection between PHP and MySQL database
-   */
-  function add_to_watchlist($email, $productcode, $db) {
-    $query = "INSERT INTO watchlist_items VALUES "
-           . "(?, ?)";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('ss', $email, $productcode);
-    $stmt->execute();
-    $stmt->free_result();
-    $stmt->close();
   }
 
   function add_to_favourites($email, $show_id, $db) {
@@ -538,42 +460,6 @@
         "</span>
       </div>
     ";
-  }
-
-  /*
-   *  Get a list of all valid product codes from database
-   *  @param   mysqli  $db  Connection between PHP and MySQL database
-   *  @return  array
-   */
-  function all_productcodes_list($db) {
-    $query = "SELECT DISTINCT products.productCode "
-           . "FROM products "
-           . "ORDER BY products.productCode";
-    $results = $db->query($query);
-
-    if (!$results) {
-      die("Couldn't get product codes: Database query failed.");
-    }
-
-    while($row = $results->fetch_assoc()) {
-      $productcodes[] = $row["productCode"];
-    }
-    $results->free_result();
-    return $productcodes;
-  }
-
-  /*
-   *  Check of a product code is in the list of valid product codes from database
-   *  @param   string  $code  Product code of item to check
-   *  @param   mysqli  $db    Connection between PHP and MySQL database
-   *  @return  boolean
-   */
-  function is_valid_product($code, $db) {
-    if (in_array($code, all_productcodes_list($db))) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   function usernames_list($db) {
@@ -652,7 +538,7 @@
       return false;
     }
   }
-/* 	 <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a> */
+
   function display_show_card($show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
     $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
@@ -689,10 +575,8 @@
                   }
 
                 echo "</form>
-
               </div>
             </div>
-
           </div>
         </div>
       </a>
@@ -715,18 +599,12 @@
                 <span class='show-epi'>Episode $episode_num</span>
               </div>
             </div>
-
           </div>
         </div>
       </a>
     ";
   }
 
-
-/*
- <span class='save fas fa-bookmark'></span>
- <span><span class='fas fa-comment'></span> 100</span>
-*/
   function display_show_list($show_id, $show_name, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
     $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
@@ -735,19 +613,13 @@
         <div class='col-2of12' id='test-list'>
           <div class='show-container''>
             <div class='redirect'></div>
-
             <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
             <div class='show-info'>
-
               <div class='show-descript'>
                 <span class='show-title'>$show_name</span>
                 <span class='show-title'>Episode $episode_num</span>
               </div>
-
-              <div class='functions'>
-
-              </div>
-
+              <div class='functions'></div>
             </div>
           </div>
         </div>
@@ -788,9 +660,9 @@
     $name_stmt->execute();
     $name_stmt->bind_result($showname);
     $name_stmt->fetch();
-    return $showname;
     $name_stmt->free_result();
     $name_stmt->close();
+    return $showname;
   }
 
   function genres_list_from_id($show_id, $db) {
@@ -806,6 +678,7 @@
     while($row = $results->fetch_assoc()) {
       $genres[] = $row["genre"];
     }
+
     $results->free_result();
     return $genres;
   }
@@ -821,6 +694,7 @@
     while($row = $results->fetch_assoc()) {
       $genres[] = $row["genre"];
     }
+
     $results->free_result();
     return $genres;
   }
@@ -854,6 +728,7 @@
     while($row = $results->fetch_assoc()) {
       $rated_shows[] = $row["show_id"];
     }
+
     $results->free_result();
     return $rated_shows;
   }

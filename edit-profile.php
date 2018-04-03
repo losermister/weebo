@@ -63,7 +63,6 @@
     }
   }
 
-
   /*  1. Create form with legend
    *  2. Add all textfields with labels
    *  3. Close form, and add submit button with text

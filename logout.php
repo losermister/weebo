@@ -14,6 +14,7 @@
   require('helper/header.php');
 
   if (!empty($old_user)) {
+    display_notification_success("You've been logged out!");
     echo "You've been logged out!";
   } else {
     // Display error message if they weren't logged in but came to this page somehow

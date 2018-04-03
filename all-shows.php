@@ -5,12 +5,9 @@
 ?>
 
 	<div class="container content">
-
 		<h1>All Shows</h1>
-
 		<div class="row">
 			<?php
-
 				$shows_query = "SELECT show_id, name, bg_img "
 				             . "FROM shows "
 				             . "ORDER BY show_id";
@@ -28,23 +25,15 @@
 			 	$shows_stmt->close();
 			?>
 		</div>
-
-		</div>
 	</div>
 
-
 	<footer>
-
 		<div class="container">
 			<div class="row">
 				Footer text
 			</div>
-
 		</div>
-
-
 	</footer>
-
 
 </body>
 
