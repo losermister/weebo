@@ -126,6 +126,7 @@
   }
 
   function add_radio_buttons($varname, $options) {
+  	echo "<label for =\"$varname\">$varname</label>";
     $i = 0;
     foreach($options as $opt) {
       add_radio_options($varname, $opt, $i);
@@ -134,6 +135,7 @@
   }
 
   function add_radio_options($varname, $opt, $i) {
+  	
   	echo "<div class='col-4of12'>";
     echo "<label for='$opt'><img class='img-responsive' src='avatar/" . $opt . ".png'/></label>";
     echo "<input type='radio' value='$opt' name='$varname' id='$opt' ";

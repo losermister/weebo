@@ -538,20 +538,21 @@ input[type*="radio"]{
 
 
 
-input[type*="radio"]:checked + label{
-	background:green;
-}
 
 .col-4of12 label{
 	padding:0px;
 }
 
-input[type*="radio"]:checked{
-
-
+input[type*="radio"]:checked {
 	background:rgb(0, 194, 123);	
 	width:100%;
-	height:10px;
+	height:1rem;
+
+}
+
+input[type*="radio"]:focus{
+	outline:none !important;
+	border:none;
 
 
 }
@@ -595,7 +596,7 @@ button.btn[type*="submit"]:hover{
 }
 
 button.btn[type*="submit"]:focus{
-	out	line:none;
+	outline:none;
 	
 
 }
