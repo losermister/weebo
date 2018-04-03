@@ -130,10 +130,12 @@
   }
 
   function add_radio_options($varname, $opt, $i) {
-    echo "<label for='$opt'><img src='avatar/" . $opt . ".png'/></label>";
+  	echo "<div class='col-4of12'>";
+    echo "<label for='$opt'><img class='img-responsive' src='avatar/" . $opt . ".png'/></label>";
     echo "<input type='radio' value='$opt' name='$varname' id='$opt' ";
     if ($i == 0) echo "checked";
     echo "/>";
+    echo"</div>";
   }
 
   function add_dropdown($label, $varname, $options, $texts) {

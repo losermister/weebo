@@ -86,6 +86,11 @@ iframe.trailer{
 	height:250px;
 }
 
+
+.img-responsive{
+	width:100%;
+}
+
 nav{
 	background:#ffffff;
 	padding:0rem 0px 0rem 0px;
@@ -521,6 +526,39 @@ input[type*="submit"]{
 }
 
 
+input[type*="radio"]{
+
+	
+	appearance:none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	margin:0px;
+	background:rgb(0, 194, 123);	
+}
+
+
+
+input[type*="radio"]:checked + label{
+	background:green;
+}
+
+.col-4of12 label{
+	padding:0px;
+}
+
+input[type*="radio"]:checked{
+
+
+	background:rgb(0, 194, 123);	
+	width:100%;
+	height:10px;
+
+
+}
+
+
+
+
 .save{
 
 	padding:8px 9px 8px 9px;
@@ -665,6 +703,13 @@ span.avatar-img{
 .col-3of12{
 	width:25%;
 }
+
+
+
+.col-4of12{
+	width:33%;
+}
+
 
 .col-6of12{
 	width:50%;
