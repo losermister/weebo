@@ -121,6 +121,17 @@
     echo "<br>";
   }
 
+  function add_dropdown($label, $varname, $options, $texts) {
+    global $$varname;
+    echo "<label>$label</label>";
+    echo "<select name='$varname' id='$varname'>";
+    echo "<option value = '' disabled selected>Select genre</option>";
+    $i = 0;
+    foreach ($options as $opt)
+      add_dropdown_options($texts[$i++], $varname, $opt);
+    echo "</select>";
+  }
+
   function add_dropdown_num_range($varname, $min, $max) {
     global $$varname;
     if (isset($_POST['rating'])) $rating = $_POST['rating']; else $rating = '';
@@ -130,6 +141,13 @@
       add_dropdown_num_range_options($i, $varname);
     }
     echo "</select>";
+  }
+
+  function add_dropdown_options($text, $varname, $opt) {
+    global $$varname;
+    echo "<option value = '$opt'" ;
+    if ($opt == $$varname) echo "selected";
+    echo ">$text</option>";
   }
 
   function add_dropdown_num_range_options($i, $varname) {
@@ -613,7 +631,7 @@
 /* 	 <a href=\"favourites.php\"><span class='save fas fa-bookmark'></span></a> */
   function display_show_card($show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
-    $show_name = strlen($show_name) > 12 ? substr($show_name, 0, 12)."..." : $show_name;
+    $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
     echo "
       <a href=\"show.php?id=" . $show_id . "\">" . "
         <div class='col-2of12'>
@@ -742,6 +760,21 @@
     $query = "SELECT genre "
            . "FROM genres "
            . "WHERE show_id = $show_id";
+    $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get genres list for show: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $genres[] = $row["genre"];
+    }
+    $results->free_result();
+    return $genres;
+  }
+
+  function all_genres_list($db) {
+    $query = "SELECT DISTINCT genre FROM genres ORDER BY genre";
     $results = $db->query($query);
 
     if (!$results) {

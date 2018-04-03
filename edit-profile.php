@@ -13,14 +13,14 @@
   }
 
   if (isset($_SESSION['update_profile'])) {
-    echo "Successfully updated your profile!";
+    display_notification_success("Successfully updated your profile!");
     unset($_SESSION['update_profile']);
   }
 
   // If form submitted, store entered registration data from POST
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
-    $fav_genre = trim($_POST['fav_genre']);
+    $fav_genre = $_POST['genre'];
     $password = $_POST['password'];
     $password2 = $_POST['password2'];
     $profile_img = '';
@@ -66,7 +66,7 @@
 
   form_start('edit-profile.php', 'Edit public profile: ' . $email);
   add_textfield('username', 'Username: ');
-  add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
+  add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
   add_textfield('password', 'Password: ');
   add_textfield('password2', 'Confirm password: ');
   form_end('Update');
