@@ -40,14 +40,8 @@
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $comment_body = trim($_POST['comment']);
-    echo $comment_body;
     $email = $_SESSION['valid_user'];
-    echo $email;
-    echo $video_url;
-    date_default_timezone_set('America/Los_Angeles');
-    $date = date('m/d/Y h:i:s a', time());
-    echo $date;
-    post_comment($email, $video_url, $comment_body, $date);
+    post_comment($email, $video_url, $comment_body, $db);
   }
 
   echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
@@ -75,7 +69,7 @@
                   . "FROM comments "
                   . "INNER JOIN users ON comments.email = users.email "
                   . "WHERE video_url = ? "
-                  . "ORDER BY date_added";
+                  . "ORDER BY date_added DESC";
   $comments_stmt = $db->prepare($comments_query);
   $comments_stmt->bind_param('s', $video_url);
   $comments_stmt->execute();

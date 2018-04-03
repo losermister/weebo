@@ -2,7 +2,7 @@
 
   session_start();
 
-  static $num_of_avatars = 3;
+  static $num_of_avatars = 4;
   static $shows_per_page = 12;
 
   /*
@@ -54,7 +54,6 @@
    */
   function display_userprofile($username, $email, $fav_genre, $profile_img) {
   	echo "<h1>user profile</h1>";
-  	
   	echo "<h4>username:</h4>";
     echo "<p>$username</p>";
     echo "<h4>email:</h4>";
@@ -747,6 +746,21 @@
       }
     }
     return $new_recs;
+  }
+
+  function post_comment($email, $video_url, $comment_body, $db) {
+    $query = "INSERT INTO comments(email, video_url, comment_body, date_added) "
+           . "VALUES (?, ?, ?, NOW())";
+    $stmt = $db->prepare($query);
+    if ( !$stmt ) {
+      printf('errno: %d, error: %s', $db->errno, $db->error);
+      die;
+    }
+    $stmt->bind_param('sss', $email, $video_url, $comment_body);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->free_result();
+    $stmt->close();
   }
 
 ?>
