@@ -2,10 +2,13 @@
 	require('helper/functions.php');
 	use_http();
   require('helper/header.php');
+
+  if (isset($_SESSION['valid_user'])) {
+    $email = $_SESSION['valid_user'];
+  } else {
+  	$email = "";
+  }
 ?>
-
-
-
 
 	<div class="banner-container">
 
@@ -24,18 +27,25 @@
 					<h2>kill la kill</h2>
 					<p>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.</p>
 					<a href="http://localhost/weebo/show.php?id=17" class="btn btn-primary"><!-- <span class="fas fa-play"></span> -->watch series</a>
-<!-- 					<a href="#" class="btn btn-secondary"><span class="fas fa-play"></span><span class='fas fa-bookmark'></span>bookmark</a> -->
+
 					<form action='favourites.php' class='save-btn' method='post'>
-            <input type='hidden' name='favourite_show' value='17'>
-            <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>bookmark</button>
-		      </form>
+						<?php
+							$featured_show = 17;
+	            if (in_favourites_list($email, $featured_show, $db)) {
+	              echo "<input type='hidden' name='unfavourite_show' value='17'>
+	              <button type='submit' class='saved-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>remove</button>";
+	            } else {
+	                echo "<input type='hidden' name='favourite_show' value='17'>
+	                <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>favourite</button>";
+	              }
+						?>
+					</form>
 				</div>
 
 			</div>
 		</div>
-
-
 		<div class="banner-overlay">
+
 		</div>
 
 		<div class="banner-img-container">
@@ -45,16 +55,13 @@
 	</div>
 
 
-
-
-
 	<div class="container content">
 		<div class="row content" >
 			<div class="col-3of12">
 
 				<div class="row">
 					<div class="col-12of12">
-							<h3 class="cat">recent uploads</h3>
+						<h3 class=\"cat\">recent uploads</h3>
 					</div>
 
 				</div>
@@ -69,11 +76,9 @@
 						$recents_stmt = $db->prepare($recents_query);
 						$recents_stmt->execute();
 						$recents_stmt->bind_result($show_id, $show_name, $episode_num, $show_img);
-
 						while ($recents_stmt->fetch()) {
 							display_show_list($show_id, $show_name, $episode_num, $show_img);
 						}
-
 					  $recents_stmt->free_result();
 					  $recents_stmt->close();
 					 ?>
@@ -86,40 +91,71 @@
 
 				<div class="row">
 					<div class="col-12of12">
+							<?php
 
-							<h3 class="cat">Recommended for you</h3>
+								if (isset($_SESSION['valid_user'])) {
+									$email = $_SESSION['valid_user'];
+								}
 
+								if (isset($_SESSION['valid_user']) && sizeof(rated_shows_list($email, $db)) > 1) {
+									echo "<h3 class=\"cat\">Recommended for you</h3>";
+								} else {
+									echo "<h3 class=\"cat\">Top rated</h3>";
+								}
+
+							?>
 					</div>
-
 				</div>
 
-
 				<div class="row">
-				<?php
-					$shows_query = "SELECT show_id, name, bg_img "
-					             . "FROM shows "
-					             . "ORDER BY show_id DESC "
-					             . "LIMIT 18";
-					$shows_stmt = $db->prepare($shows_query);
-					$shows_stmt->execute();
-					$shows_stmt->bind_result($show_id, $show_name, $show_img);
-					$shows_stmt->store_result();
+					<?php
+						if (isset($_SESSION['valid_user']) && sizeof(rated_shows_list($email, $db)) > 1) {
+							require './OpenSlopeOne.php';
+							$openslopeone = new OpenSlopeOne();
+							$openslopeone->initSlopeOneTable('MySQL');
+							$recs = $openslopeone->getRecommendedItemsByUser($email);
+              $recs = remove_already_rated($recs, $email, $db);
+							foreach ($recs as $rec) {
+								$shows_query = "SELECT show_id, name, bg_img "
+								             . "FROM shows "
+								             . "WHERE show_id = $rec";
+								$shows_stmt = $db->prepare($shows_query);
+								$shows_stmt->execute();
+								$shows_stmt->bind_result($show_id, $show_name, $show_img);
+								$shows_stmt->store_result();
 
-					while ($shows_stmt->fetch()) {
-						display_show_card($show_id, $show_name, $show_img, $db);
-					}
+								while ($shows_stmt->fetch()) {
+									display_show_card($show_id, $show_name, $show_img, $db);
+								}
+								$shows_stmt->free_result();
+							  $shows_stmt->close();
+							}
+						} else {
+								$shows_query = "SELECT oso_user_ratings.show_id, shows.name, shows.bg_img "
+								             . "FROM oso_user_ratings "
+								             . "INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id "
+								             . " GROUP BY oso_user_ratings.show_id "
+								             . "ORDER BY avg(rating) DESC "
+								             . "LIMIT 18";
 
-					$shows_stmt->free_result();
-				  $shows_stmt->close();
-				?>
+								$shows_stmt = $db->prepare($shows_query);
+								$shows_stmt->execute();
+								$shows_stmt->bind_result($show_id, $show_name, $show_img);
+								$shows_stmt->store_result();
+
+								while ($shows_stmt->fetch()) {
+									display_show_card($show_id, $show_name, $show_img, $db);
+								}
+								$shows_stmt->free_result();
+							  $shows_stmt->close();
+							}
+					?>
+				</div>
 
 			</div>
-
 		</div>
-	</div>
 
 
-<!--
 	<footer>
 
 		<div class="container">
@@ -134,6 +170,5 @@
 
 
 </body>
--->
 
 </html>

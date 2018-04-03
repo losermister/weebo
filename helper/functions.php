@@ -771,6 +771,7 @@
   }
 
   function rated_shows_list($email, $db) {
+    $rated_shows[] = '';
     $query = "SELECT oso_user_ratings.show_id "
            . "FROM oso_user_ratings "
            . "WHERE email = '$email'";
