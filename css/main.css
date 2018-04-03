@@ -275,6 +275,7 @@ select#genre:focus{
 	border:none;
 	color:#FFFFFF;
 	background:rgb(252,52,73);
+	font-weight:500;
 
 }
 
@@ -296,10 +297,14 @@ select#genre:focus{
 	text-decoration: none;
 	text-transform: uppercase;
 	box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+	font-weight:500;
 
 
 }
 
+#rate select:focus{
+	outline:none;
+}
 
 
 nav ul.fl-left{
@@ -541,8 +546,23 @@ input[type*="submit"]{
 button.btn[type*="submit"]{
 	border:0px;
 	font-weight:500;
+	transition:opacity 0.2s linear;
 
 }
+
+button.btn[type*="submit"]:hover{
+	opacity:0.8;
+	
+
+}
+
+button.btn[type*="submit"]:focus{
+	out	line:none;
+	
+
+}
+
+
 
 form.save-btn{
 	display:inline-block;
