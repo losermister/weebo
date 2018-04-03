@@ -471,6 +471,7 @@ nav ul.fl-left a:hover li{
 
 .btn span.fas{
 	/* margin-right:0.5rem; */
+	margin:0;
 }
 
 fieldset{
@@ -636,6 +637,12 @@ button.save[type*="submit"]{
 
 button.save[type*="submit"] .fas{
 	margin:0px 2px 0px 2px;
+
+}
+
+
+button.save[type*="submit"] .fa-check{
+	margin:0px 1px 0px 1px;
 
 }
 
