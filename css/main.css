@@ -635,6 +635,7 @@ span.avatar{
 	background:#333333;
 	float:left;
 	overflow: hidden;
+	box-shadow: 0rem 0rem 0.1rem rgba(0,0,0,0.5);
 }
 
 span.avatar-img{
@@ -1034,8 +1035,8 @@ span.avatar-img{
 
 
 .bkmrk-state{
-	background:rgba(0,194,123,1) !important;
-	color:white !important;
+	/* background:rgba(0,194,123,1) !important; */
+	color:rgba(0,194,123,1)!important;
 	opacity:1 !important;
 }
 .saved-state{
