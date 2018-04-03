@@ -6,6 +6,7 @@
 
   if (isset($_SESSION['require_login'])) {
     display_notification_error($_SESSION['require_login']);
+    unset($_SESSION['require_login']);
   }
 
   // If login credentials submitted, check to see if there's a record in the database
@@ -24,8 +25,6 @@
     // If there's a record, verify the password before logging in
     if ($login_stmt->fetch() && password_verify($password, $pass_hash)) {
       $_SESSION['valid_user'] = $email;
-      if (isset($_SESSION['require_login']))
-        unset($_SESSION['require_login']);
       header("Location: index.php");
     } else {
     	echo "<div id='error' class='small-container'>";
