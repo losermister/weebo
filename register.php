@@ -82,7 +82,11 @@
   add_honeypot_textfield('email', 'Email ');
   add_textfield('emailaddress', 'Email: ');
   add_textfield('username', 'Username ');
-  add_textfield('fav_genre', 'Your favourite genre: '); // dropdown
+ /*  add_textfield('fav_genre', 'Your favourite genre: '); // dropdown */
+  echo "<label>your favourite genre</label>";
+   echo "<select id='genre'>";
+    echo "<option value = '' disabled selected>Select genre</option>";
+    echo "</select>";
   add_textfield('password', 'Password ');
   add_textfield('password2', 'Confirm password ');
   form_end('Sign up Now');

@@ -229,10 +229,44 @@ nav ul.fl-right a:hover li{
 	text-transform: lowercase;
 }
 
+select#genre{
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	font-size:1rem;
+	width:100%;
+	padding:1.2rem;
+	border-radius:0px;
+	border:none;
+	margin:1rem 0rem 1rem 0rem;
+
+}
+
+select#genre:after{
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    width: 0; 
+    color:black;
+    background:black;
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #333;
+
+}
+
+
+select#genre:focus{
+	outline:none;
+}
+
 
 #rate{
 	margin-bottom:7;
 }
+
 
 #rate button{
 	display:inline-block;
@@ -494,9 +528,12 @@ input[type*="submit"]{
 
 }
 
+
+
 .save:hover, .save:focus{
 	background:rgb(252,52,73);
 	opacity:1;
+	outline:none;
 	color:white;
 }
 
@@ -881,8 +918,7 @@ legend{
 .notify-msg-container{
 	position:absolute;
 
-	display: none;
-
+	visibility: hidden;
 	width:100%;
 	border-radius:0.25rem;
 	z-index:10;
@@ -921,6 +957,7 @@ legend{
 	color:#FFFFFF;
 	text-transform:capitalize;
 	vertical-align: middle;
+	
 }
 
 
@@ -929,10 +966,12 @@ legend{
 	from{
 		opacity:1;
 		display: block;
+		visibility: visible;
 	}
 
 	to{
 		opacity:0;
+		visibility: hidden;
 	}
 
 }
