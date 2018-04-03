@@ -572,7 +572,7 @@ form.save-btn{
 button.save[type*="submit"]{
 	display:block;
 	margin:0px;
-	padding:8px 9px 8px 9px;
+	padding:8px 8px 8px 8px;
 	text-align: center;
 	border-radius:100px;
 	background:#4A4574;
