@@ -53,8 +53,8 @@
 
   $episode_stmt->free_result();
   $episode_stmt->close();
-  
-  
+
+
     echo "<div class='container'>";
 /*   echo "<h2>Comments</h2>"; */
 
@@ -62,14 +62,14 @@
   echo "<div class='post-comments-container'>";
   // TODO: Structure + style the comment form and login message
   if (isset($_SESSION['valid_user'])) {
-	
+
   	echo"<div class='row'>";
   	echo "<div class='col-1of12'>";
-    echo "<img src='".avatar_from_email($db)."'>";	
+    echo "<img src='".avatar_from_email($db)."'>";
     echo "</div>";
     echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
     echo "<fieldset>";
-	
+
     echo "<h3>Leave a comment</h3>";
 
     echo "<textarea name='comment' rows='4' cols='50' placeholder='Type your comment...'></textarea>";
@@ -77,7 +77,7 @@
     echo "<input type=\"submit\" name=\"submit-comment\" value=\"comment\">";
     echo "</form>";
     echo "</div>";
-    
+
   } else {
     echo "Please <a href='login.php'> sign in </a> to comment on this episode!";
   }
@@ -93,20 +93,20 @@
   $comments_stmt->bind_result($username, $avatar, $comment, $date);
 
 
- 
+
   while ($comments_stmt->fetch()) {
     // TODO: Structure + style each comment
     echo "<div class='comments'>";
     echo "<div class='col-1of12'>";
-    echo "<img src=" . $avatar . ">";
+    echo "<a href='user.php?id=$username'><img src=" . $avatar . "></a>";
     echo "</div>";
     echo "<h6><a href='user.php?id=$username'>" . $username . "</a> • $date</h6>";
-    
+
     echo "<p>$comment</p>";
-  
+
     echo "</div>";
   }
-  
+
   echo "</div>";
    echo "</div>";
 
