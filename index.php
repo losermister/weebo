@@ -8,6 +8,12 @@
   } else {
   	$email = "";
   }
+
+	if (isset($_SESSION['logout'])) {
+		display_notification_success($_SESSION['logout']);
+		session_destroy();
+	}
+
 ?>
 
 	<div class="banner-container">
