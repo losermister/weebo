@@ -23,6 +23,10 @@
     exit;
   }
 
+  if (isset($_SESSION['valid_user'])) {
+    $email = $_SESSION['valid_user'];
+  }
+
   $episode_query = "SELECT video_url "
                  . "FROM links "
                  . "WHERE show_id = ? AND episode_num = ? "
@@ -40,8 +44,8 @@
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $comment_body = trim($_POST['comment']);
-    $email = $_SESSION['valid_user'];
     post_comment($email, $video_url, $comment_body, $db);
+    display_notification_success("Thanks for leaving a comment!");
   }
 
   echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
@@ -57,6 +61,7 @@
     echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
     echo "<fieldset>";
     echo "<legend>Leave a comment</legend>";
+    echo "<img src='" . avatar_from_email($db) . "''>";
     echo "<textarea name='comment' rows='4' cols='50' placeholder='Type your comment...'></textarea>";
     echo "</fieldset>";
     echo "<input type=\"submit\" name=\"submit-comment\" value=\"add comment\">";
@@ -77,7 +82,7 @@
 
   while ($comments_stmt->fetch()) {
     // TODO: Structure + style each comment
-    echo $username;
+    echo "<a href='user.php?id=$username'>" . $username . "</a>";
     echo "<img src=" . $avatar . ">";
     echo $comment;
     echo $date;
