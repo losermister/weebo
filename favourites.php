@@ -35,20 +35,23 @@
 			  	}
 			  }
 
-				$shows_query = "SELECT favourite_shows.show_id, shows.name, shows.bg_img "
+				$shows_query = "SELECT avg(rating) as avg_rating, favourite_shows.show_id, shows.name, shows.bg_img "
 				             . "FROM favourite_shows "
 				             . "INNER JOIN shows ON favourite_shows.show_id = shows.show_id "
-				             . "WHERE email = ?";
+				             . "INNER JOIN oso_user_ratings ON favourite_shows.show_id = oso_user_ratings.show_id "
+				             . "WHERE favourite_shows.email = ? "
+				             . "GROUP BY oso_user_ratings.show_id";
+
 				$shows_stmt = $db->prepare($shows_query);
 				$shows_stmt->bind_param('s', $email);
 				$shows_stmt->execute();
-				$shows_stmt->bind_result($show_id, $show_name, $show_img);
+				$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
 				$result = $shows_stmt->get_result();
 				$shows_stmt->free_result();
 			  $shows_stmt->close();
 
 				while ($row = $result->fetch_array(MYSQLI_NUM)) {
-				   display_show_card($row[0], $row[1], $row[2], $db);
+				   display_show_card($row[0], $row[1], $row[2], $row[3], $db);
 				}
 
 			?>
