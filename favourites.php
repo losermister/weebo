@@ -1,14 +1,8 @@
 <?php
 	require('helper/functions.php');
 	use_http();
-  require('helper/header.php');
 ?>
 
-	<div class="container content">
-
-		<h1>My Favourite Shows</h1>
-
-		<div class="row">
 			<?php
 	      if (isset($_SESSION['valid_user'])) {
 	      	$email = $_SESSION['valid_user'];
@@ -34,6 +28,11 @@
 			    	display_notification_success("Removed " . showname_from_id($unfavourite_id, $db) . " from your favourites.");
 			  	}
 			  }
+
+  			require('helper/header.php');
+			  echo "<div class='container content'>";
+		    echo "<h1>My Favourite Shows</h1>";
+		    echo "<div class='row'>";
 
 				$shows_query = "SELECT avg(rating) as avg_rating, favourite_shows.show_id, shows.name, shows.bg_img "
 				             . "FROM favourite_shows "
