@@ -780,4 +780,20 @@
     $stmt->close();
   }
 
+  function get_num_comments($video_url, $db) {
+    $query = "SELECT * FROM comments "
+           . "WHERE video_url = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('s', $video_url);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if (!$result) {
+      echo "Oops! Couldn't execute query.";
+    }
+    $stmt->free_result();
+    $stmt->close();
+    return $result->num_rows;
+  }
+
+
 ?>

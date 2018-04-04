@@ -54,7 +54,7 @@
   $episode_stmt->free_result();
   $episode_stmt->close();
 
-  echo "<h3>Comments</h3>";
+  echo "<h3>" . get_num_comments($video_url, $db) . " Comments</h3>";
 
   // TODO: Structure + style the comment form and login message
   if (isset($_SESSION['valid_user'])) {
