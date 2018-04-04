@@ -48,7 +48,7 @@
 			<div class="col-3of12">
 				<div class="row">
 					<div class="col-12of12">
-						<h3 class=\"cat\">recent uploads</h3>
+						<h3 class="cat">recent uploads</h3>
 					</div>
 				</div>
 				<div class="row" id="">
