@@ -561,9 +561,11 @@
     }
   }
 
-  function display_show_card($show_id, $show_name, $show_img, $db) {
+  function display_show_card($avg_rating, $show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
     $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
+    // Format average rating to be out of 10 and 2 decimal places
+    $avg_rating = number_format($avg_rating * 10, 2);
     echo "
       <a href=\"show.php?id=" . $show_id . "\">" . "
         <div class='col-2of12'>
@@ -575,6 +577,7 @@
             <div class='show-info'>
               <div class='show-descript'>
                 <span class='show-title'>$show_name</span>
+                <span>$avg_rating</span>
               </div>
               <div class='functions'>
                 <form action='favourites.php' class='save-btn' method='post'>";

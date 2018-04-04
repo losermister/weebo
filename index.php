@@ -92,38 +92,41 @@
 							require './OpenSlopeOne.php';
 							$openslopeone = new OpenSlopeOne();
 							$openslopeone->initSlopeOneTable('MySQL');
-							$recs = $openslopeone->getRecommendedItemsByUser($email);
+							$recs = $openslopeone->getRecommendedItemsByUser($email, 18);
               $recs = remove_already_rated($recs, $email, $db);
 							foreach ($recs as $rec) {
-								$shows_query = "SELECT show_id, name, bg_img "
-								             . "FROM shows "
-								             . "WHERE show_id = $rec";
+								$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
+								             . "FROM oso_user_ratings "
+								             . "INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id "
+								             . "GROUP BY oso_user_ratings.show_id "
+								             . "HAVING show_id = $rec ";
+
 								$shows_stmt = $db->prepare($shows_query);
 								$shows_stmt->execute();
-								$shows_stmt->bind_result($show_id, $show_name, $show_img);
+								$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
 								$shows_stmt->store_result();
 
 								while ($shows_stmt->fetch()) {
-									display_show_card($show_id, $show_name, $show_img, $db);
+									display_show_card($avg_rating, $show_id, $show_name, $show_img, $db);
 								}
 								$shows_stmt->free_result();
 							  $shows_stmt->close();
 							}
 						} else {
-								$shows_query = "SELECT oso_user_ratings.show_id, shows.name, shows.bg_img "
+								$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
 								             . "FROM oso_user_ratings "
 								             . "INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id "
-								             . " GROUP BY oso_user_ratings.show_id "
+								             . "GROUP BY oso_user_ratings.show_id "
 								             . "ORDER BY avg(rating) DESC "
 								             . "LIMIT 18";
 
 								$shows_stmt = $db->prepare($shows_query);
 								$shows_stmt->execute();
-								$shows_stmt->bind_result($show_id, $show_name, $show_img);
+								$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
 								$shows_stmt->store_result();
 
 								while ($shows_stmt->fetch()) {
-									display_show_card($show_id, $show_name, $show_img, $db);
+									display_show_card($avg_rating, $show_id, $show_name, $show_img, $db);
 								}
 								$shows_stmt->free_result();
 							  $shows_stmt->close();
