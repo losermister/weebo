@@ -413,6 +413,23 @@
     $stmt->close();
   }
 
+  function get_num_favourites($db) {
+    $email = $_SESSION['valid_user'];
+    $query = "SELECT * "
+           . "FROM favourite_shows "
+           . "WHERE email = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if (!$result) {
+      echo "Oops! Couldn't execute query.";
+    }
+    $stmt->free_result();
+    $stmt->close();
+    return $result->num_rows;
+  }
+
   function in_favourites_list($email, $show_id, $db) {
     $query = "SELECT * "
            . "FROM favourite_shows "
