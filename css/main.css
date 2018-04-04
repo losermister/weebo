@@ -432,6 +432,19 @@ nav ul.fl-left a:hover li{
 }
 
 
+.avgrate{
+	display:inline-block;
+	position:absolute;
+	color:white;
+	font-size:0.8rem;
+	padding:0.5rem;
+	margin:0.5rem;
+	border-radius:3px;
+	top:0;
+	left:0;
+	background:rgba(0,194,123,1);
+	z-index:3;	
+}
 
 .btn{
 	/* width:100%; */
@@ -440,7 +453,8 @@ nav ul.fl-left a:hover li{
 	display:inline-block;
 	text-align: center;
 	font-weight:bold;
-	font-size:0.8rem;
+	font-size:0.5rem;
+	
 	margin-right:5px;
 	text-decoration: none;
 	text-transform: uppercase;
@@ -653,7 +667,7 @@ button.save[type*="submit"]{
 
 
 button.save[type*="submit"] .fas{
-	margin:0px 2px 0px 2px;
+	margin:0px 0px 0px 0px;
 
 }
 

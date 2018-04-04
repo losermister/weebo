@@ -572,12 +572,12 @@
           <div class='show-container'>
             <div class='redirect'></div>
 
-            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+            <div class='show-img-container'><span class='avgrate'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>
 
             <div class='show-info'>
               <div class='show-descript'>
                 <span class='show-title'>$show_name</span>
-                <span>$avg_rating</span>
+               
               </div>
               <div class='functions'>
                 <form action='favourites.php' class='save-btn' method='post'>";
@@ -595,7 +595,7 @@
                   } else {
                     echo "
                       <input type='hidden' name='favourite_show' value='$show_id'>
-                      <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-bookmark'></span></button>
+                      <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-heart'></span></button>
                     ";
                   }
 
