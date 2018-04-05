@@ -23,7 +23,10 @@
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
 	          	$avatar = avatar_from_email($db);
-	          	echo "<a href=\"favourites.php\"><li>favourites (" . get_num_favourites($db) . ")</li></a>";
+	          	echo "
+
+							<a href=\"favourites.php\" ><li class='fvr-lnk'><span>" . get_num_favourites($db) . "</span>favourites </li></a>
+						";
 	            echo "<a id='user-click'><li class='user-act'><span class='avatar'><span class='avatar-img' style='background-image:url($avatar)'></span></span>$username <span class='fas fa-caret-down'></span></li></a>";
 
 							echo "<div class='user-dropdown'>";

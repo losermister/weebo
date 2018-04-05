@@ -37,9 +37,9 @@
   $episode_stmt->bind_result($video_url);
 
 	echo "<div class='container'>";
-
+  echo "<div class='col-9of12'>";
   while ($episode_stmt->fetch()) {
-    echo "<iframe class='vid' src='$video_url' ></iframe>";
+    echo "<iframe class='vid' src='$video_url' allowfullscreen></iframe>";
   }
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -49,13 +49,13 @@
   }
 
   echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
-	echo "</div>";
+	// echo "</div>";
 
   $episode_stmt->free_result();
   $episode_stmt->close();
 
 
-    echo "<div class='container'>";
+
 /*   echo "<h2>Comments</h2>"; */
 
   echo "<h3>" . get_num_comments($video_url, $db) . " Comments</h3>";
@@ -67,6 +67,7 @@
   	echo "<div class='col-1of12'>";
     echo "<img src='".avatar_from_email($db)."'>";
     echo "</div>";
+    echo "<div class='col-11of12'>";
     echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
     echo "<fieldset>";
 
@@ -77,9 +78,10 @@
     echo "<input type=\"submit\" name=\"submit-comment\" value=\"comment\">";
     echo "</form>";
     echo "</div>";
+    echo "</div>";
 
   } else {
-    echo "Please <a href='login.php'> sign in </a> to comment on this episode!";
+    echo "<p class='sign-in-comment'>Please <a href='login.php'> sign in </a> to comment on this episode!</p>";
   }
 
   $comments_query = "SELECT users.user_id, users.profile_img, comment_body, date_added "
@@ -100,14 +102,22 @@
     echo "<div class='col-1of12'>";
     echo "<a href='user.php?id=$username'><img src=" . $avatar . "></a>";
     echo "</div>";
+    echo "<div class='col-11of12'>";
     echo "<h6><a href='user.php?id=$username'>" . $username . "</a> • $date</h6>";
 
     echo "<p>$comment</p>";
 
     echo "</div>";
+    echo "</div>";
   }
-
   echo "</div>";
+  echo "</div>";
+
+  echo "<div class='col-3of12'>";
+  echo "<h3>Up next</h3>";
+  echo "</div>";
+
+
    echo "</div>";
 
   $db->close();

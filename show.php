@@ -1,3 +1,4 @@
+
 <?php
 
   require('helper/functions.php');
@@ -154,3 +155,29 @@
     $db->close();
   }
 ?>
+
+<script>
+  $(document).ready(function(){
+    var textHtml = $(".descript").html();
+    var lessText = textHtml.substr(0,200);
+
+    if(textHtml.length > 255){
+      $(".descript").html(lessText).append("...<a href='' class='read-more'>Show More</a>");
+    }
+    else{
+      $(".descript").html(textHtml);
+    }
+
+    $("body").on("click",".read-more", function(event){
+      event.preventDefault();
+      $(this).parent(".descript").html(textHtml).append("<a href='' class='read-less'>Show Less</a>");
+
+    });
+
+    $("body").on("click",".read-less", function(){
+      event.preventDefault();
+      $(this).parent(".descript").html(textHtml.substr(0,200)).append("...<a href='' class='read-more'>Show More</a>");
+    });
+
+  });
+</script>
