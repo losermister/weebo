@@ -59,7 +59,7 @@
                 <button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
               } else {
                   echo "<input type='hidden' name='favourite_show' value='$show_id'>
-                  <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-bookmark'></span>favourite</button>";
+                  <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button>";
               }
             echo "</form>
   				</div>
