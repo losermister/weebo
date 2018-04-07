@@ -566,18 +566,28 @@
     $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
     // Format average rating to be out of 10 and 2 decimal places
     $avg_rating = number_format($avg_rating * 10, 2);
+
+    $rating_style;
+    if (($avg_rating >= 0.0) && ($avg_rating < 5.0)) {
+      $rating_style = "background:#ff3a3a; border-bottom:1px solid red;";
+    } else if (($avg_rating >= 5.0) && ($avg_rating < 8.0)) {
+      $rating_style = "background:#ffc800; border-bottom:1px solid yellow;";
+    } else if (($avg_rating >= 8.0) && ($avg_rating <= 10.0)) {
+      $rating_style = "background:#2cb757; border-bottom:1px solid green;";
+    }
+
     echo "
       <a href=\"show.php?id=" . $show_id . "\">" . "
         <div class='col-2of12'>
           <div class='show-container'>
             <div class='redirect'></div>
 
-            <div class='show-img-container'><span class='avgrate'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>
+            <div class='show-img-container'><span class='avgrate' style='$rating_style'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>
 
             <div class='show-info'>
               <div class='show-descript'>
                 <span class='show-title'>$show_name</span>
-               
+
               </div>
               <div class='functions'>
                 <form action='favourites.php' class='save-btn' method='post'>";
