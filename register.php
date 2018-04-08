@@ -71,14 +71,14 @@
    */
 
   form_start('register.php', 'Create a new weebflix account');
-  echo "<p>Get access to 100+ tv shows</p>";
+  add_radio_buttons('avatar', $avatar_list);
   add_honeypot_textfield('email', 'Email ');
   add_textfield('emailaddress', 'Email ');
   add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
-  add_radio_buttons('avatar', $avatar_list);
+
   add_textfield('password', 'Password ');
   add_textfield('password2', 'Confirm password ');
-  form_end('Sign up Now');
+  form_end('create account');
 
 ?>

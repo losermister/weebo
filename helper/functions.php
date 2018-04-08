@@ -103,6 +103,7 @@
    *  @param  array   $options  Values/ids of each option
    */
   function add_radio_buttons($varname, $options) {
+
   	echo "<label for =\"$varname\">$varname</label>";
     $i = 0;
     foreach($options as $opt) {
@@ -118,8 +119,8 @@
    *  @param  int     $i        Index of each option
    */
   function add_radio_options($varname, $opt, $i) {
-  	echo "<div class='col-4of12'>";
-    echo "<label for='$opt'><img class='img-responsive' src='avatar/" . $opt . ".png'/></label>";
+  	echo "<div class='col-3of12'>";
+    echo "<label class='avatar-style' for='$opt'><img class='img-responsive' src='avatar/" . $opt . ".png'/></label>";
     echo "<input type='radio' value='$opt' name='$varname' id='$opt' ";
     if ($i == 0) echo "checked";
     echo "/>";
@@ -136,11 +137,17 @@
   function add_dropdown($label, $varname, $options, $texts) {
     global $$varname;
     echo "<label>$label</label>";
+    echo "<div class='dropdown'>";
     echo "<select name='$varname' id='$varname'>";
+
     $i = 0;
     foreach ($options as $opt)
       add_dropdown_options($texts[$i++], $varname, $opt);
+
     echo "</select>";
+    echo "<span class='fas fa-caret-down'></span>";
+    echo "</div>";
+
   }
 
   /*
@@ -569,11 +576,11 @@
 
     $rating_style;
     if (($avg_rating >= 0.0) && ($avg_rating < 5.0)) {
-      $rating_style = "background:#ff3a3a; border-bottom:1px solid red;";
+      $rating_style = "background:#ff3a3a;";
     } else if (($avg_rating >= 5.0) && ($avg_rating < 8.0)) {
-      $rating_style = "background:#ffc800; border-bottom:1px solid yellow;";
+      $rating_style = "background:#ffc800;";
     } else if (($avg_rating >= 8.0) && ($avg_rating <= 10.0)) {
-      $rating_style = "background:#2cb757; border-bottom:1px solid green;";
+      $rating_style = "background:#2cb757;";
     }
 
     echo "

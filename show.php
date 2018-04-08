@@ -48,7 +48,7 @@
 
     echo "
    	<div class='banner-container'>
-  	 	<div class='container'>
+  	 	<div class='text-container'>
   	 		<div class='banner-details'>
   				<div class='col-6of12'>
   					<h2>". $results['show_name'] ."</h2>

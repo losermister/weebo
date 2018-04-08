@@ -17,7 +17,7 @@
 ?>
 
 	<div class="banner-container">
-		<div class="container">
+		<div class="text-container">
 			<div class="banner-text">
 				<div class="col-12of12">
 					<span>staff pick</span>
@@ -142,13 +142,13 @@
 			</div>
 		</div>
 
-		<footer>
+		<!-- <footer>
 			<div class="container">
 				<div class="row">
 					Footer text
 				</div>
 			</div>
-		</footer>
+		</footer> -->
 
 	</body>
 

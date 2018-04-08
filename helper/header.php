@@ -14,20 +14,20 @@
 		<div class="container">
 			<div class="row">
 				<ul class="fl-left">
-					<a href="index.php"><li id="logo">weebflix</li></a>
+					<li id="logo"><a href="index.php">weebflix</a></li>
 				</ul>
 				<ul class="fl-left"></ul>
 				<ul class="fl-right">
-					<a href="all-shows.php"><li>all shows</li></a>
+					<li><a href="all-shows.php">all shows</a></li>
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
 	          	$avatar = avatar_from_email($db);
 	          	echo "
 
-							<a href=\"favourites.php\" ><li class='fvr-lnk'><span>" . get_num_favourites($db) . "</span>favourites </li></a>
+							<li class='fvr-lnk'><a href=\"favourites.php\" ><span>" . get_num_favourites($db) . "</span>favourites</a></li>
 						";
-	            echo "<a id='user-click'><li class='user-act'><span class='avatar'><span class='avatar-img' style='background-image:url($avatar)'></span></span>$username <span class='fas fa-caret-down'></span></li></a>";
+	            echo "<li class='user-act'><a id='user-click'><span class='avatar'><span class='avatar-img' style='background-image:url($avatar)'></span></span>$username <span class='fas fa-caret-down'></span></a></li>";
 
 							echo "<div class='user-dropdown'>";
 							echo "<a href=\"user.php?id=$username\">my profile</a>";
@@ -35,7 +35,7 @@
 	            echo "<a href=\"logout.php\">Logout</a>";
 							echo "</div>";
 	          } else {
-	            echo "<a href=\"login.php\"><li>sign up/login</li></a>";
+	            echo "<li><a href=\"login.php\">sign up/login</a></li>";
 	          }
 			    ?>
 					<script>
