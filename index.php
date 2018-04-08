@@ -149,7 +149,6 @@
 				</div>
 			</div>
 		</footer> -->
-
-	</body>
-
-</html>
+	<?php
+  	require('helper/footer.php');
+  ?>

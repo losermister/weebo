@@ -6,7 +6,11 @@
 
 	<div class="container content">
 		<h1>All Shows</h1>
-		<div class="row">
+			<?php add_dropdown('filter by genre', 'filter-by-genre', all_genres_list($db), all_genres_list($db)); ?>
+			<div class="loading-overlay" style="display: none; color: white;">
+				<span class="overlay-content">Loading...</span>
+			</div>
+		<div class="row" id="show-data">
 			<?php
 				$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
 				             . "FROM oso_user_ratings "
@@ -20,32 +24,38 @@
 				$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
 				$shows_stmt->store_result();
 
-				$shows_count = '';
-
 				while ($shows_stmt->fetch()) {
 					display_show_card($avg_rating, $show_id, $show_name, $show_img, $db);
-					$shows_count++;
 				}
-
-				$pages = '';
-				echo "count: ". $shows_count . "<br>";
-				$pages = ceil($shows_count / $shows_per_page);
-				echo "pages: " . $pages;
 
 				$shows_stmt->free_result();
 			 	$shows_stmt->close();
+
 			?>
 		</div>
 	</div>
 
-	<footer>
-		<div class="container">
-			<div class="row">
-				Footer text
-			</div>
-		</div>
-	</footer>
+<script type='text/javascript'>
+	$('#filter-by-genre').change(function() {
+		getShows('filter', $(this).val())
+	});
 
-</body>
+	function getShows(type, val) {
+		$.ajax({
+			type: 'POST',
+			url:  'get-shows.php',
+			data: 'type='+type+'&val='+val,
+			beforeSend:function(html) {
+				$('.loading-overlay').show();
+			},
+			success:function(html) {
+				$('.loading-overlay').hide();
+				$('#show-data').html(html);
+			}
+		});
+	}
+</script>
 
-</html>
+<?php
+	require('helper/footer.php');
+?>
