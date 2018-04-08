@@ -6,7 +6,19 @@
 
 	<div class="container content">
 		<h1>All Shows</h1>
+
+
 		<div class="row">
+			<div class="col-3of12">
+				<div class="checkbox-header">genre</div>
+				<form>
+					<label class="checkbox"><input type="checkbox" value="hello"><span class="check"></span>Romance</label>
+					<label class="checkbox"><input type="checkbox" value="hello"><span class="check"></span>Action</label>
+					<label class="checkbox"><input type="checkbox" value="hello"><span class="check"></span>adventure</label>
+				</form>
+
+			</div>
+			<div class="col-9of12">
 			<?php
 				$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
 				             . "FROM oso_user_ratings "
@@ -35,6 +47,7 @@
 				$shows_stmt->free_result();
 			 	$shows_stmt->close();
 			?>
+		</div>
 		</div>
 	</div>
 
