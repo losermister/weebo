@@ -12,14 +12,14 @@
 	  }
 	  if (!empty($_POST['filter-by-multi-genre'])) {
 			$num_filtered_genres = count($_POST['filter-by-multi-genre']);
-			$filtered_genres = "'" . implode ("', '", $_POST['filter-by-multi-genre']) . "'";
+			// $filtered_genres = "'" . implode ("', '", $_POST['filter-by-multi-genre']) . "'";
+			$filtered_genres = $_POST['filter-by-multi-genre'];
 	  }
 	}
-
 	// echo count(all_genres_list($db));
 
 	// echo $filtered_year . "<br>";
-	// echo $filtered_genres . "<br>";
+	// print_r($filtered_genres) . "<br>";
 	// echo $num_filtered_genres . "<br>";
 	// $flags = str_repeat('s', count(all_genres_list($db))) . 'ii';
   //  echo $flags;
@@ -33,16 +33,29 @@
 	             . "       GROUP BY shows.show_id "
 	             . "      ) AS avg_finder ON shows.show_id = avg_finder.show_id "
 	             . "INNER JOIN genres on shows.show_id = genres.show_id ";
-	if (!empty($_POST['filter-by-multi-genre'])) {
-	 	$shows_query .= "WHERE genres.genre IN ($filtered_genres) ";
-	}
 	if (!empty($_POST['filter-by-year']) && $filtered_year != 'All') {
-	 	$shows_query .= "AND YEAR (airing_date) = $filtered_year ";
+	 	$shows_query .= "WHERE YEAR (airing_date) = $filtered_year ";
+	}
+	if (!empty($_POST['filter-by-multi-genre'])) {
+		for($i = 0; $i < $num_filtered_genres; $i++) {
+			if ($i == 0) {
+				$shows_query .= "AND (genres.genre = '$filtered_genres[$i]' ";
+				if ($num_filtered_genres <= 1) {
+					$shows_query .= ") ";
+				}
+			} else {
+				$shows_query .= "OR genres.genre = '$filtered_genres[$i]' ";
+				if ($i == $num_filtered_genres-1) {
+					$shows_query .= ") ";
+				}
+			}
+	 	// $shows_query .= "WHERE genres.genre IN ($filtered_genres) ";
+		}
 	}
 	$shows_query .= "GROUP BY shows.show_id ";
-	if (!empty($_POST['filter-by-multi-genre'])) {
-	 	$shows_query .= "HAVING COUNT(genre) >= $num_filtered_genres ";
-	}
+	// if (!empty($_POST['filter-by-multi-genre'])) {
+	//  	$shows_query .= "HAVING COUNT(genre) >= $num_filtered_genres ";
+	// }
 	$shows_query   .= "ORDER BY shows.show_id";
 
 	// echo $shows_query;
