@@ -8,18 +8,19 @@
 		<h1>All Shows</h1>
 		<div class="row">
 			<div class="col-3of12">
-				<div class="checkbox-header">genre</div>
-				<form>
-					<?php add_dropdown('filter by genre', 'filter-by-genre', all_genres_list($db), all_genres_list($db)); ?>
-					<div class="loading-overlay" style="display: none; color: white;">
-						<span class="overlay-content">Loading...</span>
-					</div>
-					<label class="checkbox"><input type="checkbox" value="hello"><span class="check"></span>Romance</label>
-					<label class="checkbox"><input type="checkbox" value="hello"><span class="check"></span>Action</label>
-					<label class="checkbox"><input type="checkbox" value="hello"><span class="check"></span>adventure</label>
+				<form class="filter-form">
+					<?php
+						echo "<div class='checkbox-header'>Airing year</div>";
+						add_dropdown_filter('All years', 'filter-by-year', all_years_list($db), all_years_list($db));
+						echo "<div class='checkbox-header'>genre</div>";
+						add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db));
+					?>
 				</form>
 			</div>
 			<div class="col-9of12" id="show-data">
+				<div class="loading-overlay" style="display: none; color: white;">
+					<span class="overlay-content">Loading...</span>
+				</div>
 				<?php
 					$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
 					             . "FROM oso_user_ratings "
@@ -27,28 +28,8 @@
 					             . "GROUP BY oso_user_ratings.show_id "
 					             . "ORDER BY shows.show_id";
 
-// SELECT avg_show_rating AS 'avg_rating',
-// 	   shows.show_id,
-//        shows.name,
-//        shows.bg_img,
-//        genres.genre
-// FROM shows
-// JOIN ( SELECT shows.show_id AS show_id,
-//               AVG(rating) AS avg_show_rating
-//        FROM oso_user_ratings
-//        INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id
-//        GROUP BY shows.show_id
-//      ) AS avg_finder ON shows.show_id = avg_finder.show_id
-// INNER JOIN genres on shows.show_id = genres.show_id
-// WHERE genres.genre = 'Shounen' OR genres.genre = 'Action'
-// GROUP BY shows.show_id
-// ORDER BY shows.show_id
-
-// GROUP BY show_id
-
 					$shows_stmt = $db->prepare($shows_query);
 					$shows_stmt->execute();
-
 					$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
 					$shows_stmt->store_result();
 
@@ -64,15 +45,18 @@
 	</div>
 
 <script type='text/javascript'>
-	$('#filter-by-genre').change(function() {
-		getShows('filter', $(this).val())
+	$('[id^=filter]').change(function() {
+		$('[id^=filter]').each(function() {
+			console.log($('.filter-form').serialize())
+			getShows()
+		});
 	});
 
-	function getShows(type, val) {
+	function getShows() {
 		$.ajax({
 			type: 'POST',
 			url:  'get-shows.php',
-			data: 'type='+type+'&val='+val,
+			data: $('.filter-form').serialize(),
 			beforeSend:function(html) {
 				$('.loading-overlay').show();
 			},

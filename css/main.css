@@ -305,7 +305,7 @@ div.dropdown{
 	top:2.2rem;
 }
 
-select#genre, select#filter-by-genre{
+select#genre, select#filter-by-genre, select#filter-by-year{
 	appearance: none;
 	-moz-appearance: none;
 	-webkit-appearance: none;
@@ -318,7 +318,7 @@ select#genre, select#filter-by-genre{
 
 }
 
-select#genre:after, select#filter-by-genre:after{
+select#genre:after, select#filter-by-genre:after, select#filter-by-year:after{
     content: "";
     position: absolute;
     right: 10px;
@@ -334,7 +334,7 @@ select#genre:after, select#filter-by-genre:after{
 }
 
 
-select#genre:focus, select#filter-by-genre{
+select#genre:focus, select#filter-by-genre:focus, select#filter-by-year:focus{
 	outline:none;
 }
 

@@ -147,8 +147,23 @@
     echo "</select>";
     echo "<span class='fas fa-caret-down'></span>";
     echo "</div>";
-
   }
+
+  function add_dropdown_filter($label, $varname, $options, $texts) {
+    global $$varname;
+    echo "<div class='dropdown'>";
+    echo "<select name='$varname' id='$varname'>";
+    echo "<option value = 'All'" ;
+    echo ">$label</option>";
+    $i = 0;
+    foreach ($options as $opt)
+      add_dropdown_options($texts[$i++], $varname, $opt);
+
+    echo "</select>";
+    echo "<span class='fas fa-caret-down'></span>";
+    echo "</div>";
+  }
+
 
   /*
    *  Create each option for the text dropdown
@@ -192,6 +207,41 @@
     if ($$varname == $fraction) echo "selected";
     echo ">$i</option>";
   }
+
+  /*
+   *  Add a checklist and labels
+   *  @param  string  $varname  Name attribute of the input elements
+   *  @param  array   $options  List of value attributes for each option
+   *  @param  array   $texts    List of label names to display
+   */
+  function add_checklist($varname, $options, $texts) {
+    if (isset($_POST['columns'])) {
+      foreach($_POST['columns'] as $column) {
+        // Compare user's input against whitelisted values of allowed column names
+        if (array_search($column, $options) === false) {
+          // Prompt user to select a column from list if their input was invalid
+          echo ("<mark>Please select at least one column!</mark><br>");
+        }
+      }
+    }
+    global $$varname;
+    $i = 0;
+    foreach($options as $opt)
+      add_checklist_options($texts[$i++], $varname, $opt);
+  }
+
+  /*
+   *  Add options to checklist
+   *  @param  string  $text     Text to display as labels
+   *  @param  string  $varname  Name attribute of inputs
+   *  @param  string  $opt      Value attributes for each option
+   */
+  function add_checklist_options($text, $varname, $opt) {
+    global $$varname;
+    echo "<label class='checkbox'><input type=\"checkbox\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre'><span class=\"check\"></span>$text</label>";
+    // if (isset($_POST['columns']) && in_array($opt, $_POST['columns'])) echo "checked";
+  }
+
 
   /*
    *  Create a hidden textfield with generic name to catch spam bots
@@ -723,6 +773,25 @@
 
     $results->free_result();
     return $genres;
+  }
+
+  function all_years_list($db) {
+    $query = "SELECT YEAR(airing_date) as year "
+           . "FROM shows "
+           . "GROUP BY year "
+           . "ORDER BY year DESC";
+   $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get genres list for show: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $years[] = $row["year"];
+    }
+
+    $results->free_result();
+    return $years;
   }
 
   function all_genres_list($db) {
