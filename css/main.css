@@ -752,11 +752,13 @@ input[type*="radio"]:focus {
 }
 
 
-input#filter-by-multi-genre[type*="radio"]:checked {
+input#filter-by-status[type*="radio"]:checked {
 	height:0px !important;
 	width:0px !important;
 	background:none !important;
 }
+
+
 
 input[type*="radio"]:checked ~ .check{
 	background:rgb(252,52,73);
