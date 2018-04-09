@@ -242,6 +242,40 @@
     // if (isset($_POST['columns']) && in_array($opt, $_POST['columns'])) echo "checked";
   }
 
+  /*
+   *  Add a checklist and labels
+   *  @param  string  $varname  Name attribute of the input elements
+   *  @param  array   $options  List of value attributes for each option
+   *  @param  array   $texts    List of label names to display
+   */
+  function add_radiolist($varname, $options, $texts) {
+    if (isset($_POST['columns'])) {
+      foreach($_POST['columns'] as $column) {
+        // Compare user's input against whitelisted values of allowed column names
+        if (array_search($column, $options) === false) {
+          // Prompt user to select a column from list if their input was invalid
+          echo ("<mark>Please select at least one column!</mark><br>");
+        }
+      }
+    }
+    global $$varname;
+    echo "<label class='checkbox'><input type=\"radio\" name=\"$varname\" value=\"All\" id='filter-by-status'><span class=\"check\"></span>All</label>";
+    $i = 0;
+    foreach($options as $opt)
+      add_radiolist_options($texts[$i++], $varname, $opt);
+  }
+
+  /*
+   *  Add options to checklist
+   *  @param  string  $text     Text to display as labels
+   *  @param  string  $varname  Name attribute of inputs
+   *  @param  string  $opt      Value attributes for each option
+   */
+  function add_radiolist_options($text, $varname, $opt) {
+    global $$varname;
+    echo "<label class='checkbox'><input type=\"radio\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre'><span class=\"check\"></span>$text</label>";
+    // if (isset($_POST['columns']) && in_array($opt, $_POST['columns'])) echo "checked";
+  }
 
   /*
    *  Create a hidden textfield with generic name to catch spam bots
@@ -792,6 +826,23 @@
 
     $results->free_result();
     return $years;
+  }
+
+  function all_status_list($db) {
+    $query = "SELECT DISTINCT status "
+           . "FROM shows";
+   $results = $db->query($query);
+
+    if (!$results) {
+      die("Couldn't get genres list for show: Database query failed.");
+    }
+
+    while($row = $results->fetch_assoc()) {
+      $statuses[] = $row["status"];
+    }
+
+    $results->free_result();
+    return $statuses;
   }
 
   function all_genres_list($db) {

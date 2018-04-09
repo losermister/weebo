@@ -3,12 +3,16 @@
 	$filtered_year = '';
 	$filtered_genres = '';
 	$num_filtered_genres = 0;
+	$filtered_status = '';
 
 	require('helper/functions.php');
 
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!empty($_POST['filter-by-year'])) {
 			$filtered_year = $_POST['filter-by-year'];
+	  }
+		if (!empty($_POST['filter-by-status'])) {
+			$filtered_status = $_POST['filter-by-status'];
 	  }
 	  if (!empty($_POST['filter-by-multi-genre'])) {
 			$num_filtered_genres = count($_POST['filter-by-multi-genre']);
@@ -52,11 +56,14 @@
 	 	// $shows_query .= "WHERE genres.genre IN ($filtered_genres) ";
 		}
 	}
+	if (!empty($_POST['filter-by-status']) && $filtered_status != 'All') {
+	 	$shows_query .= "AND shows.status = '$filtered_status' ";
+	}
 	$shows_query .= "GROUP BY shows.show_id ";
 	// if (!empty($_POST['filter-by-multi-genre'])) {
 	//  	$shows_query .= "HAVING COUNT(genre) >= $num_filtered_genres ";
 	// }
-	$shows_query   .= "ORDER BY shows.show_id";
+	$shows_query .= "ORDER BY shows.show_id";
 
 	// echo $shows_query;
 

@@ -11,7 +11,9 @@
 				<form class="filter-form">
 					<?php
 						echo "<div class='checkbox-header'>Airing year</div>";
-						add_dropdown_filter('All years', 'filter-by-year', all_years_list($db), all_years_list($db));
+						add_dropdown_filter('All', 'filter-by-year', all_years_list($db), all_years_list($db));
+						echo "<div class='checkbox-header'>status</div>";
+						add_radiolist('filter-by-status', all_status_list($db), all_status_list($db));
 						echo "<div class='checkbox-header'>genre</div>";
 						add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db));
 					?>
@@ -46,10 +48,7 @@
 
 <script type='text/javascript'>
 	$('[id^=filter]').change(function() {
-		$('[id^=filter]').each(function() {
-			console.log($('.filter-form').serialize())
-			getShows()
-		});
+		getShows()
 	});
 
 	function getShows() {
@@ -65,6 +64,7 @@
 				$('#show-data').html(html);
 			}
 		});
+		console.log($('.filter-form').serialize())
 	}
 </script>
 
