@@ -273,7 +273,7 @@
    */
   function add_radiolist_options($text, $varname, $opt) {
     global $$varname;
-    echo "<label class='checkbox'><input type=\"radio\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre'><span class=\"check\"></span>$text</label>";
+    echo "<label class='checkbox'><input type=\"radio\" name=\"$varname\" value=\"$opt\" id='filter-by-status'><span class=\"check\"></span>$text</label>";
     // if (isset($_POST['columns']) && in_array($opt, $_POST['columns'])) echo "checked";
   }
 
