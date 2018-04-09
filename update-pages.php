@@ -4,7 +4,6 @@
 	$filtered_genres = '';
 	$num_filtered_genres = 0;
 	$filtered_status = '';
-	$current_page = 1;
 
 	require('helper/functions.php');
 
@@ -22,19 +21,11 @@
 	  }
 		if (!empty($_POST['page'])) {
 			$current_page = $_POST['page'];
-	  }	  
+	  }
 		if (!empty($_POST['curpage'])) {
 			$current_page = $_POST['curpage'];
 	  }
 	}
-	// echo count(all_genres_list($db));
-
-	// echo $filtered_year . "<br>";
-	// print_r($filtered_genres) . "<br>";
-	// echo $num_filtered_genres . "<br>";
-	// $flags = str_repeat('s', count(all_genres_list($db))) . 'ii';
-  //  echo $flags;
-
 
 	$shows_query = "SELECT avg_show_rating AS 'avg_rating', shows.show_id, shows.name, shows.bg_img "
 	             . "FROM shows "
@@ -75,8 +66,6 @@
 	// }
 	$shows_query .= "ORDER BY shows.show_id";
 
-	// echo $shows_query . "<br>";
-
 	// $shows_stmt = $db->prepare($shows_query);
  //  if (!$shows_stmt) {
  //    printf('errno: %d, error: %s', $shows_stmt->errno, $shows_stmt->error);
@@ -103,40 +92,79 @@
 		// display_show_card($row[0], $row[1], $row[2], $row[3], $db);
 	}
 
-	if ($res->num_rows <= 0) {
-		echo "<h2>No shows found</h1>";
-		echo "<p>Oops, nothing matched your filter criteria.</p>";
-	}
+	// if ($res->num_rows <= 0) {
+	// 	echo "<h2>No shows found</h1>";
+	// 	echo "<p>Oops, nothing matched your filter criteria.</p>";
+	// }
 
 	$num_items = $res->num_rows;
 	$pages = ceil($num_items / $items_per_page);
-	$offset = ($current_page - 1) * $items_per_page;
 
-	// echo "json: " . json_encode($pages) . "<br>";
-	// json_encode($pages);
+	add_page_nav(1, $pages, 'page-nav');
 
-	echo "num_items: " . $num_items . "<br>";
-	echo "items per page: " . $items_per_page . "<br>";
-	echo "pages: " . $pages . "<br>";
-	echo "current page: " . $current_page . "<br>";
-	echo "offset: " . $offset . "<br>";
 
-	$res->free_result();
+?>
 
-	// print_r($all_show_results);
-	if ($current_page < $pages) {
-		for ($i = $offset; $i < $offset+$items_per_page; $i++) {
-			display_show_card($all_show_results[$i][0], $all_show_results[$i][1], $all_show_results[$i][2], $all_show_results[$i][3], $db);
-		}
-	} else {
-		for ($i = $offset; $i < $num_items; $i++) {
-      display_show_card($all_show_results[$i][0], $all_show_results[$i][1], $all_show_results[$i][2], $all_show_results[$i][3], $db);
-		}
+<script type='text/javascript'>
+	$('[id=filter-page]').change(function() {
+		// updatePages()
+		getShows()
+		console.log($('.browse-form').serialize())
+	});
+
+	// $('[id=filter-by-status], [id=filter-by-year], [id=filter-by-multi-genre]').change(function() {
+	// 	resetPage()
+	// 	updatePages()
+	// 	console.log($('.browse-form').serialize() + "&curpage=" + 1)
+	// });
+
+	function resetPage() {
+		$.ajax({
+			type: 'POST',
+			url:  'update-pages.php',
+			data: $('.browse-form').serialize() + "&curpage=" + 1,
+			success:function(html) {
+				$('#show-page-nav').html(html);
+				// $('#show-page-nav').html(html);
+			}
+		});
 	}
 
-	$db->close();
+	function getShows() {
+		$.ajax({
+			type: 'POST',
+			url:  'get-shows.php',
+			data: $('.browse-form').serialize(),
+			beforeSend:function(html) {
+				$('.loading-overlay').show();
+			},
+			success:function(html) {
+				$('.loading-overlay').hide();
+				$('#show-data').html(html);
+				// $('#show-page-nav').html(html);
+			}
+		});
+	}
 
+	function updatePages() {
+		console.log('updatepages')
+		$.ajax({
+			type: 'POST',
+			url:  'get-shows.php',
+			data: $('.browse-form').serialize() + "&curpage=" + 1,
+			beforeSend:function(html) {
+				$('.loading-overlay').show();
+			},
+			success:function(html) {
+				$('.loading-overlay').hide();
+				$('#show-data').html(html);
+				// $('#show-page-nav').html(html);
+			}
+		});
+	}
 
- 	exit;
+</script>
 
+<?php
+	require('helper/footer.php');
 ?>

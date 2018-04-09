@@ -3,7 +3,7 @@
   session_start();
 
   static $num_of_avatars = 4;
-  static $shows_per_page = 12;
+  static $items_per_page = 12;
 
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
@@ -106,10 +106,22 @@
 
   	echo "<label for =\"$varname\">$varname</label>";
     $i = 0;
-    foreach($options as $opt) {
+    foreach ($options as $opt) {
       add_radio_options($varname, $opt, $i);
       $i++;
     }
+  }
+
+  function add_page_nav($current_page, $pages, $classname='') {
+    echo "<form class='browse-form page-form' id=$classname>";
+    for ($i = 1; $i <= $pages; $i++) {
+      echo "<label class='checkbox'><input id='filter-page' type='radio' name='page' value='$i' ";
+      if ($i == $current_page) {
+        echo "checked";
+      }
+      echo ">$i</label>";
+    }
+    echo "</form>";
   }
 
   /*
@@ -527,6 +539,7 @@
            . "WHERE favourite_shows.email = '$email' "
            . "AND favourite_shows.show_id = $show_id";
     $results = $db->query($query);
+
     if ($results->num_rows > 0) {
       return true;
     } else {

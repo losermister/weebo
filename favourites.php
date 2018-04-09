@@ -58,14 +58,6 @@
 	</div>
 </div>
 
-<footer>
-	<div class="container">
-		<div class="row">
-			Footer text
-		</div>
-	</div>
-</footer>
-
 </body>
 
 </html>
