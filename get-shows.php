@@ -22,7 +22,7 @@
 	  }
 		if (!empty($_POST['page'])) {
 			$current_page = $_POST['page'];
-	  }	  
+	  }
 		if (!empty($_POST['curpage'])) {
 			$current_page = $_POST['curpage'];
 	  }
@@ -100,7 +100,6 @@
 
 	while ($row = $res->fetch_row()) {
 		 $all_show_results[] = $row;
-		// display_show_card($row[0], $row[1], $row[2], $row[3], $db);
 	}
 
 	if ($res->num_rows <= 0) {
@@ -112,14 +111,11 @@
 	$pages = ceil($num_items / $items_per_page);
 	$offset = ($current_page - 1) * $items_per_page;
 
-	// echo "json: " . json_encode($pages) . "<br>";
-	// json_encode($pages);
-
-	echo "num_items: " . $num_items . "<br>";
-	echo "items per page: " . $items_per_page . "<br>";
-	echo "pages: " . $pages . "<br>";
-	echo "current page: " . $current_page . "<br>";
-	echo "offset: " . $offset . "<br>";
+	// echo "num_items: " . $num_items . "<br>";
+	// echo "items per page: " . $items_per_page . "<br>";
+	// echo "pages: " . $pages . "<br>";
+	// echo "current page: " . $current_page . "<br>";
+	// echo "offset: " . $offset . "<br>";
 
 	$res->free_result();
 

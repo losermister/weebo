@@ -37,7 +37,6 @@
 
 					while ($row = $res->fetch_row()) {
 						$all_show_results[] = $row;
-						// display_show_card($avg_rating, $show_id, $show_name, $show_img, $db);
 					}
 
 					$num_items = sizeof($all_show_results);
@@ -64,11 +63,11 @@
 				</div>
 				<?php
 
-					echo "num_items: " . $num_items . "<br>";
-					echo "items per page: " . $items_per_page . "<br>";
-					echo "pages: " . $pages . "<br>";
-					echo "current page: " . $current_page . "<br>";
-					echo "offset: " . $offset . "<br>";
+					// echo "num_items: " . $num_items . "<br>";
+					// echo "items per page: " . $items_per_page . "<br>";
+					// echo "pages: " . $pages . "<br>";
+					// echo "current page: " . $current_page . "<br>";
+					// echo "offset: " . $offset . "<br>";
 
 					// print_r($all_show_results);
 
@@ -108,7 +107,6 @@
 			data: $('.browse-form').serialize() + "&curpage=" + 1,
 			success:function(html) {
 				$('#show-page-nav').html(html);
-				// $('#show-page-nav').html(html);
 			}
 		});
 	}
@@ -124,7 +122,6 @@
 			success:function(html) {
 				$('.loading-overlay').hide();
 				$('#show-data').html(html);
-				// $('#show-page-nav').html(html);
 			}
 		});
 	}
@@ -141,7 +138,6 @@
 			success:function(html) {
 				$('.loading-overlay').hide();
 				$('#show-data').html(html);
-				// $('#show-page-nav').html(html);
 			}
 		});
 	}

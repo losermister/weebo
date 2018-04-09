@@ -83,40 +83,26 @@
 	// }
 
 	// $shows_stmt->free_result();
- // 	$shows_stmt->close();
+ // $shows_stmt->close();
 
 	$res = $db->query($shows_query);
 
 	while ($row = $res->fetch_row()) {
 		 $all_show_results[] = $row;
-		// display_show_card($row[0], $row[1], $row[2], $row[3], $db);
 	}
-
-	// if ($res->num_rows <= 0) {
-	// 	echo "<h2>No shows found</h1>";
-	// 	echo "<p>Oops, nothing matched your filter criteria.</p>";
-	// }
 
 	$num_items = $res->num_rows;
 	$pages = ceil($num_items / $items_per_page);
 
 	add_page_nav(1, $pages, 'page-nav');
 
-
 ?>
 
 <script type='text/javascript'>
 	$('[id=filter-page]').change(function() {
-		// updatePages()
 		getShows()
 		console.log($('.browse-form').serialize())
 	});
-
-	// $('[id=filter-by-status], [id=filter-by-year], [id=filter-by-multi-genre]').change(function() {
-	// 	resetPage()
-	// 	updatePages()
-	// 	console.log($('.browse-form').serialize() + "&curpage=" + 1)
-	// });
 
 	function resetPage() {
 		$.ajax({
