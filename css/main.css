@@ -92,7 +92,7 @@ p{
 
 iframe{
 	border:0px;
-	box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+	/* box-shadow: 0px 0px 10px rgba(0,0,0,0.5); */
 	width:100%;
 }
 
@@ -102,7 +102,7 @@ iframe.vid{
 }
 
 iframe.trailer{
-	height:250px;
+	height:200px;
 }
 
 
@@ -303,6 +303,29 @@ div.dropdown{
 	position:absolute;
 	right:1.2rem;
 	top:2.2rem;
+}
+
+
+div.dropdown-filter{
+	position:relative;
+
+}
+
+.dropdown-filter span.fa-caret-down{
+	position:absolute;
+	right:0.5rem;
+	top:0.4rem;
+	color:#b1acb4;
+}
+
+
+.dropdown-filter select#filter-by-year{
+	font-size:0.8rem;
+	padding:0.5rem;
+	margin:0;
+	background:#2E2B45;
+	box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+	color:#b1acb4;
 }
 
 select#genre, select#filter-by-genre, select#filter-by-year{
@@ -528,7 +551,8 @@ nav ul.fl-left a:hover li{
 }
 
 .btn-primary{
-		background:rgb(252,52,73);
+		/* background:rgb(252,52,73); */
+		background: linear-gradient(45deg, red, rgb(252,52,73));
 	color: #ffffff;
 	opacity:1;
 	transition:opacity 0.2s ease-in-out;
@@ -550,6 +574,7 @@ nav ul.fl-left a:hover li{
 	margin-right:0.5rem;
 
 }
+
 
 .fvr-lnk{
 
@@ -665,7 +690,7 @@ label.checkbox{
 	position:relative;
 	display:block;
 	color:#b1acb4;
-	padding:1rem !important;
+	padding:0.5rem !important;
 	font-size:0.8rem;
 	background:#2E2B45;
 	text-transform:capitalize;
@@ -679,7 +704,12 @@ label.checkbox{
 	font-size:0.8rem;
 	background:#2E2B45;
 	text-transform: uppercase;
+	margin-top:1.2rem;
+}
 
+
+.checkbox-header:first-child{
+	margin-top:0;
 }
 
 .check{
@@ -713,6 +743,27 @@ input[type*="checkbox"]:checked ~ .check{
 
 }
 
+
+input[type*="radio"]:focus {
+	outline:none;
+	border:none;
+
+
+}
+
+
+input#filter-by-multi-genre[type*="radio"]:checked {
+	height:0px !important;
+	width:0px !important;
+	background:none !important;
+}
+
+input[type*="radio"]:checked ~ .check{
+	background:rgb(252,52,73);
+	border-radius:0.5rem;
+
+
+}
 
 
 
@@ -844,7 +895,8 @@ button.save[type*="submit"] .fa-check{
 
 
 button.save:hover[type*="submit"]{
-	background:rgb(252,52,73);
+	/* background:rgb(252,52,73); */
+	  background: linear-gradient(45deg, red, rgb(252,52,73));
 	opacity:1;
 	color:white;
 
@@ -864,11 +916,11 @@ button.save:hover[type*="submit"]{
 }
 
 .comments p{
-	margin:0.5rem;
+	margin:0.5rem 0;
 	line-height: 1.3;
 	color:#FFFFFF;
 	font-weight:300;
-	font-size:0.9rem;
+	font-size:0.8rem;
 }
 
 .comments h6{
@@ -973,6 +1025,13 @@ span.avatar-img{
 
 
 
+.padder-top{
+	padding-top:1rem !important;
+}
+
+.padder-bottom{
+	padding-bottom:2rem;
+}
 
 
 
@@ -1016,13 +1075,6 @@ span.avatar-img{
 
 
 
-	.padder-top{
-		margin-top:1rem !important;
-	}
-
-	.padder-bottom{
-		padding-bottom:1rem;
-	}
 
 	.post-comments-container .col-1of12{
 		padding-top:0;
@@ -1338,10 +1390,19 @@ span.avatar-img{
 	color:#b1acb4;
 	padding:1.5rem;
 	line-height:1.5;
+
 }
 
 .info h4{
-	margin: 0.4rem 0rem 0.4rem 0rem;
+	margin: 1rem 0rem 0.4rem 0rem;
+	text-transform: uppercase;
+	font-size:0.9rem;
+	color:#FFFFFF;
+	font-weight:500;
+}
+
+.info h4:first-child{
+	margin: 0rem 0rem 0.4rem 0rem;
 	text-transform: uppercase;
 	font-size:0.9rem;
 	color:#FFFFFF;
@@ -1416,6 +1477,23 @@ span.avatar-img{
 	}
 
 }
+
+.read-less{
+	text-transform: uppercase;
+	font-size:0.8rem;
+	display:block;
+	margin-top:0.5rem;
+}
+
+
+.read-more{
+	text-transform: uppercase;
+	font-size:0.8rem;
+	display:block;
+		margin-top:0.5rem;
+}
+
+
 
 
 .row{

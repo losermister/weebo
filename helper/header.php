@@ -18,13 +18,12 @@
 				</ul>
 				<ul class="fl-left"></ul>
 				<ul class="fl-right">
-					<li><a href="all-shows.php">all shows</a></li>
+					<li><a href="all-shows.php">browse</a></li>
 					<?php
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
 	          	$avatar = avatar_from_email($db);
 	          	echo "
-
 							<li class='fvr-lnk'><a href=\"favourites.php\" ><span>" . get_num_favourites($db) . "</span>favourites</a></li>
 						";
 	            echo "<li class='user-act'><a id='user-click'><span class='avatar'><span class='avatar-img' style='background-image:url($avatar)'></span></span>$username <span class='fas fa-caret-down'></span></a></li>";

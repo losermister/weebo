@@ -54,7 +54,7 @@
   form_end('sign in');
 
 
-  echo "<div class='small-container row padder-top'>";
+  echo "<div class='small-container row'>";
   echo "<hr>";
   echo "<p class='text-center padder-top padder-bottom'>Don't have an account?<a href=\"register.php\"> Create your account.</a></p>";
   echo "</div>";

@@ -151,7 +151,7 @@
 
   function add_dropdown_filter($label, $varname, $options, $texts) {
     global $$varname;
-    echo "<div class='dropdown'>";
+    echo "<div class='dropdown-filter'>";
     echo "<select name='$varname' id='$varname'>";
     echo "<option value = 'All'" ;
     echo ">$label</option>";
