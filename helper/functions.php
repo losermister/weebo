@@ -774,6 +774,30 @@
   }
 
 
+  function display_upcoming_list($show_id, $show_name, $episode_num, $show_img) {
+    // Trim show name if longer than 20 characters, for consistent sizing
+    $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
+    echo "
+      <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
+        <div class='upcoming-list'>
+
+            <div class='redirect'></div>
+            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+            <div class='show-info'>
+              <div class='show-descript'>
+                <span class='show-epi'>Episode $episode_num</span>
+                <span class='show-title'>$show_name</span>
+
+              </div>
+
+            </div>
+
+        </div>
+      </a>
+    ";
+  }
+
+
   function username_from_email($db) {
     $email = $_SESSION['valid_user'];
     $name_query = "SELECT users.user_id FROM users WHERE users.email = ?";

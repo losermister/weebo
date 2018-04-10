@@ -1434,6 +1434,8 @@ label.pagination input[type*="radio"]:checked ~span{
 	text-transform: none !important;
 }
 
+
+
 .info{
 
 	background:#2E2B45;
@@ -1720,6 +1722,53 @@ content:'';
 }
 
 
+.upcoming-list {
+	position:relative;
+	display:block;
+	/* background:#2E2B45; */
+	padding:0.5rem;
+	transition:all 0.2s linear;
+}
+
+.upcoming-list:hover {
+
+	background:#2E2B45;
+
+}
+
+.upcoming-list:after{
+	content: '';
+	clear: both;
+	display: table;
+
+}
+
+.upcoming-list .show-img-container{
+	display:block;
+	float:left;
+	width:45% !important;
+	height:85px;
+}
+
+.upcoming-list .show-info{
+	position:relative;
+	float:left;
+	background:none;
+	display:block;
+	color:#b1acb4;
+	width:50% !important;
+	top:0 !important;
+	bottom:none !important;
+}
+
+.upcoming-list .show-info .show-title{
+	font-size:0.5rem !important;
+}
+
+.upcoming-list .show-info .show-epi{
+	font-size:1rem !important;
+}
+
 
 span.show-title{
 	display:block;
@@ -1828,7 +1877,7 @@ span.show-type{
 }
 
 .fade-in{
-	animation:fade-in 0.2s ease-in-out;
+	animation:fade-in 0.3s linear;
 }
 
 @keyframe fade-in{

@@ -112,14 +112,43 @@
   }
   echo "</div>";
   echo "</div>";
+  $show_query = "SELECT name, bg_img, description, banner_img, anime_trailer, name_jp, status, airing_date, avg_rating "
+              . "FROM shows "
+              . "WHERE show_id = ?";
+  $show_stmt = $db->prepare($show_query);
+  $show_stmt->bind_param('i', $show_id);
+  $show_stmt->execute();
+  $show_stmt->bind_result($show_name, $show_img, $description, $banner_img, $anime_trailer, $name_jp, $status, $airing_date, $avg_rating);
+  $result = $show_stmt->get_result();
+  $show_stmt->free_result();
+  $show_stmt->close();
+  $results_keys = array('show_name', 'show_img', 'description', 'banner_img', 'anime_trailer', 'name_jp', 'status', 'airing_date', 'avg_rating');
 
+  while ($row = $result->fetch_array(MYSQLI_NUM)) {
+
+  $results = array_combine($results_keys, $row);
+
+  $episodes_query = "SELECT DISTINCT episode_num "
+                  . "FROM links "
+                  . "WHERE show_id = ? "
+                  . "ORDER BY episode_num ASC";
+  $episodes_stmt = $db->prepare($episodes_query);
+  $episodes_stmt->bind_param('i', $show_id);
+  $episodes_stmt->execute();
+  $episodes_stmt->bind_result($episode_num);
+  $episodes_stmt->store_result();
   echo "<div class='col-3of12'>";
   echo "<h3>Up next</h3>";
+  while ($episodes_stmt->fetch()) {
+    display_upcoming_list($show_id, $results['show_name'], $episode_num, $results['show_img']);
+  }
+
+
   echo "</div>";
 
 
    echo "</div>";
 
   $db->close();
-
+}
 ?>
