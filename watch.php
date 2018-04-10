@@ -42,43 +42,42 @@
     echo "<iframe class='vid' src='$video_url' allowfullscreen></iframe>";
   }
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $comment_body = trim($_POST['comment']);
-    post_comment($email, $video_url, $comment_body, $db);
-    display_notification_success("Thanks for leaving a comment!");
-  }
+  // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  //   $comment_body = trim($_POST['comment']);
+  //   post_comment($email, $video_url, $comment_body, $db);
+  //   display_notification_success("Thanks for leaving a comment!");
+  // }
 
   echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
-	// echo "</div>";
 
   $episode_stmt->free_result();
   $episode_stmt->close();
 
+  $num_comments = get_num_comments($video_url, $db);
 
-
-/*   echo "<h2>Comments</h2>"; */
-
-  echo "<h3>" . get_num_comments($video_url, $db) . " Comments</h3>";
+  echo "<section class='comments'>";
+  echo "<h3 id='comment-counter'>" . $num_comments . " Comments</h3>";
   echo "<div class='post-comments-container'>";
-  // TODO: Structure + style the comment form and login message
+
   if (isset($_SESSION['valid_user'])) {
 
-  	echo"<div class='row'>";
+  	echo "<div class='row'>";
   	echo "<div class='col-1of12'>";
     echo "<img src='".avatar_from_email($db)."'>";
     echo "</div>";
     echo "<div class='col-11of12'>";
-    echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
+    // echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
+    echo "<form class='comment-form'>";
     echo "<fieldset>";
 
     echo "<h3>Leave a comment</h3>";
 
-    echo "<textarea name='comment' rows='4' cols='50' placeholder='Type your comment...'></textarea>";
+    echo "<textarea id='comment-box' name='comment' rows='4' cols='50' placeholder='Type your comment...'></textarea>";
     echo "</fieldset>";
-    echo "<input type=\"submit\" name=\"submit-comment\" value=\"comment\">";
+    echo "<input id='submit-comment' type=\"submit\" name=\"submit-comment\" value=\"comment\">";
     echo "</form>";
     echo "</div>";
-    echo "</div>";
+    // echo "</div>";
 
   } else {
     echo "<p class='sign-in-comment'>Please <a href='login.php'> sign in </a> to comment on this episode!</p>";
@@ -94,22 +93,21 @@
   $comments_stmt->execute();
   $comments_stmt->bind_result($username, $avatar, $comment, $date);
 
+  $res = $comments_stmt->get_result();
 
-
-  while ($comments_stmt->fetch()) {
-    // TODO: Structure + style each comment
-    echo "<div class='comments'>";
-    echo "<div class='col-1of12'>";
-    echo "<a href='user.php?id=$username'><img src=" . $avatar . "></a>";
-    echo "</div>";
-    echo "<div class='col-11of12'>";
-    echo "<h6><a href='user.php?id=$username'>" . $username . "</a> • $date</h6>";
-
-    echo "<p>$comment</p>";
-
-    echo "</div>";
-    echo "</div>";
+  while ($row = $res->fetch_row()) {
+    $all_comments[] = $row;
   }
+
+  $comments_stmt->store_result();
+  $comments_stmt->free_result();
+  $comments_stmt->close();
+
+  for ($i = 0; $i < $num_comments; $i++) {
+    display_comment($all_comments[$i][0], $all_comments[$i][1], $all_comments[$i][2], $all_comments[$i][3]);
+  }
+
+  echo "</section>";
   echo "</div>";
   echo "</div>";
 
@@ -145,12 +143,32 @@
     display_upcoming_list($show_id, $results['show_name'], $ep_num, $episode_num, $results['show_img']);
   }
 
-
   echo "</div>";
-
-
   echo "</div>";
 
   $db->close();
 }
+?>
+
+<script type='text/javascript'>
+  $('#submit-comment').click(function() {
+    event.preventDefault();
+    var posted_comment = $('#comment-box').val()
+    var video_url = $('.vid').attr('src')
+    var commenter_username = $('#user-click').text()
+    var num_comments = $('#comment-counter').text()
+    console.log(posted_comment + video_url + commenter_username)
+    $.ajax({
+      type: 'POST',
+      url:  'post-comment.php',
+      data: { username : commenter_username, comment_text : posted_comment, video_url : video_url },
+      success:function(html) {
+        $('.comments').html(html).hide().fadeIn('fast');
+      }
+    });
+  });
+</script>
+
+<?php
+  require('helper/footer.php');
 ?>

@@ -813,7 +813,17 @@
 
   }
 
-
+  function email_from_username($username, $db) {
+    $name_query = "SELECT users.email FROM users WHERE users.user_id = ?";
+    $name_stmt = $db->prepare($name_query);
+    $name_stmt->bind_param('s', $username);
+    $name_stmt->execute();
+    $name_stmt->bind_result($email);
+    $name_stmt->fetch();
+    $name_stmt->free_result();
+    $name_stmt->close();
+    return $email;
+  }
 
   function username_from_email($db) {
     $email = $_SESSION['valid_user'];
@@ -997,5 +1007,16 @@
     return $result->num_rows;
   }
 
+  function display_comment($username, $avatar, $comment, $date) {
+    echo "
+      <div class='col-1of12'>
+        <a href='user.php?id=$username'><img src='$avatar'></a>
+      </div>
+      <div class='col-11of12'>
+        <h6><a href='user.php?id=$username'>" . $username . "</a> • $date</h6>
+         <p>$comment</p>
+      </div>
+    ";
+  }
 
 ?>
