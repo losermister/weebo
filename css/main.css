@@ -1471,8 +1471,7 @@ label.pagination input[type*="radio"]:checked ~span{
 }
 
 .notify-msg-container{
-	position:absolute;
-
+	position:fixed;
 	visibility: hidden;
 	width:100%;
 	border-radius:0.25rem;
@@ -1512,7 +1511,6 @@ label.pagination input[type*="radio"]:checked ~span{
 	color:#FFFFFF;
 	text-transform:capitalize;
 	vertical-align: middle;
-
 }
 
 

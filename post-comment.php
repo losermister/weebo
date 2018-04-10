@@ -17,8 +17,12 @@
 
   $email = email_from_username($username, $db);
 
-  post_comment($email, $video_url, $comment_text, $db);
-  display_notification_success("Thanks for leaving a comment!");
+  if ($comment_text == '') {
+    display_notification_error("Please leave your comment before submitting!");
+  } else {
+    post_comment($email, $video_url, $comment_text, $db);
+    display_notification_success("Thanks for leaving a comment!");
+  }
 
   $num_comments = get_num_comments($video_url, $db);
 
@@ -77,10 +81,11 @@
     var posted_comment = $('#comment-box').val()
     var video_url = $('.vid').attr('src')
     var commenter_username = $('#user-click').text()
+    var num_comments = $('#comment-counter').text()
     console.log(posted_comment + video_url + commenter_username)
     $.ajax({
       type: 'POST',
-      url:  'update-comments.php',
+      url:  'post-comment.php',
       data: { username : commenter_username, comment_text : posted_comment, video_url : video_url },
       success:function(html) {
         $('.comments').html(html).hide().fadeIn('fast');
