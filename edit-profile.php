@@ -68,10 +68,11 @@
    *  3. Close form, and add submit button with text
    */
 
-  form_start('edit-profile.php', 'Edit public profile: ' . $email);
+  form_start('edit-profile.php', 'Edit public profile');
+    add_radio_buttons('avatar', $avatar_list);
   add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
-  add_radio_buttons('avatar', $avatar_list);
+
   add_textfield('password', 'Password ');
   add_textfield('password2', 'Confirm password ');
   form_end('Update');

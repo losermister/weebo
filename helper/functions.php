@@ -53,14 +53,21 @@
    *  @param   string  $profile_img  Path to user's chosen avatar
    */
   function display_userprofile($username, $email, $fav_genre, $profile_img) {
-  	echo "<h1>user profile</h1>";
-  	echo "<h4>username:</h4>";
-    echo "<p>$username</p>";
+
+
+    echo "<div class='col-3of12'>";
+    echo "<div class='info'>";
+    echo "<img class='img-center profile-img' src='$profile_img'>";
+    echo "<h2 class='text-center username-text'>$username</h2>";
     echo "<h4>email:</h4>";
     echo "<p>$email</p>";
     echo "<h4>favourite genre:</h4>";
     echo "<p> $fav_genre</p>";
-    echo "<img src='$profile_img'>";
+    echo "</div>";
+    echo "</div>";
+    echo "<div class='col-9of12'>";
+    echo "</div>";
+
   }
 
   /*
