@@ -583,7 +583,7 @@ nav ul.fl-left a:hover li{
 
 .fvr-lnk span{
 	/* display:block; */
-	transform: translate(0px,-8px);
+	transform: translate(5px,-8px);
 	position:absolute;
 	top:-5px;
 	right:0;
@@ -591,10 +591,10 @@ nav ul.fl-left a:hover li{
 	color:#FFFFFF;
 	background:rgb(252,52,73);
 	border-radius:50%;
-	font-size:0.5rem;
+	font-size:0.1rem;
 	/* box-shadow:0rem 0rem 0.2rem rgba(0,0,0,0.3); */
 
-	padding:0.25rem 0.4rem 0.25rem 0.4rem;
+	padding:0.2rem 0.4rem;
 	/* animation: fvr-notify 0.2s ease-in-out; */
 }
 
@@ -739,7 +739,6 @@ input[type*="checkbox"]:focus {
 
 input[type*="checkbox"]:checked ~ .check{
 	background:rgb(252,52,73);
-	border-radius:0.5rem;
 
 }
 
@@ -1033,6 +1032,31 @@ span.avatar-img{
 
 .padder-bottom{
 	padding-bottom:2rem;
+}
+
+
+label.pagination{
+	display:block;
+	float:left;
+	width:inherit;
+	color:#b1acb4;
+	margin:0.25rem;
+
+	padding:0.5rem 0.75rem !important;
+	font-size:0.8rem;
+	background:#2E2B45;
+}
+
+
+label.pagination input[type*="radio"]:checked {
+	height:0;
+	width:0;
+	background:none;
+}
+
+label.pagination input[type*="radio"]:checked ~span{
+	color:rgb(252,52,73);
+	font-weight:bold !important;
 }
 
 

@@ -113,13 +113,13 @@
   }
 
   function add_page_nav($current_page, $pages, $classname='') {
-    echo "<form class='browse-form page-form' id=$classname>";
+    echo "<form class='row browse-form page-form' id=$classname>";
     for ($i = 1; $i <= $pages; $i++) {
-      echo "<label class='checkbox'><input id='filter-page' type='radio' name='page' value='$i' ";
+      echo "<label class='pagination'><input id='filter-page' type='radio' name='page' value='$i' ";
       if ($i == $current_page) {
         echo "checked";
       }
-      echo ">$i</label>";
+      echo "><span>$i</span></label>";
     }
     echo "</form>";
   }
@@ -765,6 +765,7 @@
       </a>
     ";
   }
+
 
   function username_from_email($db) {
     $email = $_SESSION['valid_user'];
