@@ -1344,11 +1344,12 @@ label.pagination input[type*="radio"]:checked ~span{
 	display:block;
 	/* float:left; */
 	position:relative;
-	border-radius:0.2rem;
+	border-radius:50%;
 	background:#2E2B45;
 	box-shdaow:0rem 0rem 0.7rem rgba(0,0,0,0.8);
 	/* padding:1rem; */
 	/* height:2.5rem; */
+
 	max-width:100%;
 	margin:auto;
 }
@@ -1728,6 +1729,13 @@ content:'';
 	/* background:#2E2B45; */
 	padding:0.5rem;
 	transition:all 0.2s linear;
+}
+
+.clicked {
+
+	/* background:#2E2B45; */
+	background:#2E2B45;
+
 }
 
 .upcoming-list:hover {

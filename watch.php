@@ -112,6 +112,8 @@
   }
   echo "</div>";
   echo "</div>";
+
+
   $show_query = "SELECT name, bg_img, description, banner_img, anime_trailer, name_jp, status, airing_date, avg_rating "
               . "FROM shows "
               . "WHERE show_id = ?";
@@ -138,16 +140,16 @@
   $episodes_stmt->bind_result($episode_num);
   $episodes_stmt->store_result();
   echo "<div class='col-3of12'>";
-  echo "<h3>Up next</h3>";
+  echo "<h3>videos</h3>";
   while ($episodes_stmt->fetch()) {
-    display_upcoming_list($show_id, $results['show_name'], $episode_num, $results['show_img']);
+    display_upcoming_list($show_id, $results['show_name'], $ep_num, $episode_num, $results['show_img']);
   }
 
 
   echo "</div>";
 
 
-   echo "</div>";
+  echo "</div>";
 
   $db->close();
 }

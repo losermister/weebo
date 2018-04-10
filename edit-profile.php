@@ -69,7 +69,7 @@
    */
 
   form_start('edit-profile.php', 'Edit public profile');
-    add_radio_buttons('avatar', $avatar_list);
+  add_radio_buttons('avatar', $avatar_list);
   add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
 
