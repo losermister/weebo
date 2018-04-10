@@ -126,7 +126,7 @@
 			},
 			success:function(html) {
 				$('.loading-overlay').hide();
-				$('#show-data').html(html);
+				$('#show-data').html(html).hide().fadeIn('fast');
 				// $('#show-page-nav').html(html);
 			}
 		});
@@ -143,7 +143,7 @@
 			},
 			success:function(html) {
 				$('.loading-overlay').hide();
-				$('#show-data').html(html);
+				$('#show-data').html(html).hide().fadeIn('fast');
 				// $('#show-page-nav').html(html);
 			}
 		});

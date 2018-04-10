@@ -3,7 +3,7 @@
   session_start();
 
   static $num_of_avatars = 4;
-  static $items_per_page = 12;
+  static $items_per_page = 18;
 
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
@@ -690,7 +690,7 @@
     echo "
       <a href=\"show.php?id=" . $show_id . "\">" . "
         <div class='col-2of12'>
-          <div class='show-container'>
+          <div class='show-container fade-in'>
             <div class='redirect'></div>
 
             <div class='show-img-container'><span class='avgrate' style='$rating_style'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>

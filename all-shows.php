@@ -56,7 +56,7 @@
 					echo "</section>";
 				?>
 
-				<section id="show-data">
+				<section id="show-data" class="fade-in">
 
 				<div class="loading-overlay" style="display: none; color: white;">
 					<span class="overlay-content">Loading...</span>
@@ -121,7 +121,7 @@
 			},
 			success:function(html) {
 				$('.loading-overlay').hide();
-				$('#show-data').html(html);
+				$('#show-data').html(html).hide().fadeIn('fast');
 			}
 		});
 	}
@@ -137,7 +137,7 @@
 			},
 			success:function(html) {
 				$('.loading-overlay').hide();
-				$('#show-data').html(html);
+				$('#show-data').html(html).hide().fadeIn('fast');
 			}
 		});
 	}
