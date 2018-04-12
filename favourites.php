@@ -53,6 +53,10 @@
 				   display_show_card($row[0], $row[1], $row[2], $row[3], $db);
 				}
 
+				if (!$result->fetch_array(MYSQLI_NUM)) {
+					echo "<p>You haven't favourited any shows yet.</p>";
+				}
+
 			?>
 		</div>
 	</div>
