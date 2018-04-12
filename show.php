@@ -99,17 +99,20 @@
 				<div class='row'>
 					<div class='col-12of12'>
 					  <div class='info'>
-  					  <h4>Average rating:</h4>
-  					  <p>" . number_format($avg_rating * 10, 2) . "</p>";
+              <section id = 'display-rating'>
+    					  <h4>Average rating:</h4>
+    					  <p>" . number_format($avg_rating * 10, 2) . "</p>";
 
-              if (isset($_SESSION['valid_user'])) {
-                echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
-                add_dropdown_num_range('rating', 1, 10);
-                echo "<button type='submit' form ='rate' value ='Submit' class='btn-small'>Rate</button>
-                </form>";
-              }
+                if (isset($_SESSION['valid_user'])) {
+                  echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
+                  add_dropdown_num_range('rating', 1, 10);
+                  echo "<button type='submit' id='submit-rating' form ='rate' value ='Submit' class='btn-small'>Rate</button>
+                  </form>";
+                }
 
+                get_user_rating_for_show($email, $show_id, $db);
   					  echo "
+              </section>
               <h4>Airing date:</h4>
 					    <p>" . $results['airing_date'] . "</p>
 					    <h4>Status:</h4>
@@ -156,7 +159,25 @@
   }
 ?>
 
-<script>
+
+
+<script type='text/javascript'>
+
+  $('#submit-rating').click(function() {
+    event.preventDefault();
+    var username = $('#user-click').text()
+    var show_name = $('h2').first().text()
+    console.log($('#rate').serialize() + "&username=" + username + "&show_name=" + show_name)
+    $.ajax({
+      type: 'POST',
+      url:  'submit-rating.php',
+      data: $('#rate').serialize() + "&username=" + username + "&show_name=" + show_name,
+      success:function(html) {
+        $('#display-rating').html(html).hide().fadeIn('fast');
+      }
+    });
+  });
+
   $(document).ready(function(){
     var textHtml = $(".descript").html();
     var lessText = textHtml.substr(0,200);

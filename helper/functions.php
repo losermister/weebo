@@ -863,6 +863,18 @@
     return $showname;
   }
 
+  function showid_from_name($show_name, $db) {
+    $id_query = "SELECT shows.show_id FROM shows WHERE shows.name = ?";
+    $id_stmt = $db->prepare($id_query);
+    $id_stmt->bind_param('s', $show_name);
+    $id_stmt->execute();
+    $id_stmt->bind_result($show_id);
+    $id_stmt->fetch();
+    $id_stmt->free_result();
+    $id_stmt->close();
+    return $show_id;
+  }
+
   function genres_list_from_id($show_id, $db) {
     $query = "SELECT genre "
            . "FROM genres "
@@ -1017,6 +1029,26 @@
          <p>$comment</p>
       </div>
     ";
+  }
+
+  function get_user_rating_for_show($email, $show_id, $db) {
+    $query = "SELECT rating "
+           . "FROM oso_user_ratings "
+           . "WHERE email = ? "
+           . "AND show_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('si', $email, $show_id);
+    $stmt->execute();
+    $stmt->bind_result($rating);
+    $stmt->fetch();
+    $stmt->free_result();
+    $stmt->close();
+    if ($rating <= 0) {
+      echo '<p>You haven\'t rated this show yet!</p>';
+    } else {
+      $rating = $rating * 10;
+      echo '<p>You last rated this show ' . $rating . '/10</p>';
+    }
   }
 
 ?>
