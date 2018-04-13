@@ -1,10 +1,6 @@
 <?php
 
-  session_start();
-
-  static $featured_show_id = 17;
-  static $num_of_avatars = 4;
-  static $items_per_page = 18;
+  require('helper/variables.php');
 
   /*
    *  Trigger SSL communication by turning HTTP request to HTTPS request
@@ -48,7 +44,7 @@
 
   /*
    *  HTML to display a user's profile details
-   *  @param   string  $userame      User's chosen display name
+   *  @param   string  $username      User's display name
    *  @param   string  $email        User's email address
    *  @param   string  $fav_genre    User's selected favourite genre
    *  @param   string  $profile_img  Path to user's chosen avatar
@@ -66,6 +62,15 @@
     echo "</div>";
   }
 
+  /*
+   *  HTML to display a user's recent activity on their profile
+   *  @param   string  $username     User's display name
+   *  @param   string  $video_url    The video link of any comments the user made
+   *  @param   string  $rating       The rating given to any shows the user rated
+   *  @param   string  $dated_added  The date and time of the activity
+   *  @param   int     $show_id      The show_id of the show interacted with (comment or rating)
+   *  @param   mysqli  $db           Connection between PHP and MySQL database
+   */
   function display_user_activity($username, $video_url, $rating, $date_added, $show_id, $db) {
     echo "<div class='col-2of12' id='test-list'>";
     if ($video_url == '') {
@@ -73,13 +78,18 @@
       echo "<p>$username rated <a href='show.php?id=$show_id'>" . showname_from_id($show_id, $db) . "</a> " . number_format($rating * 10) . "/10.</p>";
     } else {
       echo "<p>$date_added</p>";
-      $episode_num = episode_from_video_url($video_url, $db);
-      echo "<p>$username commented on <a href='watch.php?show=$show_id&ep=$episode_num'>" . show_name_and_episode_from_video_url($video_url, $db) ."</a>.</p>";
+      $episode_num = episode_num_from_video_url($video_url, $db);
+      echo "<p>$username commented on <a href='watch.php?show=$show_id&ep=$episode_num'>" . show_name_and_episode_num_from_video_url($video_url, $db) ."</a>.</p>";
     }
     echo "</div>";
   }
 
-  function show_name_and_episode_from_video_url($video_url, $db) {
+  /*
+   *  Get a show's name and episode formatted as 'Show Name - Episode #'
+   *  @param   string  $video_url  The video URL of the episode
+   *  @param   mysqli  $db         Connection between PHP and MySQL database
+   */
+  function show_name_and_episode_num_from_video_url($video_url, $db) {
     $query = "SELECT name, episode_num FROM shows "
            . "INNER JOIN links ON shows.show_id = links.show_id "
            . "WHERE links.video_url = ?";
@@ -93,7 +103,12 @@
     return $show_name . ' - Episode ' . $episode_num;
   }
 
-  function episode_from_video_url($video_url, $db) {
+  /*
+   *  Get the episode number from a video URL
+   *  @param   string  $video_url  The video URL of the episode
+   *  @param   mysqli  $db         Connection between PHP and MySQL database
+   */
+  function episode_num_from_video_url($video_url, $db) {
     $query = "SELECT episode_num FROM shows "
            . "INNER JOIN links ON shows.show_id = links.show_id "
            . "WHERE links.video_url = ?";
@@ -108,7 +123,7 @@
   }
 
   /*
-   *  Create opening form and fieldset tags, add legend
+   *  Create form and fieldset tags, add legend
    *  @param  string  $url   URL to send the form data to after submission
    *  @param  string  $text  Text to display in legend
    */
@@ -138,7 +153,6 @@
     } else {
       echo "<input type =\"text\" placeholder=\"$label\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     }
-    echo "<br>";
   }
 
   /*
@@ -147,7 +161,6 @@
    *  @param  array   $options  Values/ids of each option
    */
   function add_radio_buttons($varname, $options) {
-
   	echo "<label for =\"$varname\">$varname</label>";
     $i = 0;
     foreach ($options as $opt) {
@@ -156,8 +169,14 @@
     }
   }
 
-  function add_page_nav($current_page, $pages, $classname='') {
-    echo "<form class='row browse-form page-form' id=$classname>";
+  /*
+   *  Create a page navigation for pagination
+   *  @param  int     $current_page  The current page that the user is on
+   *  @param  int     $pages         Total number of pages to show
+   *  @param  string  $idname        Optional id for the form element
+   */
+  function add_page_nav($current_page, $pages, $idname='') {
+    echo "<form class='row browse-form page-form' id=$idname>";
     for ($i = 1; $i <= $pages; $i++) {
       echo "<label class='pagination'><input id='filter-page' type='radio' name='page' value='$i' ";
       if ($i == $current_page) {

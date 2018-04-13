@@ -99,6 +99,61 @@
 ?>
 
 <script type='text/javascript'>
+
+	// $(function() {
+
+		function updateFavs() {
+			event.preventDefault();
+			var show_id = $(this).closest('.show-info').attr('data-show-id')
+			var username = $('#user-click').text()
+
+			if (!$(this).hasClass('saved-state')) {
+				$(this).addClass('saved-state animated bounceIn')
+				$(this).children().removeClass('fa-heart animated bounceIn')
+				$(this).children().addClass('fa-check')
+				var action = 'add'
+			} else {
+				$(this).removeClass('saved-state animated bounceIn')
+				$(this).children().removeClass('fa-check')
+				$(this).children().addClass('fa-heart animated bounceIn')
+				var action = 'remove'
+			}
+			console.log($(this).closest('.show-info').attr('data-show-id'))
+			console.log(username)
+			console.log(action)
+
+	    $.ajax({
+	      type: 'POST',
+	      url:  'update-favourite.php',
+	      data: { show_id : show_id, action : action, username : username },
+	      success:function(html) {
+			     $('.display-favs').load(
+			     	document.URL +  ' .display-favs',
+			     	function() {
+			     		$('.save').off();
+			     		addClickHandler();
+			     	})
+	        $('.fvr-lnk a span').html(html)
+	        $('.fvr-lnk a span').animate({
+			      top: "-5"
+			    }, {
+			      queue: false,
+			      duration: 200
+			    })
+			    .animate({ top: "0" }, 100 );
+	      }
+	    });
+		}
+
+		function addClickHandler() {
+			$('.save').click(updateFavs);
+		}
+
+		addClickHandler();
+	// });
+
+
+
 	$('[id=filter-page]').change(function() {
 		getShows()
 		console.log($('.browse-form').serialize())
@@ -112,6 +167,8 @@
 			success:function(html) {
 				$('#show-page-nav').html(html);
 				// $('#show-page-nav').html(html);
+				$('.save').off();
+     		addClickHandler();
 			}
 		});
 	}
@@ -128,6 +185,8 @@
 				$('.loading-overlay').hide();
 				$('#show-data').html(html).hide().fadeIn('fast');
 				// $('#show-page-nav').html(html);
+				$('.save').off();
+     		addClickHandler();
 			}
 		});
 	}
@@ -145,6 +204,8 @@
 				$('.loading-overlay').hide();
 				$('#show-data').html(html).hide().fadeIn('fast');
 				// $('#show-page-nav').html(html);
+				$('.save').off();
+     		addClickHandler();
 			}
 		});
 	}

@@ -94,6 +94,95 @@
 
 <script type='text/javascript'>
 
+	// $(function() {
+
+		function updateFavs() {
+			event.preventDefault();
+			var show_id = $(this).closest('.show-info').attr('data-show-id')
+			var username = $('#user-click').text()
+
+			if (!$(this).hasClass('saved-state')) {
+				$(this).addClass('saved-state animated bounceIn')
+				$(this).children().removeClass('fa-heart animated bounceIn')
+				$(this).children().addClass('fa-check')
+				var action = 'add'
+			} else {
+				$(this).removeClass('saved-state animated bounceIn')
+				$(this).children().removeClass('fa-check')
+				$(this).children().addClass('fa-heart animated bounceIn')
+				var action = 'remove'
+			}
+			console.log($(this).closest('.show-info').attr('data-show-id'))
+			console.log(username)
+			console.log(action)
+
+	    $.ajax({
+	      type: 'POST',
+	      url:  'update-favourite.php',
+	      data: { show_id : show_id, action : action, username : username },
+	      success:function(html) {
+			     $('.display-favs').load(
+			     	document.URL +  ' .display-favs',
+			     	function() {
+			     		$('.save').off();
+			     		addClickHandler();
+			     	})
+	        $('.fvr-lnk a span').html(html)
+	        $('.fvr-lnk a span').animate({
+			      top: "-5"
+			    }, {
+			      queue: false,
+			      duration: 200
+			    })
+			    .animate({ top: "0" }, 100 );
+	      }
+	    });
+		}
+
+		function addClickHandler() {
+			$('.save').click(updateFavs);
+		}
+
+		addClickHandler();
+	// });
+
+	// $('.save').click(function() {
+	// 	event.preventDefault();
+	// 	var show_id = $(this).closest('.show-info').attr('data-show-id')
+	// 	var username = $('#user-click').text()
+
+	// 	if (!$(this).hasClass('saved-state')) {
+	// 		$(this).addClass('saved-state animated bounceIn')
+	// 		$(this).children().removeClass('fa-heart animated bounceIn')
+	// 		$(this).children().addClass('fa-check')
+	// 		var action = 'add'
+	// 	} else {
+	// 		$(this).removeClass('saved-state animated bounceIn')
+	// 		$(this).children().removeClass('fa-check')
+	// 		$(this).children().addClass('fa-heart animated bounceIn')
+	// 		var action = 'remove'
+	// 	}
+	// 	console.log($(this).closest('.show-info').attr('data-show-id'))
+	// 	console.log(username)
+	// 	console.log(action)
+
+ //    $.ajax({
+ //      type: 'POST',
+ //      url:  'update-favourite.php',
+ //      data: { show_id : show_id, action : action, username : username },
+ //      success:function(html) {
+ //        $('.fvr-lnk a span').html(html)
+ //        $('.fvr-lnk a span').animate({
+	// 	      top: "-5"
+	// 	    }, {
+	// 	      queue: false,
+	// 	      duration: 200
+	// 	    })
+	// 	    .animate({ top: "0" }, 100 );
+ //      }
+ //    });
+	// });
+
 	$('[id=filter-page]').change(function() {
 		// updatePages()
 		getShows()
@@ -113,11 +202,14 @@
 			data: $('.browse-form').serialize() + "&curpage=" + 1,
 			success:function(html) {
 				$('#show-page-nav').html(html);
+				$('.save').off();
+     		addClickHandler();
 			}
 		});
 	}
 
 	function getShows() {
+		console.log('resetPage')
 		$.ajax({
 			type: 'POST',
 			url:  'get-shows.php',
@@ -128,6 +220,8 @@
 			success:function(html) {
 				$('.loading-overlay').hide();
 				$('#show-data').html(html).hide().fadeIn('fast');
+				$('.save').off();
+     		addClickHandler();
 			}
 		});
 	}
@@ -144,6 +238,8 @@
 			success:function(html) {
 				$('.loading-overlay').hide();
 				$('#show-data').html(html).hide().fadeIn('fast');
+				$('.save').off();
+     		addClickHandler();
 			}
 		});
 	}
