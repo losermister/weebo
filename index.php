@@ -14,42 +14,12 @@
 		session_destroy();
 	}
 
+	$heading = 'Staff pick';
+	$short_description = 'During her family\'s move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.';
+
+	display_featured_show($featured_show_id, $heading, $short_description, $email, $db);
+
 ?>
-
-
-
-	<div class="banner-container">
-		<div class="text-container">
-			<div class="banner-text">
-				<div class="col-12of12">
-					<span>staff pick</span>
-				</div>
-			</div>
-			<div class="banner-details">
-				<div class="col-6of12">
-					<h2>kill la kill</h2>
-					<p>During her family's move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.</p>
-					<a href="http://localhost/weebo/show.php?id=17" class="btn btn-primary"><!-- <span class="fas fa-play"></span> -->watch series</a>
-					<form action='favourites.php' class='save-btn' method='post'>
-						<?php
-							$featured_show = 17;
-	            if (in_favourites_list($email, $featured_show, $db)) {
-	              echo "<input type='hidden' name='unfavourite_show' value='17'>
-	              <button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
-	            } else {
-	                echo "<input type='hidden' name='favourite_show' value='17'>
-	                <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button>";
-	              }
-						?>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="banner-overlay"></div>
-		<div class="banner-img-container">
-			<div class="show-img" style="background-image:url('http://i0.kym-cdn.com/photos/images/original/000/686/177/af4.jpg')"></div>
-		</div>
-	</div>
 
 	<div class="container content">
 		<div class="row content" >
@@ -144,13 +114,85 @@
 			</div>
 		</div>
 
-		<!-- <footer>
-			<div class="container">
-				<div class="row">
-					Footer text
-				</div>
-			</div>
-		</footer> -->
 	<?php
   	require('helper/footer.php');
   ?>
+
+<script type='text/javascript'>
+
+	$('.btn-secondary').click(function() {
+		event.preventDefault();
+		var show_id = $('h2').attr('data-show-id')
+		var username = $('#user-click').text()
+
+		if (!$(this).hasClass('bkmrk-state')) {
+			$(this).addClass('bkmrk-state animated pulse')
+			$(this).children().removeClass('fa-heart animated pulse')
+			$(this).children().addClass('fa-check')
+			var action = 'add'
+		} else {
+			$(this).removeClass('bkmrk-state animated pulse')
+			$(this).children().removeClass('fa-check')
+			$(this).children().addClass('fa-heart animated pulse')
+			var action = 'remove'
+		}
+		// console.log($('h2').attr('data-show-id'))
+		// console.log(username)
+		// console.log(action)
+
+    $.ajax({
+      type: 'POST',
+      url:  'update-favourite.php',
+      data: { show_id : show_id, action : action, username : username },
+      success:function(html) {
+        $('.fvr-lnk a span').html(html)
+        $('.fvr-lnk a span').animate({
+		      top: "-5"
+		    }, {
+		      queue: false,
+		      duration: 200
+		    })
+		    .animate({ top: "0" }, 100 );
+      }
+    });
+	});
+
+
+	$('.save').click(function() {
+		event.preventDefault();
+		var show_id = $(this).closest('.show-info').attr('data-show-id')
+		var username = $('#user-click').text()
+
+		if (!$(this).hasClass('saved-state')) {
+			$(this).addClass('saved-state animated bounceIn')
+			$(this).children().removeClass('fa-heart animated bounceIn')
+			$(this).children().addClass('fa-check')
+			var action = 'add'
+		} else {
+			$(this).removeClass('saved-state animated bounceIn')
+			$(this).children().removeClass('fa-check')
+			$(this).children().addClass('fa-heart animated bounceIn')
+			var action = 'remove'
+		}
+		console.log($(this).closest('.show-info').attr('data-show-id'))
+		console.log(username)
+		console.log(action)
+
+    $.ajax({
+      type: 'POST',
+      url:  'update-favourite.php',
+      data: { show_id : show_id, action : action, username : username },
+      success:function(html) {
+        $('.fvr-lnk a span').html(html)
+        $('.fvr-lnk a span').animate({
+		      top: "-5"
+		    }, {
+		      queue: false,
+		      duration: 200
+		    })
+		    .animate({ top: "0" }, 100 );
+      }
+    });
+	});
+
+</script>

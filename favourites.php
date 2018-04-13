@@ -11,28 +11,10 @@
 	      	header('Location: login.php');
 	      }
 
-			  if (isset($_POST['favourite_show'])) {
-			    $new_favourite_id = $_POST['favourite_show'];
-
-			    if (check_shows_list($new_favourite_id, $db) && !in_favourites_list($email, $new_favourite_id, $db)) {
-			    	add_to_favourites($email, $new_favourite_id, $db);
-			    	display_notification_success("Successfully added " . showname_from_id($new_favourite_id, $db) . " to your favourites!");
-			    } else if (!check_shows_list($new_favourite_id, $db)) {
-			    	display_notification_error("Not added: Invalid show ID " . $new_favourite_id . " was submitted.");
-			    }
-
-			  } else if (isset($_POST['unfavourite_show'])) {
-			  	$unfavourite_id = $_POST['unfavourite_show'];
-			  	if (check_shows_list($unfavourite_id, $db) && in_favourites_list($email, $unfavourite_id, $db)) {
-			    	remove_from_favourites($email, $unfavourite_id, $db);
-			    	display_notification_success("Removed " . showname_from_id($unfavourite_id, $db) . " from your favourites.");
-			  	}
-			  }
-
   			require('helper/header.php');
 			  echo "<div class='container content'>";
 		    echo "<h1>My Favourite Shows</h1>";
-		    echo "<div class='row'>";
+		    echo "<div class='row display-favs'>";
 
 				$shows_query = "SELECT avg(rating) as avg_rating, favourite_shows.show_id, shows.name, shows.bg_img "
 				             . "FROM favourite_shows "
@@ -68,6 +50,64 @@
 	</div>
 </div>
 
-</body>
+<?php
+	require('helper/footer.php');
+?>
 
-</html>
+<script type='text/javascript'>
+
+	$(function() {
+
+	function updateFavs() {
+		event.preventDefault();
+		var show_id = $(this).closest('.show-info').attr('data-show-id')
+		var username = $('#user-click').text()
+
+		if (!$(this).hasClass('saved-state')) {
+			$(this).addClass('saved-state animated bounceIn')
+			$(this).children().removeClass('fa-heart animated bounceIn')
+			$(this).children().addClass('fa-check')
+			var action = 'add'
+		} else {
+			$(this).removeClass('saved-state animated bounceIn')
+			$(this).children().removeClass('fa-check')
+			$(this).children().addClass('fa-heart animated bounceIn')
+			var action = 'remove'
+		}
+		// console.log($(this).closest('.show-info').attr('data-show-id'))
+		// console.log(username)
+		// console.log(action)
+
+    $.ajax({
+      type: 'POST',
+      url:  'update-favourite.php',
+      data: { show_id : show_id, action : action, username : username },
+      success:function(html) {
+		     $('.display-favs').load(
+		     	document.URL +  ' .display-favs',
+		     	function() {
+		     		$('.save').off();
+		     		addClickHandler();
+		     	})
+        $('.fvr-lnk a span').html(html)
+        $('.fvr-lnk a span').animate({
+		      top: "-5"
+		    }, {
+		      queue: false,
+		      duration: 200
+		    })
+		    .animate({ top: "0" }, 100 );
+      }
+    });
+	}
+
+	function addClickHandler() {
+		$('.save').click(updateFavs);
+	}
+
+	addClickHandler();
+
+});
+
+
+</script>

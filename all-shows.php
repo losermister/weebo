@@ -93,6 +93,7 @@
 	</div>
 
 <script type='text/javascript'>
+
 	$('[id=filter-page]').change(function() {
 		// updatePages()
 		getShows()

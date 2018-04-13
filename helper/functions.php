@@ -2,6 +2,7 @@
 
   session_start();
 
+  static $featured_show_id = 17;
   static $num_of_avatars = 4;
   static $items_per_page = 18;
 
@@ -731,13 +732,13 @@
 
             <div class='show-img-container'><span class='avgrate' style='$rating_style'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>
 
-            <div class='show-info'>
+            <div class='show-info' data-show-id='$show_id'>
               <div class='show-descript'>
                 <span class='show-title'>$show_name</span>
 
               </div>
               <div class='functions'>
-                <form action='favourites.php' class='save-btn' method='post'>";
+                <form action='favourites.php' class='save-btn'>";
                   if (isset($_SESSION['valid_user'])) {
                     $email = $_SESSION['valid_user'];
                   } else {
@@ -746,13 +747,11 @@
 
                   if (in_favourites_list($email, $show_id, $db)) {
                     echo "
-                      <input type='hidden' name='unfavourite_show' value='$show_id'>
-                      <button type='submit' class='save saved-state' name='add_show_btn' value=''><span class='fas fa-check'></span></button>
+                      <button type='submit' class='save saved-state' value=''><span class='fas fa-check'></span></button>
                     ";
                   } else {
                     echo "
-                      <input type='hidden' name='favourite_show' value='$show_id'>
-                      <button type='submit' class='save' name='add_show_btn' value=''><span class='fas fa-heart'></span></button>
+                      <button type='submit' class='save' value=''><span class='fas fa-heart'></span></button>
                     ";
                   }
 
@@ -909,6 +908,18 @@
     $id_stmt->free_result();
     $id_stmt->close();
     return $show_id;
+  }
+
+  function showbanner_from_id($show_id, $db) {
+    $query = "SELECT shows.banner_img FROM shows WHERE shows.show_id = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $show_id);
+    $stmt->execute();
+    $stmt->bind_result($show_banner_url);
+    $stmt->fetch();
+    $stmt->free_result();
+    $stmt->close();
+    return $show_banner_url;
   }
 
   function genres_list_from_id($show_id, $db) {
@@ -1086,5 +1097,159 @@
       echo '<p>You last rated this show ' . $rating . '/10</p>';
     }
   }
+
+  function display_featured_show($featured_show_id, $heading, $short_description, $email, $db) {
+    $show_name = showname_from_id($featured_show_id, $db);
+    $banner_img = showbanner_from_id($featured_show_id, $db);
+    echo
+      "<div class='banner-container'>
+        <div class='text-container'>
+          <div class='banner-text'>
+            <div class='col-12of12'>
+              <span>staff pick</span>
+            </div>
+          </div>
+          <div class='banner-details'>
+            <div class='col-6of12'>
+              <h2 data-show-id=$featured_show_id>$show_name</h2>
+              <p>$short_description</p>
+              <a href='show.php?id=$featured_show_id' class='btn btn-primary'>watch series</a>";
+                if (in_favourites_list($email, $featured_show_id, $db)) {
+                  echo "<button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
+                } else {
+                    echo "<button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button>";
+                  }
+              echo "
+            </div>
+          </div>
+        </div>
+        <div class='banner-overlay'></div>
+        <div class='banner-img-container'>
+          <div class='show-img' style='background-image:url($banner_img)'></div>
+        </div>
+      </div>
+    ";
+  }
+
+  function display_show_banner($show_id, $show_name, $show_name_jp, $banner_img, $email, $db) {
+    echo "
+      <div class='banner-container'>
+        <div class='text-container'>
+          <div class='banner-details'>
+            <div class='col-6of12'>
+              <h2 data-show-id=$show_id>$show_name</h2>
+              <p>$show_name_jp</p>";
+                if (in_favourites_list($email, $show_id, $db)) {
+                  echo "<input type='hidden' name='unfavourite_show' value='$show_id'>
+                  <button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
+                } else {
+                    echo "<input type='hidden' name='favourite_show' value='$show_id'>
+                    <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button>";
+                }
+              echo "
+            </div>
+          </div>
+        </div>
+        <div class='banner-overlay'></div>
+        <div class='banner-img-container'>
+          <div class='show-img' style='background-image:url($banner_img)'></div>
+        </div>
+      </div>
+    ";
+  }
+
+  function display_show_trailer($heading, $trailer_url) {
+    echo "
+      <div class='row'>
+        <div class='col-12of12'>
+          <h3 class='cat'>$heading</h3>
+        </div>
+      </div>
+      <iframe class='trailer' src='$trailer_url' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>
+    ";
+  }
+
+  function display_show_synopsis($heading, $description) {
+    echo "
+      <div class='row'>
+        <div class='col-12of12'>
+          <h3 class='cat'>$heading</h3>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-12of12'>
+          <div class='info'>
+            <p class='descript'>$description</p>
+          </div>
+        </div>
+      </div>
+    ";
+  }
+
+  function display_show_info($heading, $avg_rating, $show_id, $email, $airing_date, $status, $genres, $db) {
+    echo "
+      <div class='row'>
+        <div class='col-12of12'>
+            <h3 class='cat'>$heading</h3>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='col-12of12'>
+          <div class='info'>
+            <section id = 'display-rating'>
+              <h4>Average rating:</h4>
+              <p>" . number_format($avg_rating * 10, 2) . "</p>";
+
+              if (isset($_SESSION['valid_user'])) {
+                echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
+                add_dropdown_num_range('rating', 1, 10);
+                echo "<button type='submit' id='submit-rating' form ='rate' value ='Submit' class='btn-small'>Rate</button>
+                </form>";
+              }
+
+              get_user_rating_for_show($email, $show_id, $db);
+            echo "
+            </section>
+            <h4>Airing date:</h4>
+            <p>$airing_date</p>
+            <h4>Status:</h4>
+            <p>$status</p>
+            <h4>Genre:</h4>
+            <p><a href='#'>$genres</a></p>
+          </div>
+        </div>
+      </div>
+    ";
+  }
+
+  function display_all_videos($show_id, $show_name, $show_img, $db) {
+    $episodes_query = "SELECT DISTINCT episode_num "
+                    . "FROM links "
+                    . "WHERE show_id = ? "
+                    . "ORDER BY episode_num DESC";
+    $episodes_stmt = $db->prepare($episodes_query);
+    $episodes_stmt->bind_param('i', $show_id);
+    $episodes_stmt->execute();
+    $episodes_stmt->bind_result($episode_num);
+    $episodes_stmt->store_result();
+
+    echo "
+      <div class='row'>
+        <div class='col-12of12'>
+          <h3 class='cat'>videos ($episodes_stmt->num_rows)</h3>
+        </div>
+      </div>
+      <div class='row'>";
+        while ($episodes_stmt->fetch()) {
+          display_video_card($show_id, $show_name, $episode_num, $show_img);
+        }
+      echo "
+      </div>";
+
+    $episodes_stmt->free_result();
+    $episodes_stmt->close();
+    $db->close();
+  }
+
 
 ?>

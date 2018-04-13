@@ -42,12 +42,6 @@
     echo "<iframe class='vid' src='$video_url' allowfullscreen></iframe>";
   }
 
-  // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  //   $comment_body = trim($_POST['comment']);
-  //   post_comment($email, $video_url, $comment_body, $db);
-  //   display_notification_success("Thanks for leaving a comment!");
-  // }
-
   echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
 
   $episode_stmt->free_result();
@@ -66,7 +60,6 @@
     echo "<img src='".avatar_from_email($db)."'>";
     echo "</div>";
     echo "<div class='col-11of12'>";
-    // echo "<form action=\"watch.php?show=$show_id&ep=$ep_num\" method=\"post\">";
     echo "<form class='comment-form'>";
     echo "<fieldset>";
 
@@ -77,7 +70,6 @@
     echo "<input id='submit-comment' type=\"submit\" name=\"submit-comment\" value=\"comment\">";
     echo "</form>";
     echo "</div>";
-    // echo "</div>";
 
   } else {
     echo "<p class='sign-in-comment'>Please <a href='login.php'> sign in </a> to comment on this episode!</p>";

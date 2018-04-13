@@ -587,7 +587,7 @@ nav ul.fl-left a:hover li{
 }
 
 .fvr-lnk span{
-	/* display:block; */
+	 /*display:block; */
 	transform: translate(5px,-8px);
 	position:absolute;
 	top:-5px;
@@ -600,19 +600,19 @@ nav ul.fl-left a:hover li{
 	/* box-shadow:0rem 0rem 0.2rem rgba(0,0,0,0.3); */
 
 	padding:0.2rem 0.4rem;
-	/* animation: fvr-notify 0.2s ease-in-out; */
+	/*animation: fvr-notify 0.2s ease-in-out;*/
 }
 
 
 /* @keyframes fvr-notify {
 	from{
-		transform: translate(15px,-25px);
+		transform: translate(5px,-25px);
 	}
 	to{
-		transform: translate(15px,-10px);
+		transform: translate(5px,-10px);
 	}
-}
- */
+}*/
+
 
 fieldset{
 	border:none;
@@ -678,7 +678,7 @@ input[type*="submit"]{
 input[type*="submit"]:hover{
 	/* width:100%; */
 	opacity:0.7;
-
+	cursor: pointer;
 }
 
 
@@ -847,14 +847,14 @@ input[type*="radio"]:focus{
 button.btn[type*="submit"]{
 	border:0px;
 	font-weight:500;
-	transition:opacity 0.2s linear;
+	transition:background-color 0.2s linear;
 
 }
 
 button.btn[type*="submit"]:hover{
-	opacity:0.8;
-
-
+/*	opacity:0.8;*/
+	background-color: rgba(240, 240, 240, 1);
+	cursor: pointer;
 }
 
 button.btn[type*="submit"]:focus{
@@ -886,7 +886,9 @@ button.save[type*="submit"]{
 	color:#b1acb4;
 }
 
-
+button.save[type*="submit"]:hover{
+	cursor: pointer;
+}
 
 
 button.save[type*="submit"] .fas{
@@ -1578,9 +1580,9 @@ label.pagination input[type*="radio"]:checked ~span{
 	opacity:1 !important;
 }
 
-.saved-state:hover .saved-state:focus{
+.saved-state:hover{
 	background:#4A4574 !important;
-	color:#b1acb4 !important;
+	/*color:#b1acb4 !important;*/
 }
 
 
