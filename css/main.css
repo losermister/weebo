@@ -1734,6 +1734,8 @@ content:'';
 	transition:all 0.2s linear;
 }
 
+
+
 .clicked {
 
 	/* background:#2E2B45; */
@@ -1778,6 +1780,11 @@ content:'';
 
 .upcoming-list .show-info .show-epi{
 	font-size:1rem !important;
+		color:#b1acb4;
+}
+
+.upcoming-list .show-info .show-epi:hover{
+	text-decoration: none;
 }
 
 

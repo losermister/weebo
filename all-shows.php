@@ -83,6 +83,11 @@
 
 				?>
 				</section>
+				<?php
+					echo "<section id='show-page-nav'>";
+					add_page_nav($current_page, $pages, 'page-nav');
+					echo "</section>";
+				?>
 			</div>
 		</div>
 	</div>
