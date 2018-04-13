@@ -908,7 +908,7 @@ input[type*="radio"]:focus{
 
 #search-result-container .show-descript{
 
-	margin:0rem 1rem;
+	margin:0rem 0rem;
 	text-align:left;
 
 }
