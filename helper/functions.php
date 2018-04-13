@@ -52,9 +52,7 @@
    *  @param   string  $fav_genre    User's selected favourite genre
    *  @param   string  $profile_img  Path to user's chosen avatar
    */
-  function display_userprofile($username, $email, $fav_genre, $profile_img) {
-
-
+  function display_user_profile($username, $email, $fav_genre, $profile_img) {
     echo "<div class='col-3of12'>";
     echo "<div class='info'>";
     echo "<img class='img-center profile-img' src='$profile_img'>";
@@ -65,9 +63,47 @@
     echo "<p> $fav_genre</p>";
     echo "</div>";
     echo "</div>";
-    echo "<div class='col-9of12'>";
-    echo "</div>";
+  }
 
+  function display_user_activity($username, $video_url, $rating, $date_added, $show_id, $db) {
+    echo "<div class='col-2of12' id='test-list'>";
+    if ($video_url == '') {
+      echo "<p>$date_added</p>";
+      echo "<p>$username rated <a href='show.php?id=$show_id'>" . showname_from_id($show_id, $db) . "</a> " . number_format($rating * 10) . "/10.</p>";
+    } else {
+      echo "<p>$date_added</p>";
+      $episode_num = episode_from_video_url($video_url, $db);
+      echo "<p>$username commented on <a href='watch.php?show=$show_id&ep=$episode_num'>" . show_name_and_episode_from_video_url($video_url, $db) ."</a>.</p>";
+    }
+    echo "</div>";
+  }
+
+  function show_name_and_episode_from_video_url($video_url, $db) {
+    $query = "SELECT name, episode_num FROM shows "
+           . "INNER JOIN links ON shows.show_id = links.show_id "
+           . "WHERE links.video_url = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('s', $video_url);
+    $stmt->execute();
+    $stmt->bind_result($show_name, $episode_num);
+    $stmt->fetch();
+    $stmt->free_result();
+    $stmt->close();
+    return $show_name . ' - Episode ' . $episode_num;
+  }
+
+  function episode_from_video_url($video_url, $db) {
+    $query = "SELECT episode_num FROM shows "
+           . "INNER JOIN links ON shows.show_id = links.show_id "
+           . "WHERE links.video_url = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('s', $video_url);
+    $stmt->execute();
+    $stmt->bind_result($episode_num);
+    $stmt->fetch();
+    $stmt->free_result();
+    $stmt->close();
+    return $episode_num;
   }
 
   /*
@@ -488,8 +524,8 @@
   }
 
   function update_rating($email, $show_id, $rating, $db) {
-    $query = "INSERT INTO oso_user_ratings(email, show_id, rating) "
-             . "VALUES (?, ?, ?) "
+    $query = "INSERT INTO oso_user_ratings(email, show_id, rating, date_added) "
+             . "VALUES (?, ?, ?, NOW()) "
              . "ON DUPLICATE KEY UPDATE rating = ?";
     $stmt = $db->prepare($query);
     if ( !$stmt ) {

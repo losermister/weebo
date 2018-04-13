@@ -21,16 +21,67 @@
   $profile_stmt->bind_param('s', $username);
   $profile_stmt->execute();
   $profile_stmt->bind_result($email, $fav_genre, $profile_img);
-  echo "<div class='container'>";
-  while ($profile_stmt->fetch()) {
-    display_userprofile($username, $email, $fav_genre, $profile_img);
-  }
-  
-  echo "</div>";
 
-  // Release results and close prepared statement to free up memory space
+  echo "<div class='container'>";
+
+  while ($profile_stmt->fetch()) {
+    display_user_profile($username, $email, $fav_genre, $profile_img);
+  }
+
   $profile_stmt->free_result();
   $profile_stmt->close();
+
+  echo "<div class='col-9of12'>";
+
+  $email = email_from_username($username, $db);
+
+  $activity_query = "SELECT video_url, "
+                  . "null AS rating, "
+                  . "date_added, "
+                  . "(SELECT show_id from links WHERE links.video_url = comments.video_url) AS show_id "
+                  . "FROM comments where comments.email = ? "
+                  . "UNION "
+                  . "SELECT null AS video_url, "
+                  . "rating, "
+                  . "date_added, "
+                  . "show_id "
+                  . "FROM oso_user_ratings WHERE oso_user_ratings.email = ? "
+                  . "ORDER BY date_added DESC "
+                  . "LIMIT 10 ";
+
+                  // echo $activity_query;
+
+  $activity_stmt = $db->prepare($activity_query);
+  $activity_stmt->bind_param('ss', $email, $email);
+  $activity_stmt->execute();
+  if ( !$activity_stmt ) {
+    printf('errno: %d, error: %s', $db->errno, $db->error);
+    die;
+  }
+
+  $activity_stmt->bind_result($video_url, $rating, $date_added, $show_id);
+  $res = $activity_stmt->get_result();
+
+  while ($row = $res->fetch_row()) {
+    $all_activity_results[] = $row;
+  }
+
+  $activity_stmt->store_result();
+  $activity_stmt->free_result();
+  $activity_stmt->close();
+
+  $num_items = sizeof($all_activity_results);
+
+  echo "<h2>Recent Activity</h2>";
+
+  for ($i = 0; $i < $num_items; $i++) {
+    display_user_activity($username, $all_activity_results[$i][0], $all_activity_results[$i][1], $all_activity_results[$i][2], $all_activity_results[$i][3], $db);
+  }
+
+  echo "</div>";
+
+  echo "</div>";
+
 
   $db->close();
 
