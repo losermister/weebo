@@ -9,26 +9,32 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
-		// $(document).ready(function(){
-		// 	$('#search-show input[type="text"]').on("keyup input"),function(){
-		// 		var inputVal = $(this).sibling(".result");
-		// 		if(inputVal.length){
-		// 			$.get("update-search", {term: inputVal}).done(function(data){
-		// 				resultDropdown.html(data);
-		// 			});
-		// 		}
-		// 		else{
-		// 			resultDropdown.empty();
-		// 		}
-		// 	}
+		$(document).ready(function(){
+			$('.search-show input[type="text"]').on("keyup input",function(){
+
+			 // alert("no");
+				var inputVal = $(this).val();
+				 var resultDropdown = $(this).siblings(".result");
+				if(inputVal.length){
+					$.get("update-search.php", {term: inputVal}).done(function(data){
+						resultDropdown.html(data);
+					});
+					// alert('hello');
+				}
+
+				else{
+					resultDropdown.empty();
+				}
+			});
+
 
 			// Set search input value on click of result item
-	 // $(document).on("click", ".result p", function(){
-		// 	 $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
-		// 	 $(this).parent(".result").empty();
-	 // });
-	 //
-		// });
+	 $(document).on("click", ".result p", function(){
+			 $(this).parents(".search-show").find('input[type="text"]').val($(this).text());
+			 $(this).parent(".result").empty();
+	 });
+
+		});
 
 	</script>
 
@@ -41,7 +47,7 @@
 				<ul class="fl-left">
 					<li id="logo"><a href="index.php">weebflix</a></li>
 				</ul>
-				<div class="fl-left" id="search-show">
+				<div class="fl-left search-show">
 					<input type="text"  placeholder="search for anime...">
 					<div class="result"></div>
 				</div>
