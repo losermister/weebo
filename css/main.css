@@ -191,6 +191,10 @@ nav ul.fl-right li a{
 	transition:all 0.2s linear;
 }
 
+nav ul.fl-right li a span{
+
+}
+
 nav ul.fl-right li a:hover{
 	background:rgba(241,240,255,0.6);
 	color:#625D8A !important;
@@ -408,11 +412,30 @@ select#genre:focus, select#filter-by-genre:focus, select#filter-by-year:focus{
 }
 
 
+nav fl-left{
+	margin:0;
+}
+
+nav div.fl-left input[type*="text"]{
+	padding:0.75rem 0.75rem 0.75rem 0.75rem;
+	width:350px;
+	margin:0.5rem 0.75rem;
+	box-shadow: 0rem 0rem 0.2rem rgba(0,0,0,0.2);
+
+}
+
+nav div.fl-left input[type*="text"]:focus{
+	border-left:0px ;
+}
+
 nav ul.fl-left{
 	/* margin-top:21px;
 	margin-bottom:21px; */
 	margin:0;
 }
+
+
+
 
 
 nav ul.fl-left li{
