@@ -709,11 +709,38 @@
     }
   }
 
+  function display_search_list($show_id, $show_name, $show_img, $db) {
+    // Trim show name if longer than 12 characters, for consistent card sizing
+    $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
+
+
+    echo "
+      <a href=\"show.php?id=" . $show_id . "\">" . "
+
+          <div class='show-container fade-in'>
+            <div class='redirect'></div>
+
+            <div class='show-img-container'><span class='avgrate' style='$rating_style'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>
+
+            <div class='show-info' data-show-id='$show_id'>
+              <div class='show-descript'>
+                <span class='show-title'>$show_name</span>
+
+              </div>
+
+            </div>
+          </div>
+
+      </a>
+    ";
+  }
+
+
   function display_show_card($avg_rating, $show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
     $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
     // Format average rating to be out of 10 and 2 decimal places
-    $avg_rating = number_format($avg_rating * 10, 2);
+    $avg_rating = number_format($avg_rating * 10, 1);
 
     $rating_style;
     if (($avg_rating >= 0.0) && ($avg_rating < 5.0)) {
@@ -1198,7 +1225,7 @@
           <div class='info'>
             <section id = 'display-rating'>
               <h4>Average rating:</h4>
-              <p>" . number_format($avg_rating * 10, 2) . "</p>";
+              <p>" . number_format($avg_rating * 10, 1) . "</p>";
 
               if (isset($_SESSION['valid_user'])) {
                 echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";

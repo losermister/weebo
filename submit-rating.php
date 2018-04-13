@@ -23,7 +23,7 @@
 
     $avg_rating = (avg_show_rating($show_id, $db));
 
-    echo "<p>" . number_format($avg_rating * 10, 2) . "</p>";
+    echo "<p>" . number_format($avg_rating * 10, 1) . "</p>";
 
     if (isset($_SESSION['valid_user'])) {
       echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
