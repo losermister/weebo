@@ -62,6 +62,8 @@
   $activity_stmt->bind_result($video_url, $rating, $date_added, $show_id);
   $res = $activity_stmt->get_result();
 
+  $all_activity_results = array();
+
   while ($row = $res->fetch_row()) {
     $all_activity_results[] = $row;
   }
@@ -76,6 +78,10 @@
 
   for ($i = 0; $i < $num_items; $i++) {
     display_user_activity($username, $all_activity_results[$i][0], $all_activity_results[$i][1], $all_activity_results[$i][2], $all_activity_results[$i][3], $db);
+  }
+
+  if ($num_items <= 0) {
+    echo "<p>No recent activity to show for $username.</p>";
   }
 
   echo "</div>";

@@ -46,14 +46,20 @@
 				$shows_stmt->execute();
 				$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
 				$result = $shows_stmt->get_result();
+				$shows_stmt->store_result();
 				$shows_stmt->free_result();
 			  $shows_stmt->close();
 
+			  $all_favourites_results = array();
+
 				while ($row = $result->fetch_array(MYSQLI_NUM)) {
-				   display_show_card($row[0], $row[1], $row[2], $row[3], $db);
+				  $all_favourites_results[] = $row;
+				  display_show_card($row[0], $row[1], $row[2], $row[3], $db);
 				}
 
-				if (!$result->fetch_array(MYSQLI_NUM)) {
+				$num_favourites = sizeof($all_favourites_results);
+
+				if ($num_favourites <= 0) {
 					echo "<p>You haven't favourited any shows yet.</p>";
 				}
 
