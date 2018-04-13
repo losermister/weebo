@@ -726,27 +726,30 @@
 
   function display_search_list($show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
-    $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
+    $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
 
 
     echo "
-      <a href=\"show.php?id=" . $show_id . "\">" . "
 
-          <div class='show-container fade-in'>
-            <div class='redirect'></div>
 
-            <div class='show-img-container'><span class='avgrate' style='$rating_style'>$avg_rating</span><div class='show-img' style='background-image:url($show_img)'></div></div>
+        <a href=\"show.php?id=" . $show_id . "\">" . "
 
-            <div class='show-info' data-show-id='$show_id'>
-              <div class='show-descript'>
-                <span class='show-title'>$show_name</span>
+            <div class='search-container'>
+
+
+              <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
+
+              <div class='show-info' data-show-id='$show_id'>
+                <div class='show-descript'>
+                  <span class='show-title'>$show_name</span>
+
+                </div>
 
               </div>
-
             </div>
-          </div>
 
-      </a>
+        </a>
+
     ";
   }
 

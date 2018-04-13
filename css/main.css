@@ -857,6 +857,61 @@ input[type*="radio"]:focus{
 	color:white;
 }
 
+#search-result-container{
+	display:block;
+	background:#FFFFFF;
+	position:absolute;
+	/* position:absolute; */
+	margin-left:0.75rem;
+	width:350px;
+	box-shadow: 0rem 0rem 0.2rem rgba(0,0,0,0.05);
+	/* height:500px; */
+
+}
+
+#search-result-container:after{
+	content:"";
+	display:table;
+	clear:both;
+
+}
+
+
+#search-result-container .search-container{
+	display:inline-block;
+	width:100%;
+	padding:0.5rem;
+}
+
+#search-result-container .search-container:hover{
+	background:rgba(241,240,255,0.6);
+}
+
+
+#search-result-container .show-img-container{
+	display:block;
+	width:30%;
+	height:50px;
+	float:left;
+	margin-right:0.5rem;
+}
+
+#search-result-container .show-info{
+	display:block;
+	width:70%;
+	background:none;
+	padding:0.5rem;
+	color:#625D8A;
+	position:relative;
+
+}
+
+#search-result-container .show-descript{
+
+	margin:0rem 1rem;
+	text-align:left;
+
+}
 
 
 
