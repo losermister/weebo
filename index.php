@@ -121,9 +121,11 @@
 <script type='text/javascript'>
 
 	$('.btn-secondary').click(function() {
-		event.preventDefault();
 		var show_id = $('h2').attr('data-show-id')
 		var username = $('#user-click').text()
+
+    if (username !== '') {
+      event.preventDefault();
 
 		if (!$(this).hasClass('bkmrk-state')) {
 			$(this).addClass('bkmrk-state animated pulse')
@@ -155,44 +157,48 @@
 		    .animate({ top: "0" }, 100 );
       }
     });
+  	}
 	});
 
 
 	$('.save').click(function() {
-		event.preventDefault();
 		var show_id = $(this).closest('.show-info').attr('data-show-id')
 		var username = $('#user-click').text()
 
-		if (!$(this).hasClass('saved-state')) {
-			$(this).addClass('saved-state animated bounceIn')
-			$(this).children().removeClass('fa-heart animated bounceIn')
-			$(this).children().addClass('fa-check')
-			var action = 'add'
-		} else {
-			$(this).removeClass('saved-state animated bounceIn')
-			$(this).children().removeClass('fa-check')
-			$(this).children().addClass('fa-heart animated bounceIn')
-			var action = 'remove'
-		}
-		console.log($(this).closest('.show-info').attr('data-show-id'))
-		console.log(username)
-		console.log(action)
+		if (username !== '') {
+			event.preventDefault();
 
-    $.ajax({
-      type: 'POST',
-      url:  'update-favourite.php',
-      data: { show_id : show_id, action : action, username : username },
-      success:function(html) {
-        $('.fvr-lnk a span').html(html)
-        $('.fvr-lnk a span').animate({
-		      top: "-5"
-		    }, {
-		      queue: false,
-		      duration: 200
-		    })
-		    .animate({ top: "0" }, 100 );
-      }
-    });
+			if (!$(this).hasClass('saved-state')) {
+				$(this).addClass('saved-state animated bounceIn')
+				$(this).children().removeClass('fa-heart animated bounceIn')
+				$(this).children().addClass('fa-check')
+				var action = 'add'
+			} else {
+				$(this).removeClass('saved-state animated bounceIn')
+				$(this).children().removeClass('fa-check')
+				$(this).children().addClass('fa-heart animated bounceIn')
+				var action = 'remove'
+			}
+			console.log($(this).closest('.show-info').attr('data-show-id'))
+			console.log(username)
+			console.log(action)
+
+	    $.ajax({
+	      type: 'POST',
+	      url:  'update-favourite.php',
+	      data: { show_id : show_id, action : action, username : username },
+	      success:function(html) {
+	        $('.fvr-lnk a span').html(html)
+	        $('.fvr-lnk a span').animate({
+			      top: "-5"
+			    }, {
+			      queue: false,
+			      duration: 200
+			    })
+			    .animate({ top: "0" }, 100 );
+	      }
+	    });
+	  }
 	});
 
 </script>

@@ -207,7 +207,7 @@
    *  @param  string   $label    Label text to display
    *  @param  string   $varname  Name attribute of the input element
    *  @param  array    $options  Values of each option
-   *  @param  array    $text     Text to display for each option
+   *  @param  array    $texts    Text to display for each option
    */
   function add_dropdown($label, $varname, $options, $texts) {
     global $$varname;
@@ -224,12 +224,20 @@
     echo "</div>";
   }
 
+  /*
+   *  Create a dropdown menu for text, to be used as a filter in Browse
+   *  @param  string   $label    Label text to display
+   *  @param  string   $varname  Name attribute of the input element
+   *  @param  array    $options  Values of each option
+   *  @param  array    $texts    Text to display for each option
+   */
   function add_dropdown_filter($label, $varname, $options, $texts) {
     global $$varname;
     echo "<div class='dropdown-filter'>";
     echo "<select name='$varname' id='$varname'>";
     echo "<option value = 'All'" ;
     echo ">$label</option>";
+
     $i = 0;
     foreach ($options as $opt)
       add_dropdown_options($texts[$i++], $varname, $opt);
@@ -241,7 +249,7 @@
 
 
   /*
-   *  Create each option for the text dropdown
+   *  Create each option for the text or filter dropdown
    *  @param  string  $text     Text to display for each option
    *  @param  string  $varname  Name attribute of the input element
    *  @param  string  $opt      Value of each option
@@ -290,15 +298,6 @@
    *  @param  array   $texts    List of label names to display
    */
   function add_checklist($varname, $options, $texts) {
-    if (isset($_POST['columns'])) {
-      foreach($_POST['columns'] as $column) {
-        // Compare user's input against whitelisted values of allowed column names
-        if (array_search($column, $options) === false) {
-          // Prompt user to select a column from list if their input was invalid
-          echo ("<mark>Please select at least one column!</mark><br>");
-        }
-      }
-    }
     global $$varname;
     $i = 0;
     foreach($options as $opt)
@@ -314,25 +313,15 @@
   function add_checklist_options($text, $varname, $opt) {
     global $$varname;
     echo "<label class='checkbox'><input type=\"checkbox\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre'><span class=\"check\"></span>$text</label>";
-    // if (isset($_POST['columns']) && in_array($opt, $_POST['columns'])) echo "checked";
   }
 
   /*
-   *  Add a checklist and labels
+   *  Add a radio button list and labels
    *  @param  string  $varname  Name attribute of the input elements
    *  @param  array   $options  List of value attributes for each option
    *  @param  array   $texts    List of label names to display
    */
   function add_radiolist($varname, $options, $texts) {
-    if (isset($_POST['columns'])) {
-      foreach($_POST['columns'] as $column) {
-        // Compare user's input against whitelisted values of allowed column names
-        if (array_search($column, $options) === false) {
-          // Prompt user to select a column from list if their input was invalid
-          echo ("<mark>Please select at least one column!</mark><br>");
-        }
-      }
-    }
     global $$varname;
     echo "<label class='checkbox'><input type=\"radio\" name=\"$varname\" value=\"All\" id='filter-by-status'><span class=\"check\"></span>All</label>";
     $i = 0;
@@ -341,7 +330,7 @@
   }
 
   /*
-   *  Add options to checklist
+   *  Add options to a radio button list
    *  @param  string  $text     Text to display as labels
    *  @param  string  $varname  Name attribute of inputs
    *  @param  string  $opt      Value attributes for each option
@@ -349,7 +338,6 @@
   function add_radiolist_options($text, $varname, $opt) {
     global $$varname;
     echo "<label class='checkbox'><input type=\"radio\" name=\"$varname\" value=\"$opt\" id='filter-by-status'><span class=\"check\"></span>$text</label>";
-    // if (isset($_POST['columns']) && in_array($opt, $_POST['columns'])) echo "checked";
   }
 
   /*
@@ -370,18 +358,6 @@
     } else {
       echo "<input style=\"display: none\" autocomplete=\"off\" type =\"text\" placeholder=\"$varname\" name=\"$varname\" id=\"$varname\" value=\"$inputted_text\">";
     }
-    echo "<br>";
-  }
-
-  /*
-   *  Close fieldset and form tags, add submit button
-   *  @param  string  $button_text  Text to display in button
-   */
-  function form_end($button_text) {
-    echo "</fieldset>";
-    echo "<input type=\"submit\" name=\"log in\" value=\"$button_text\">";
-    echo "</form>";
-    echo "</div>";
   }
 
   /*
@@ -395,6 +371,17 @@
       return false;
     }
     return true;
+  }
+
+  /*
+   *  Close fieldset and form tags, add submit button
+   *  @param  string  $button_text  Text to display on submit button
+   */
+  function form_end($button_text) {
+    echo "</fieldset>";
+    echo "<input type=\"submit\" name=\"log in\" value=\"$button_text\">";
+    echo "</form>";
+    echo "</div>";
   }
 
   /*
@@ -530,6 +517,15 @@
     }
   }
 
+  /*
+   *  Update a user's profile information in the DB
+   *  @param   string   $email      User's email (can't be changed)
+   *  @param   string   $username   User's new display name
+   *  @param   string   $password   User's new password
+   *  @param   string   $fav_genre  User's favourite genre as entered
+   *  @param   string   $password   Path to user's new avatar
+   *  @param   mysqli   $db         Connection between PHP and MySQL database
+   */
   function update_profile($email, $username, $password, $fav_genre, $profile_img, $db) {
     $password = password_hash($password, PASSWORD_DEFAULT);
     $profile_img = 'avatar/' . $profile_img . '.png';
@@ -1125,22 +1121,26 @@
   }
 
   function get_user_rating_for_show($email, $show_id, $db) {
-    $query = "SELECT rating "
-           . "FROM oso_user_ratings "
-           . "WHERE email = ? "
-           . "AND show_id = ?";
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('si', $email, $show_id);
-    $stmt->execute();
-    $stmt->bind_result($rating);
-    $stmt->fetch();
-    $stmt->free_result();
-    $stmt->close();
-    if ($rating <= 0) {
-      echo '<p>You haven\'t rated this show yet!</p>';
+    if (!isset($_SESSION['valid_user'])) {
+      echo "<p><a href='login.php'>Log in</a> to rate shows!</p>";
     } else {
-      $rating = $rating * 10;
-      echo '<p>You last rated this show ' . $rating . '/10</p>';
+      $query = "SELECT rating "
+             . "FROM oso_user_ratings "
+             . "WHERE email = ? "
+             . "AND show_id = ?";
+      $stmt = $db->prepare($query);
+      $stmt->bind_param('si', $email, $show_id);
+      $stmt->execute();
+      $stmt->bind_result($rating);
+      $stmt->fetch();
+      $stmt->free_result();
+      $stmt->close();
+      if ($rating <= 0) {
+        echo '<p>You haven\'t rated this show yet!</p>';
+      } else {
+        $rating = $rating * 10;
+        echo '<p>You last rated this show ' . $rating . '/10</p>';
+      }
     }
   }
 
@@ -1163,7 +1163,7 @@
                 if (in_favourites_list($email, $featured_show_id, $db)) {
                   echo "<button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
                 } else {
-                    echo "<button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button>";
+                    echo "<a href='favourites.php'><button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button></a>";
                   }
               echo "
             </div>
@@ -1186,11 +1186,9 @@
               <h2 data-show-id=$show_id>$show_name</h2>
               <p>$show_name_jp</p>";
                 if (in_favourites_list($email, $show_id, $db)) {
-                  echo "<input type='hidden' name='unfavourite_show' value='$show_id'>
-                  <button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
+                  echo "<button type='submit' class='bkmrk-state btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-check'></span>saved</button>";
                 } else {
-                    echo "<input type='hidden' name='favourite_show' value='$show_id'>
-                    <button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button>";
+                    echo "<a href='favourites.php'><button type='submit' class='btn btn-secondary' name='add_show_btn' value=''><span class='fas fa-heart'></span>favourite</button></a>";
                 }
               echo "
             </div>

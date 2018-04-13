@@ -15,16 +15,6 @@
 
   $email = '';
 
-  if (isset($_SESSION['valid_user'])) {
-    $email = $_SESSION['valid_user'];
-
-    if (isset($_POST['rating'])) {
-      $rating = $_POST['rating'];
-      update_rating($email, $show_id, $rating, $db);
-      display_notification_success("Thanks for rating " . showname_from_id($show_id, $db) . "!");
-    }
-  }
-
   $genres = implode(', ', genres_list_from_id($show_id, $db));
 
   $avg_rating = (avg_show_rating($show_id, $db));
@@ -70,40 +60,43 @@
 <script type='text/javascript'>
 
   $('.btn-secondary').click(function() {
-    event.preventDefault();
     var show_id = $('h2').attr('data-show-id')
     var username = $('#user-click').text()
 
-    if (!$(this).hasClass('bkmrk-state')) {
-      $(this).addClass('bkmrk-state animated pulse')
-      $(this).children().removeClass('fa-heart animated pulse')
-      $(this).children().addClass('fa-check')
-      var action = 'add'
-    } else {
-      $(this).removeClass('bkmrk-state animated pulse')
-      $(this).children().removeClass('fa-check')
-      $(this).children().addClass('fa-heart animated pulse')
-      var action = 'remove'
-    }
-    // console.log($('h2').attr('data-show-id'))
-    // console.log(username)
-    // console.log(action)
+    if (username !== '') {
+      event.preventDefault();
 
-    $.ajax({
-      type: 'POST',
-      url:  'update-favourite.php',
-      data: { show_id : show_id, action : action, username : username },
-      success:function(html) {
-        $('.fvr-lnk a span').html(html)
-        $('.fvr-lnk a span').animate({
-          top: "-5"
-        }, {
-          queue: false,
-          duration: 200
-        })
-        .animate({ top: "0" }, 100 );
+      if (!$(this).hasClass('bkmrk-state')) {
+        $(this).addClass('bkmrk-state animated pulse')
+        $(this).children().removeClass('fa-heart animated pulse')
+        $(this).children().addClass('fa-check')
+        var action = 'add'
+      } else {
+        $(this).removeClass('bkmrk-state animated pulse')
+        $(this).children().removeClass('fa-check')
+        $(this).children().addClass('fa-heart animated pulse')
+        var action = 'remove'
       }
-    });
+      // console.log($('h2').attr('data-show-id'))
+      // console.log(username)
+      // console.log(action)
+
+      $.ajax({
+        type: 'POST',
+        url:  'update-favourite.php',
+        data: { show_id : show_id, action : action, username : username },
+        success:function(html) {
+          $('.fvr-lnk a span').html(html)
+          $('.fvr-lnk a span').animate({
+            top: "-5"
+          }, {
+            queue: false,
+            duration: 200
+          })
+          .animate({ top: "0" }, 100 );
+        }
+      });
+    }
   });
 
   $('#submit-rating').click(function() {

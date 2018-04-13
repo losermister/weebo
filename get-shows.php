@@ -75,27 +75,6 @@
 	// }
 	$shows_query .= "ORDER BY shows.show_id";
 
-	// echo $shows_query . "<br>";
-
-	// $shows_stmt = $db->prepare($shows_query);
- //  if (!$shows_stmt) {
- //    printf('errno: %d, error: %s', $shows_stmt->errno, $shows_stmt->error);
- //    die;
- //  }
-
-	// $shows_stmt->bind_param($flags, $filtered_genre_str, $filtered_year, $num_filtered_genres);
-	// $shows_stmt->execute();
-
-	// $shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
-	// $shows_stmt->store_result();
-
-	// while ($shows_stmt->fetch()) {
-	// 	display_show_card($avg_rating, $show_id, $show_name, $show_img, $db);
-	// }
-
-	// $shows_stmt->free_result();
- // 	$shows_stmt->close();
-
 	$res = $db->query($shows_query);
 
 	while ($row = $res->fetch_row()) {
@@ -132,66 +111,60 @@
 
 	$db->close();
 
-
  	exit;
 
 ?>
 
 <script type='text/javascript'>
 
-	// $(function() {
+	function updateFavs() {
+		event.preventDefault();
+		var show_id = $(this).closest('.show-info').attr('data-show-id')
+		var username = $('#user-click').text()
 
-		function updateFavs() {
-			event.preventDefault();
-			var show_id = $(this).closest('.show-info').attr('data-show-id')
-			var username = $('#user-click').text()
-
-			if (!$(this).hasClass('saved-state')) {
-				$(this).addClass('saved-state animated bounceIn')
-				$(this).children().removeClass('fa-heart animated bounceIn')
-				$(this).children().addClass('fa-check')
-				var action = 'add'
-			} else {
-				$(this).removeClass('saved-state animated bounceIn')
-				$(this).children().removeClass('fa-check')
-				$(this).children().addClass('fa-heart animated bounceIn')
-				var action = 'remove'
-			}
-			console.log($(this).closest('.show-info').attr('data-show-id'))
-			console.log(username)
-			console.log(action)
-
-	    $.ajax({
-	      type: 'POST',
-	      url:  'update-favourite.php',
-	      data: { show_id : show_id, action : action, username : username },
-	      success:function(html) {
-			     $('.display-favs').load(
-			     	document.URL +  ' .display-favs',
-			     	function() {
-			     		$('.save').off();
-			     		addClickHandler();
-			     	})
-	        $('.fvr-lnk a span').html(html)
-	        $('.fvr-lnk a span').animate({
-			      top: "-5"
-			    }, {
-			      queue: false,
-			      duration: 200
-			    })
-			    .animate({ top: "0" }, 100 );
-	      }
-	    });
+		if (!$(this).hasClass('saved-state')) {
+			$(this).addClass('saved-state animated bounceIn')
+			$(this).children().removeClass('fa-heart animated bounceIn')
+			$(this).children().addClass('fa-check')
+			var action = 'add'
+		} else {
+			$(this).removeClass('saved-state animated bounceIn')
+			$(this).children().removeClass('fa-check')
+			$(this).children().addClass('fa-heart animated bounceIn')
+			var action = 'remove'
 		}
+		console.log($(this).closest('.show-info').attr('data-show-id'))
+		console.log(username)
+		console.log(action)
 
-		function addClickHandler() {
-			$('.save').click(updateFavs);
-		}
+    $.ajax({
+      type: 'POST',
+      url:  'update-favourite.php',
+      data: { show_id : show_id, action : action, username : username },
+      success:function(html) {
+		     $('.display-favs').load(
+		     	document.URL +  ' .display-favs',
+		     	function() {
+		     		$('.save').off();
+		     		addClickHandler();
+		     	})
+        $('.fvr-lnk a span').html(html)
+        $('.fvr-lnk a span').animate({
+		      top: "-5"
+		    }, {
+		      queue: false,
+		      duration: 200
+		    })
+		    .animate({ top: "0" }, 100 );
+      }
+    });
+	}
 
-		addClickHandler();
-	// });
+	function addClickHandler() {
+		$('.save').click(updateFavs);
+	}
 
-
+	addClickHandler();
 
 
 	$('[id=filter-page]').change(function() {
