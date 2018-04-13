@@ -38,7 +38,8 @@
 
     // If any of the entered data are incomplete or invalid, display the appropriate error
     } else {
-        echo "We couldn't update your profile. Please check the following: ";
+        echo "<div id='error' class='small-container'>";
+        echo "<h4>We couldn't update your profile. Please check the following:</h4> ";
         echo "<ul>";
 
         if (!unique_username($username, $db))
@@ -60,6 +61,7 @@
           echo "<li>Your password needs to contain at least 1 number, 1 uppercase character, and 1 lowercase character</li>";
 
         echo "</ul>";
+        echo "</div>";
     }
   }
 
