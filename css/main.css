@@ -899,7 +899,7 @@ input[type*="radio"]:focus{
 
 #search-result-container .show-info{
 	display:block;
-	width:70%;
+	width:100%;
 	background:none;
 	padding:0.5rem;
 	color:#625D8A;
