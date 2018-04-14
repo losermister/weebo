@@ -45,7 +45,7 @@
 	             . "      ) AS avg_finder ON shows.show_id = avg_finder.show_id "
 	             . "INNER JOIN genres on shows.show_id = genres.show_id ";
 
-             echo $shows_query;
+             // echo $shows_query;
 
 	if (!empty($_POST['filter-by-year']) && $filtered_year != 'All') {
 	 	$shows_query .= "WHERE YEAR (airing_date) = $filtered_year ";

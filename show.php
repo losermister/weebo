@@ -15,7 +15,7 @@
 
   $email = '';
 
-  $genres = implode(', ', genres_list_from_id($show_id, $db));
+  $genres = genres_list_from_id($show_id, $db);
 
   $avg_rating = (avg_show_rating($show_id, $db));
 

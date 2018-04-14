@@ -1238,6 +1238,7 @@
   }
 
   function display_show_info($heading, $avg_rating, $show_id, $email, $airing_date, $status, $genres, $db) {
+    // $genres = print_r($genres);
     echo "
       <div class='row'>
         <div class='col-12of12'>
@@ -1265,8 +1266,14 @@
             <p>$airing_date</p>
             <h4>Status:</h4>
             <p>$status</p>
-            <h4>Genre:</h4>
-            <p><a href='#'>$genres</a></p>
+            <h4>Genre:</h4>";
+            for ($i = 0; $i < sizeof($genres); $i++) {
+              echo "<a href='all-shows.php?genre=$genres[$i]'>" . $genres[$i] . "</a>";
+              if ($i !== sizeof($genres)-1)
+                echo ", ";
+              echo "";
+            }
+          echo "
           </div>
         </div>
       </div>

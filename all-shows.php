@@ -25,7 +25,6 @@
 						echo "<div class='checkbox-header'>genre</div>";
 
 						if (isset($_GET['genre'])) {
-							echo $genre;
 							add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db), $genre);
 						} else {
 							add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db));
@@ -36,13 +35,29 @@
 			<div class="col-9of12">
 
 				<?php
-					$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
-					             . "FROM oso_user_ratings "
-					             . "INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id "
-					             . "GROUP BY oso_user_ratings.show_id "
-					             . "ORDER BY shows.show_id";
 
-					$shows_stmt = $db->prepare($shows_query);
+					if (isset($_GET['genre'])) {
+						$shows_query = "SELECT avg_show_rating AS 'avg_rating', shows.show_id, shows.name, shows.bg_img "
+						             . "FROM shows "
+						             . "JOIN ( SELECT shows.show_id AS show_id, AVG(rating) AS avg_show_rating "
+						             . "       FROM oso_user_ratings "
+						             . "       INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id "
+						             . "       GROUP BY shows.show_id "
+						             . "     ) AS avg_finder ON shows.show_id = avg_finder.show_id "
+						             . "INNER JOIN genres on shows.show_id = genres.show_id "
+						             . "WHERE genre = ?";
+						$shows_stmt = $db->prepare($shows_query);
+						$shows_stmt->bind_param('s', $genre);
+					}
+						else {
+						$shows_query = "SELECT avg(rating) as avg_rating, shows.show_id, shows.name, shows.bg_img "
+						             . "FROM oso_user_ratings "
+						             . "INNER JOIN shows ON shows.show_id = oso_user_ratings.show_id "
+						             . "GROUP BY oso_user_ratings.show_id "
+						             . "ORDER BY shows.show_id";
+						$shows_stmt = $db->prepare($shows_query);
+          }
+
 					$shows_stmt->execute();
 
 					$shows_stmt->bind_result($avg_rating, $show_id, $show_name, $show_img);
@@ -217,6 +232,8 @@
 				$('#show-data').html(html).hide().fadeIn('fast');
 				$('.save').off();
      		addClickHandler();
+     		console.log($('h1'))
+     		$('h1').text('All Shows')
 			}
 		});
 	}
