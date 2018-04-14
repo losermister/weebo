@@ -1706,10 +1706,10 @@ label.pagination input[type*="radio"]:checked ~span{
 
 
 
-.show-container:hover .show-img{
+/* .show-container:hover .show-img{
 	filter: blur(2px);
 	 -webkit-filter: blue(2px);
-}
+} */
 
 /*
 .show-container:hover > .redirect{
