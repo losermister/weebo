@@ -13,7 +13,11 @@
     exit;
   }
 
-  $email = '';
+  if (isset($_SESSION['valid_user'])) {
+    $email = $_SESSION['valid_user'];
+  } else {
+    $email = '';
+  }
 
   $genres = genres_list_from_id($show_id, $db);
 
