@@ -48,7 +48,7 @@
       </div>
 
       <div class='col-9of12'>";
-        display_all_videos($show_id, $results['show_name'], $results['show_img'], $db);
+        display_all_videos('Videos', $show_id, $results['show_name'], $results['show_img'], $db);
       echo
       "</div>
 

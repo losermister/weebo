@@ -10,7 +10,7 @@
     $show_name = showname_from_id($show_id, $db);
 
     if (isset($_GET['ep']) && check_episodes_list($_GET['ep'], $_GET['show'], $db)) {
-      $ep_num = $_GET['ep'];
+      $current_episode = $_GET['ep'];
     } else {
       echo "Sorry! We couldn't find that video. ";
       echo "<a href=\"show.php?id=$show_id\">Back to $show_name</a>";
@@ -32,7 +32,7 @@
                  . "WHERE show_id = ? AND episode_num = ? "
                  . "ORDER BY episode_num";
   $episode_stmt = $db->prepare($episode_query);
-  $episode_stmt->bind_param('ii', $show_id, $ep_num);
+  $episode_stmt->bind_param('ii', $show_id, $current_episode);
   $episode_stmt->execute();
   $episode_stmt->bind_result($video_url);
 
@@ -42,7 +42,7 @@
     echo "<iframe class='vid' src='$video_url' allowfullscreen></iframe>";
   }
 
-  echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $ep_num</h2>";
+  echo "<h2><a href='show.php?id=$show_id'>$show_name</a> - Episode $current_episode</h2>";
 
   $episode_stmt->free_result();
   $episode_stmt->close();
@@ -129,10 +129,12 @@
   $episodes_stmt->execute();
   $episodes_stmt->bind_result($episode_num);
   $episodes_stmt->store_result();
+
   echo "<div class='col-3of12'>";
   echo "<h3>videos</h3>";
+
   while ($episodes_stmt->fetch()) {
-    display_upcoming_list($show_id, $results['show_name'], $ep_num, $episode_num, $results['show_img']);
+    display_upcoming_list($show_id, $results['show_name'], $current_episode, $episode_num, $results['show_img']);
   }
 
   echo "</div>";

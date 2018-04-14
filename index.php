@@ -41,7 +41,7 @@
 						$recents_stmt->execute();
 						$recents_stmt->bind_result($show_id, $show_name, $episode_num, $show_img);
 						while ($recents_stmt->fetch()) {
-							display_show_list($show_id, $show_name, $episode_num, $show_img);
+							display_episodes_list($show_id, $show_name, $episode_num, $show_img);
 						}
 					  $recents_stmt->free_result();
 					  $recents_stmt->close();

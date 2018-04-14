@@ -524,12 +524,12 @@
 
   /*
    *  Update a user's profile information in the DB
-   *  @param   string   $email      User's email (can't be changed)
-   *  @param   string   $username   User's new display name
-   *  @param   string   $password   User's new password
-   *  @param   string   $fav_genre  User's favourite genre as entered
-   *  @param   string   $password   Path to user's new avatar
-   *  @param   mysqli   $db         Connection between PHP and MySQL database
+   *  @param   string   $email        User's email (can't be changed)
+   *  @param   string   $username     User's new display name
+   *  @param   string   $password     User's new password
+   *  @param   string   $fav_genre    User's favourite genre as entered
+   *  @param   string   $profile_img  Path to user's new avatar
+   *  @param   mysqli   $db           Connection between PHP and MySQL database
    */
   function update_profile($email, $username, $password, $fav_genre, $profile_img, $db) {
     $password = password_hash($password, PASSWORD_DEFAULT);
@@ -544,10 +544,17 @@
     $stmt->close();
   }
 
+  /*
+   *  Add or overwrite a user's rating for a show
+   *  @param   string  $email    User's email
+   *  @param   int     $show_id  ID of show to be rated
+   *  @param   double  $rating   User's given rating (converted to fraction)
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   */
   function update_rating($email, $show_id, $rating, $db) {
     $query = "INSERT INTO oso_user_ratings(email, show_id, rating, date_added) "
-             . "VALUES (?, ?, ?, NOW()) "
-             . "ON DUPLICATE KEY UPDATE rating = ?";
+           . "VALUES (?, ?, ?, NOW()) "
+           . "ON DUPLICATE KEY UPDATE rating = ?";
     $stmt = $db->prepare($query);
     if ( !$stmt ) {
       printf('errno: %d, error: %s', $db->errno, $db->error);
@@ -562,11 +569,12 @@
 
   /*
    *  Add a new account to the database
-   *  @param  string  $firstname  First name address as entered
-   *  @param  string  $lastname   Last name as entered
-   *  @param  string  $email      Email address as entered
-   *  @param  string  $password   Password as entered
-   *  @param  mysqli  $db         Connection between PHP and MySQL database
+   *  @param  string  $email        Email address as entered
+   *  @param  string  $username     Username as entered
+   *  @param  string  $password     Password as entered
+   *  @param  string  $fav_genre    User's chosen favourite genre
+   *  @param  string  $profile_img  User's chosen avatar
+   *  @param  mysqli  $db           Connection between PHP and MySQL database
    */
   function register($email, $username, $password, $fav_genre, $profile_img, $db) {
     $password = password_hash($password, PASSWORD_DEFAULT);
@@ -580,6 +588,11 @@
     $stmt->close();
   }
 
+  /*
+   *  Get the number of shows that the logged-in user has favourited
+   *  @param  mysqli  $db  Connection between PHP and MySQL database
+   *  @return  int
+   */
   function get_num_favourites($db) {
     $email = $_SESSION['valid_user'];
     $query = "SELECT * "
@@ -597,6 +610,13 @@
     return $result->num_rows;
   }
 
+  /*
+   *  Check whether a show is in a user's favourites list
+   *  @param   string  $email    User's email address
+   *  @param   int     $show_id  ID of the show to check
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  boolean
+   */
   function in_favourites_list($email, $show_id, $db) {
     $query = "SELECT * "
            . "FROM favourite_shows "
@@ -612,6 +632,12 @@
     $results->free_result();
   }
 
+  /*
+   *  Add a show to a user's favourites list
+   *  @param  string  $email    User's email address
+   *  @param  int     $show_id  ID of the show to add
+   *  @param  mysqli  $db       Connection between PHP and MySQL database
+   */
   function add_to_favourites($email, $show_id, $db) {
     $query = "INSERT INTO favourite_shows VALUES "
            . "(?, ?)";
@@ -622,6 +648,12 @@
     $stmt->close();
   }
 
+  /*
+   *  Remove a show from a user's favourites list
+   *  @param  string  $email    User's email address
+   *  @param  int     $show_id  ID of the show to remove
+   *  @param  mysqli  $db       Connection between PHP and MySQL database
+   */
   function remove_from_favourites($email, $show_id, $db) {
     $query = "DELETE FROM favourite_shows "
            . "WHERE favourite_shows.email = ? AND favourite_shows.show_id = ?";
@@ -632,6 +664,10 @@
     $stmt->close();
   }
 
+  /*
+   *  Display a notification message for confirmation/success
+   *  @param  string  $text  Text to display on the message
+   */
   function display_notification_success($text) {
     echo "
       <div class='notify-msg-container'>
@@ -642,6 +678,10 @@
     ";
   }
 
+  /*
+   *  Display a notification message on failure/error
+   *  @param  string  $text  Text to display on the message
+   */
   function display_notification_error($text) {
     echo "
       <div class='notify-msg-container'>
@@ -652,6 +692,11 @@
     ";
   }
 
+  /*
+   *  Get the list of all usernames in the DB
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  array
+   */
   function usernames_list($db) {
     $query = "SELECT users.user_id "
            . "FROM users "
@@ -665,10 +710,17 @@
     while($row = $results->fetch_assoc()) {
       $usernames[] = $row["user_id"];
     }
+
     $results->free_result();
     return $usernames;
   }
 
+  /*
+   *  Check if a username is in the DB
+   *  @param   string  $username  The username to check
+   *  @param   mysqli  $db        Connection between PHP and MySQL database
+   *  @return  boolean
+   */
   function check_username_list($username, $db) {
     if (in_array($username, usernames_list($db))) {
       return true;
@@ -677,6 +729,11 @@
     }
   }
 
+  /*
+   *  Get the list of all TV shows in the DB
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  array
+   */
   function shows_list($db) {
     $query = "SELECT shows.show_id "
            . "FROM shows "
@@ -690,10 +747,17 @@
     while($row = $results->fetch_assoc()) {
       $shows[] = $row["show_id"];
     }
+
     $results->free_result();
     return $shows;
   }
 
+  /*
+   *  Get the list of all episode numbers of a show in the DB
+   *  @param   int     $show_id  ID of the show to get episode numbers for
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  array
+   */
   function episodes_list($show_id, $db) {
     $query = "SELECT DISTINCT episode_num "
            . "FROM links "
@@ -709,10 +773,18 @@
     while($row = $results->fetch_assoc()) {
       $episodes[] = $row["episode_num"];
     }
+
     $results->free_result();
     return $episodes;
   }
 
+  /*
+   *  Check if an episode number is in the list of a show's episodes
+   *  @param   int     $episode_num  The episode number to check
+   *  @param   int     $show_id      ID of the show to get episode numbers for
+   *  @param   mysqli  $db           Connection between PHP and MySQL database
+   *  @return  boolean
+   */
   function check_episodes_list($episode_num, $show_id, $db) {
     if (in_array($episode_num, episodes_list($show_id, $db))) {
       return true;
@@ -721,6 +793,12 @@
     }
   }
 
+  /*
+   *  Check if a show ID is in the DB
+   *  @param   int     $show_id  ID of the show to check
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  boolean
+   */
   function check_shows_list($show_id, $db) {
     if (in_array($show_id, shows_list($db))) {
       return true;
@@ -729,42 +807,48 @@
     }
   }
 
+  /*
+   *  Display search results as a dropdown as the user is typing in the search bar
+   *  @param  int     $show_id    ID of each show result
+   *  @param  string  $show_name  Name of each show result
+   *  @param  string  $show_img   Path to image for each show result
+   *  @param  mysqli  $db         Connection between PHP and MySQL database
+   */
   function display_search_list($show_id, $show_name, $show_img, $db) {
-    // Trim show name if longer than 12 characters, for consistent card sizing
+    // Trim show name if longer than 50 characters, for consistent container sizing
     $show_name = strlen($show_name) > 50 ? substr($show_name, 0, 50)."..." : $show_name;
-
-
     echo "
-
-
-        <a href=\"show.php?id=" . $show_id . "\">" . "
-
-            <div class='search-container'>
-
-
-              <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
-
-              <div class='show-info' data-show-id='$show_id'>
-                <div class='show-descript'>
-                  <span class='show-title'>$show_name</span>
-
-                </div>
-
-              </div>
-            </div>
-
-        </a>
-
+    <a href=\"show.php?id=" . $show_id . "\">" . "
+      <div class='search-container'>
+        <div class='show-img-container'>
+          <div class='show-img' style='background-image:url($show_img)'></div>
+        </div>
+        <div class='show-info' data-show-id='$show_id'>
+          <div class='show-descript'>
+            <span class='show-title'>$show_name</span>
+         </div>
+        </div>
+      </div>
+    </a>
     ";
   }
 
-
+  /*
+   *  Display shows on the page as individual cards
+   *  @param  double  $avg_rating  Average rating as pulled from the DB
+   *  @param  int     $show_id     ID of each show
+   *  @param  string  $show_name   Name of each show
+   *  @param  string  $show_img    Path to image for each show
+   *  @param  mysqli  $db          Connection between PHP and MySQL database
+   */
   function display_show_card($avg_rating, $show_id, $show_name, $show_img, $db) {
-    // Trim show name if longer than 12 characters, for consistent card sizing
+    // Trim show name if longer than 10 characters, for consistent card sizing
     $show_name = strlen($show_name) > 10 ? substr($show_name, 0, 10)."..." : $show_name;
-    // Format average rating to be out of 10 and 2 decimal places
+
+    // Format average rating to be out of 10 and 1 decimal place
     $avg_rating = number_format($avg_rating * 10, 1);
 
+    // Style rating colours, from red -> yellow -> green for increasing ratings
     $rating_style;
     if (($avg_rating >= 0.0) && ($avg_rating < 5.0)) {
       $rating_style = "background:#ff3a3a;";
@@ -789,12 +873,14 @@
               </div>
               <div class='functions'>
                 <form action='favourites.php' class='save-btn'>";
+
                   if (isset($_SESSION['valid_user'])) {
                     $email = $_SESSION['valid_user'];
                   } else {
                     $email = '';
                   }
 
+                  // Change styling of favourites button depending if the show has been favourited by the user
                   if (in_favourites_list($email, $show_id, $db)) {
                     echo "
                       <button type='submit' class='save saved-state' value=''><span class='fas fa-check'></span></button>
@@ -814,6 +900,13 @@
     ";
   }
 
+  /*
+   *  Display episode videos on the page as individual cards
+   *  @param  int     $show_id      ID of the show
+   *  @param  string  $show_name    Name of the show
+   *  @param  int     $episode_num  Number of the episode in the series
+   *  @param  string  $show_img     Path to image for the show
+   */
   function display_video_card($show_id, $show_name, $episode_num, $show_img) {
   	$show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
     echo "
@@ -836,9 +929,18 @@
     ";
   }
 
-  function display_show_list($show_id, $show_name, $episode_num, $show_img) {
+  /*
+   *  Display episode videos on the page as a list on the sidebar
+   *  @param  int     $show_id      ID of the show
+   *  @param  string  $show_name    Name of the show
+   *  @param  int     $episode_num  Number of the episode in the series
+   *  @param  string  $show_img     Path to image for the show
+   */
+  function display_episodes_list($show_id, $show_name, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
     $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
+
+    // Display the list of shows in the sidebar
     echo "
       <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
         <div class='col-2of12' id='test-list'>
@@ -858,46 +960,43 @@
     ";
   }
 
-
-  function display_upcoming_list($show_id, $show_name, $ep_num, $episode_num, $show_img) {
+  /*
+   *  Display upcoming videos for the current show as a list on the sidebar
+   *  @param  int     $show_id          ID of the show
+   *  @param  string  $show_name        Name of the show
+   *  @param  int     $current_episode  Number of the current episode being watched
+   *  @param  int     $episode_num      Number of the episode in the series
+   *  @param  string  $show_img         Path to image for the show
+   */
+  function display_upcoming_list($show_id, $show_name, $current_episode, $episode_num, $show_img) {
     // Trim show name if longer than 20 characters, for consistent sizing
     $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
 
-    if($episode_num == $ep_num){
+    // Display list of the show's episodes and highlight the current episode
     echo "
-      <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
-        <div class='upcoming-list clicked'>
-            <div class='redirect'></div>
-            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
-            <div class='show-info'>
-              <div class='show-descript'>
-                <span class='show-epi'>Episode $episode_num</span>
-                <span class='show-title'>$show_name</span>
-              </div>
+      <a href='watch.php?show=$show_id&ep=$episode_num'>
+        <div class='upcoming-list"; if($episode_num == $current_episode) echo " clicked"; echo "'>
+          <div class='redirect'></div>
+          <div class='show-img-container'>
+            <div class='show-img' style='background-image:url($show_img)'></div>
+          </div>
+          <div class='show-info'>
+            <div class='show-descript'>
+              <span class='show-epi'>Episode $episode_num</span>
+              <span class='show-title'>$show_name</span>
             </div>
-        </div>
-      </a>
-    ";
-  }
-  else{
-    echo "
-      <a href=\"watch.php?show=$show_id&ep=$episode_num\">" . "
-        <div class='upcoming-list '>
-            <div class='redirect'></div>
-            <div class='show-img-container'><div class='show-img' style='background-image:url($show_img)'></div></div>
-            <div class='show-info'>
-              <div class='show-descript'>
-                <span class='show-epi'>Episode $episode_num</span>
-                <span class='show-title'>$show_name</span>
-              </div>
-            </div>
+          </div>
         </div>
       </a>
     ";
   }
 
-  }
-
+  /*
+   *  Get a user's email from their username
+   *  @param   string  $username  The user's username
+   *  @param   mysqli  $db        Connection between PHP and MySQL database
+   *  @return  string
+   */
   function email_from_username($username, $db) {
     $name_query = "SELECT users.email FROM users WHERE users.user_id = ?";
     $name_stmt = $db->prepare($name_query);
@@ -910,6 +1009,11 @@
     return $email;
   }
 
+  /*
+   *  Get a logged-in user's username from their email
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  string
+   */
   function username_from_email($db) {
     $email = $_SESSION['valid_user'];
     $name_query = "SELECT users.user_id FROM users WHERE users.email = ?";
@@ -923,6 +1027,11 @@
     return $username;
   }
 
+  /*
+   *  Get a logged-in user's avatar from their email
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  string
+   */
   function avatar_from_email($db) {
     $email = $_SESSION['valid_user'];
     $name_query = "SELECT users.profile_img FROM users WHERE users.email = ?";
@@ -936,6 +1045,12 @@
     return $avatar;
   }
 
+  /*
+   *  Get a show's name from its ID
+   *  @param   int     $show_id  The show's ID
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  string
+   */
   function showname_from_id($show_id, $db) {
     $name_query = "SELECT shows.name FROM shows WHERE shows.show_id = ?";
     $name_stmt = $db->prepare($name_query);
@@ -948,6 +1063,12 @@
     return $showname;
   }
 
+  /*
+   *  Get a show's ID from its name
+   *  @param   string  $show_name  The show's name
+   *  @param   mysqli  $db         Connection between PHP and MySQL database
+   *  @return  int
+   */
   function showid_from_name($show_name, $db) {
     $id_query = "SELECT shows.show_id FROM shows WHERE shows.name = ?";
     $id_stmt = $db->prepare($id_query);
@@ -960,6 +1081,12 @@
     return $show_id;
   }
 
+  /*
+   *  Get a show's banner image URL from its ID
+   *  @param   int     $show_id  The show's ID
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  string
+   */
   function showbanner_from_id($show_id, $db) {
     $query = "SELECT shows.banner_img FROM shows WHERE shows.show_id = ?";
     $stmt = $db->prepare($query);
@@ -972,6 +1099,12 @@
     return $show_banner_url;
   }
 
+  /*
+   *  Get a show's list of genres from its ID
+   *  @param   int     $show_id  The show's ID
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  array
+   */
   function genres_list_from_id($show_id, $db) {
     $query = "SELECT genre "
            . "FROM genres "
@@ -990,6 +1123,11 @@
     return $genres;
   }
 
+  /*
+   *  Get the list of all airing dates of shows in the DB
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  array
+   */
   function all_years_list($db) {
     $query = "SELECT YEAR(airing_date) as year "
            . "FROM shows "
@@ -1009,6 +1147,11 @@
     return $years;
   }
 
+  /*
+   *  Get the list of all show statuses from the DB
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  array
+   */
   function all_status_list($db) {
     $query = "SELECT DISTINCT status "
            . "FROM shows";
@@ -1026,6 +1169,11 @@
     return $statuses;
   }
 
+  /*
+   *  Get the list of all show genres from the DB
+   *  @param   mysqli  $db  Connection between PHP and MySQL database
+   *  @return  array
+   */
   function all_genres_list($db) {
     $query = "SELECT DISTINCT genre FROM genres ORDER BY genre";
     $results = $db->query($query);
@@ -1042,6 +1190,12 @@
     return $genres;
   }
 
+  /*
+   *  Get the average rating of a show from its ID
+   *  @param   int     $show_id  The show's ID
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  double
+   */
   function avg_show_rating($show_id, $db) {
     $query = "SELECT AVG(rating) as avg_rating "
            . "FROM oso_user_ratings "
@@ -1057,6 +1211,12 @@
     return $avg_rating;
   }
 
+  /*
+   *  Get the list of all of a user's rated shows
+   *  @param   string  $email  The user's email
+   *  @param   mysqli  $db     Connection between PHP and MySQL database
+   *  @return  array
+   */
   function rated_shows_list($email, $db) {
     $rated_shows[] = '';
     $query = "SELECT oso_user_ratings.show_id "
@@ -1076,6 +1236,13 @@
     return $rated_shows;
   }
 
+  /*
+   *  Get the list of recommendations for a user after removing shows already rated
+   *  @param   array  $recs    Generated recommendations (show IDs)
+   *  @param   string  $email  The user's email
+   *  @param   mysqli  $db     Connection between PHP and MySQL database
+   *  @return  array
+   */
   function remove_already_rated($recs, $email, $db) {
     $new_recs = array();
     foreach ($recs as $rec) {
@@ -1086,6 +1253,13 @@
     return $new_recs;
   }
 
+  /*
+   *  Post a user comment on a video by adding to DB
+   *  @param  string  $email         The commenter's email
+   *  @param  string  $video_url     URL of video being commented on
+   *  @param  string  $comment_body  What the commenter wrote
+   *  @param  mysqli  $db            Connection between PHP and MySQL database
+   */
   function post_comment($email, $video_url, $comment_body, $db) {
     $query = "INSERT INTO comments(email, video_url, comment_body, date_added) "
            . "VALUES (?, ?, ?, NOW())";
@@ -1101,6 +1275,12 @@
     $stmt->close();
   }
 
+  /*
+   *  Get the number of comments on a video
+   *  @param   string  $video_url  URL of video
+   *  @param   mysqli  $db         Connection between PHP and MySQL database
+   *  @return  int
+   */
   function get_num_comments($video_url, $db) {
     $query = "SELECT * FROM comments "
            . "WHERE video_url = ?";
@@ -1116,6 +1296,13 @@
     return $result->num_rows;
   }
 
+  /*
+   *  Display each user comment for a video
+   *  @param   string  $username  Username of commenter
+   *  @param   string  $avatar    URL of commenter's profile image
+   *  @param   string  $comment   What the commenter wrote
+   *  @param   string  $date      Date and time the comment was posted
+   */
   function display_comment($username, $avatar, $comment, $date) {
     echo "
       <div class='col-1of12'>
@@ -1128,7 +1315,14 @@
     ";
   }
 
-  function get_user_rating_for_show($email, $show_id, $db) {
+  /*
+   *  Display a user's rating for a show
+   *  @param   string  $email    The user's email
+   *  @param   int     $show_id  The show's ID
+   *  @param   mysqli  $db       Connection between PHP and MySQL database
+   *  @return  int
+   */
+  function display_user_rating_for_show($email, $show_id, $db) {
     if (!isset($_SESSION['valid_user'])) {
       echo "<p><a href='login.php'>Log in</a> to rate shows!</p>";
     } else {
@@ -1152,6 +1346,14 @@
     }
   }
 
+  /*
+   *  Display the currently featured show prominently
+   *  @param  int     $featured_show_id   The featured show's ID (global static variable)
+   *  @param  string  $heading            Text to display for the section
+   *  @param  string  $short_description  Brief synopsis for the show
+   *  @param  string  $email              The user's email
+   *  @param  mysqli  $db                 Connection between PHP and MySQL database
+   */
   function display_featured_show($featured_show_id, $heading, $short_description, $email, $db) {
     $show_name = showname_from_id($featured_show_id, $db);
     $banner_img = showbanner_from_id($featured_show_id, $db);
@@ -1160,7 +1362,7 @@
         <div class='text-container'>
           <div class='banner-text'>
             <div class='col-12of12'>
-              <span>staff pick</span>
+              <span>$heading</span>
             </div>
           </div>
           <div class='banner-details'>
@@ -1185,6 +1387,15 @@
     ";
   }
 
+  /*
+   *  Display a show's banner in details
+   *  @param  int     $show_id       The show's ID
+   *  @param  string  $show_name     The show's name
+   *  @param  string  $show_name_jp  The show's name in Japanese
+   *  @param  string  $banner_img    URL of the show's banner image
+   *  @param  string  $email         The user's email
+   *  @param  mysqli  $db            Connection between PHP and MySQL database
+   */
   function display_show_banner($show_id, $show_name, $show_name_jp, $banner_img, $email, $db) {
     echo "
       <div class='banner-container'>
@@ -1210,6 +1421,11 @@
     ";
   }
 
+  /*
+   *  Display a show's trailer video in details
+   *  @param  string  $heading      Text to display for the section
+   *  @param  string  $trailer_url  URL of the show's trailer video
+   */
   function display_show_trailer($heading, $trailer_url) {
     echo "
       <div class='row'>
@@ -1221,6 +1437,11 @@
     ";
   }
 
+  /*
+   *  Display a show's synopsis
+   *  @param  string  $heading      Text to display for the section
+   *  @param  string  $description  The show's synopsis
+   */
   function display_show_synopsis($heading, $description) {
     echo "
       <div class='row'>
@@ -1238,8 +1459,18 @@
     ";
   }
 
+  /*
+   *  Display additional show info - average rating, airing date, status, and genres
+   *  @param  string  $heading      Text to display for the section
+   *  @param  double  $avg_rating   The show's average rating
+   *  @param  int     $show_id      The show's ID
+   *  @param  string  $email        The user's email
+   *  @param  string  $airing_date  The show's original airing date
+   *  @param  string  $status       The show's current status
+   *  @param  array   $genres       List of genres applicable to the show
+   *  @param  mysqli  $db           Connection between PHP and MySQL database
+   */
   function display_show_info($heading, $avg_rating, $show_id, $email, $airing_date, $status, $genres, $db) {
-    // $genres = print_r($genres);
     echo "
       <div class='row'>
         <div class='col-12of12'>
@@ -1253,6 +1484,7 @@
               <h4>Average rating:</h4>
               <p>" . number_format($avg_rating * 10, 1) . "</p>";
 
+              // display the rating form if logged in
               if (isset($_SESSION['valid_user'])) {
                 echo "<form action='show.php?id=$show_id' id='rate' method ='post'>";
                 add_dropdown_num_range('rating', 1, 10);
@@ -1260,7 +1492,8 @@
                 </form>";
               }
 
-              get_user_rating_for_show($email, $show_id, $db);
+              display_user_rating_for_show($email, $show_id, $db);
+
             echo "
             </section>
             <h4>Airing date:</h4>
@@ -1268,12 +1501,15 @@
             <h4>Status:</h4>
             <p>$status</p>
             <h4>Genre:</h4>";
+
+            // link to browse page for genre when clicking on any genre
             for ($i = 0; $i < sizeof($genres); $i++) {
               echo "<a href='all-shows.php?genre=$genres[$i]'>" . $genres[$i] . "</a>";
               if ($i !== sizeof($genres)-1)
                 echo ", ";
               echo "";
             }
+
           echo "
           </div>
         </div>
@@ -1281,7 +1517,15 @@
     ";
   }
 
-  function display_all_videos($show_id, $show_name, $show_img, $db) {
+  /*
+   *  Display all videos for a show as cards
+   *  @param  string  $heading    Text to display for the section
+   *  @param  int     $show_id    The show's ID
+   *  @param  string  $show_name  The show's name
+   *  @param  string  $show_img   The show's background image
+   *  @param  mysqli  $db         Connection between PHP and MySQL database
+   */
+  function display_all_videos($heading, $show_id, $show_name, $show_img, $db) {
     $episodes_query = "SELECT DISTINCT episode_num "
                     . "FROM links "
                     . "WHERE show_id = ? "
@@ -1295,7 +1539,7 @@
     echo "
       <div class='row'>
         <div class='col-12of12'>
-          <h3 class='cat'>videos ($episodes_stmt->num_rows)</h3>
+          <h3 class='cat'>$heading ($episodes_stmt->num_rows)</h3>
         </div>
       </div>
       <div class='row'>";
