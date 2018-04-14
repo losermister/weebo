@@ -297,11 +297,11 @@
    *  @param  array   $options  List of value attributes for each option
    *  @param  array   $texts    List of label names to display
    */
-  function add_checklist($varname, $options, $texts) {
+  function add_checklist($varname, $options, $texts, $selected='') {
     global $$varname;
     $i = 0;
     foreach($options as $opt)
-      add_checklist_options($texts[$i++], $varname, $opt);
+      add_checklist_options($texts[$i++], $varname, $opt, $selected);
   }
 
   /*
@@ -310,9 +310,13 @@
    *  @param  string  $varname  Name attribute of inputs
    *  @param  string  $opt      Value attributes for each option
    */
-  function add_checklist_options($text, $varname, $opt) {
+  function add_checklist_options($text, $varname, $opt, $selected) {
     global $$varname;
-    echo "<label class='checkbox'><input type=\"checkbox\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre'><span class=\"check\"></span>$text</label>";
+    if ($selected == $opt) {
+      echo "<label class='checkbox'><input type=\"checkbox\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre' checked><span class=\"check\"></span>$text</label>";
+    } else {
+      echo "<label class='checkbox'><input type=\"checkbox\" name=\"$varname\" value=\"$opt\" id='filter-by-multi-genre'><span class=\"check\"></span>$text</label>";
+    }
   }
 
   /*

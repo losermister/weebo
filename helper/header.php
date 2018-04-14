@@ -48,7 +48,7 @@
 					<li id="logo"><a href="index.php">weebflix</a></li>
 				</ul>
 				<div class="fl-left search-show">
-					<input type="text"  placeholder="search for anime...">
+					<input type="text"  placeholder="Search for anime...">
 					<div class="result"></div>
 				</div>
 				<ul class="fl-right">

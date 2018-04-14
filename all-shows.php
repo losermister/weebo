@@ -2,20 +2,34 @@
 	require('helper/functions.php');
 	use_http();
   require('helper/header.php');
+
+	$genre = '';
+
+	if (isset($_GET['genre'])) {
+	  $genre = mysqli_real_escape_string($db, $_GET['genre']);
+	}
+
 ?>
 
 	<div class="container content">
-		<h1>All Shows</h1>
+		<h1>All <?php echo $genre; ?> Shows</h1>
 		<div class="row">
 			<div class="col-3of12">
 				<form class="browse-form">
 					<?php
+
 						echo "<div class='checkbox-header'>Airing year</div>";
 						add_dropdown_filter('All', 'filter-by-year', all_years_list($db), all_years_list($db));
 						echo "<div class='checkbox-header'>status</div>";
 						add_radiolist('filter-by-status', all_status_list($db), all_status_list($db));
 						echo "<div class='checkbox-header'>genre</div>";
-						add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db));
+
+						if (isset($_GET['genre'])) {
+							echo $genre;
+							add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db), $genre);
+						} else {
+							add_checklist('filter-by-multi-genre[]', all_genres_list($db), all_genres_list($db));
+						}
 					?>
 				</form>
 			</div>

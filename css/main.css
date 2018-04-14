@@ -863,8 +863,9 @@ input[type*="radio"]:focus{
 	position:absolute;
 	/* position:absolute; */
 	margin-left:0.75rem;
+	margin-top: -0.46rem;
 	width:350px;
-	box-shadow: 0rem 0rem 0.2rem rgba(0,0,0,0.05);
+	box-shadow: 0rem 0rem 0.2rem rgba(0,0,0,0.15);
 	/* height:500px; */
 
 }
