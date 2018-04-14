@@ -726,7 +726,7 @@
 
   function display_search_list($show_id, $show_name, $show_img, $db) {
     // Trim show name if longer than 12 characters, for consistent card sizing
-    $show_name = strlen($show_name) > 20 ? substr($show_name, 0, 20)."..." : $show_name;
+    $show_name = strlen($show_name) > 50 ? substr($show_name, 0, 50)."..." : $show_name;
 
 
     echo "
