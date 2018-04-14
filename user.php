@@ -74,11 +74,12 @@
 
   $num_items = sizeof($all_activity_results);
 
-  echo "<h2>Recent Activity</h2>";
-
+  echo "<h3 class='cat'>Recent Activity</h3>";
+  echo "<div class='recent-activity'>";
   for ($i = 0; $i < $num_items; $i++) {
     display_user_activity($username, $all_activity_results[$i][0], $all_activity_results[$i][1], $all_activity_results[$i][2], $all_activity_results[$i][3], $db);
   }
+  echo "</div>";
 
   if ($num_items <= 0) {
     echo "<p>No recent activity to show for $username.</p>";

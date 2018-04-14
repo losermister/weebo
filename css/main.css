@@ -1630,6 +1630,20 @@ label.pagination input[type*="radio"]:checked ~span{
 		margin-top:0.5rem;
 }
 
+.recent-activity{
+	display:inline-block;
+	padding:0.5rem 0.5rem;
+	margin-top:1rem;
+	background:#2E2B45;
+}
+
+
+.recent-activity p{
+
+	padding:0rem 1rem;
+	background:#2E2B45;
+}
+
 
 
 

@@ -51,7 +51,8 @@
    */
   function display_user_profile($username, $email, $fav_genre, $profile_img) {
     echo "<div class='col-3of12'>";
-    echo "<div class='info'>";
+    echo "<h3 class='cat'>User info</h3>";
+    echo "<div class='info' style='margin-top:1rem'>";
     echo "<img class='img-center profile-img' src='$profile_img'>";
     echo "<h2 class='text-center username-text'>$username</h2>";
     echo "<h4>email:</h4>";
