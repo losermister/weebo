@@ -32,7 +32,7 @@
       </form>";
     }
 
-    get_user_rating_for_show($email, $show_id, $db);
+    display_user_rating_for_show($email, $show_id, $db);
 
 	}
 

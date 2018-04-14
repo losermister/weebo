@@ -77,12 +77,10 @@
 					$shows_stmt->free_result();
 				 	$shows_stmt->close();
 
-				?>
-
-				<?php
-				 	echo "<section id='show-page-nav'>";
+	 			 	echo "<section id='show-page-nav'>";
 					add_page_nav($current_page, $pages, 'page-nav');
 					echo "</section>";
+
 				?>
 
 				<section id="show-data" class="fade-in">
@@ -110,13 +108,12 @@
 						}
 					}
 
+					// echo "<section id='show-page-nav'>";
+					// add_page_nav($current_page, $pages, 'page-nav');
+					// echo "</section>";
+
 				?>
 				</section>
-				<?php
-					echo "<section id='show-page-nav'>";
-					add_page_nav($current_page, $pages, 'page-nav');
-					echo "</section>";
-				?>
 			</div>
 		</div>
 	</div>

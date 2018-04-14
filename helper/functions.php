@@ -6,9 +6,11 @@
    *  Trigger SSL communication by turning HTTP request to HTTPS request
    */
   function require_ssl() {
-    if($_SERVER["HTTPS"] != "on") {
-      header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
-      exit();
+     if (isset($_SERVER["HTTPS"])) {
+      if ($_SERVER["HTTPS"] != "on") {
+        header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+        exit();
+      }
     }
   }
 
@@ -16,7 +18,7 @@
    *  Switch back to HTTP from HTTPS
    */
   function use_http() {
-    if(isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on") {
+    if (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on") {
       header("Location: http://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
       exit();
     }
