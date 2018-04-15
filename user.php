@@ -1,5 +1,13 @@
 <?php
 
+  //=================================================================================
+  // user.php
+  //
+  // Display a user's public profile:
+  //  - Basic user information (avatar, username, email, favourite genre)
+  //  - User activity feed showing the 10 most recent activity (ratings/comments)
+  //=================================================================================
+
   require('helper/functions.php');
   use_http();
   require('helper/header.php');
@@ -35,6 +43,8 @@
 
   $email = email_from_username($username, $db);
 
+  // Get the list of 10 most recent actions in chronological order
+  // Actions currently include user's show ratings and comments on episodes
   $activity_query = "SELECT video_url, "
                   . "null AS rating, "
                   . "date_added, "
@@ -48,8 +58,6 @@
                   . "FROM oso_user_ratings WHERE oso_user_ratings.email = ? "
                   . "ORDER BY date_added DESC "
                   . "LIMIT 10 ";
-
-                  // echo $activity_query;
 
   $activity_stmt = $db->prepare($activity_query);
   $activity_stmt->bind_param('ss', $email, $email);
@@ -74,17 +82,20 @@
 
   $num_items = sizeof($all_activity_results);
 
+  // Display the recent activity as a list
   echo "<h3 class='cat'>Recent Activity</h3>";
   echo "<div class='recent-activity'>";
+
   for ($i = 0; $i < $num_items; $i++) {
     display_user_activity($username, $all_activity_results[$i][0], $all_activity_results[$i][1], $all_activity_results[$i][2], $all_activity_results[$i][3], $db);
   }
-  echo "</div>";
 
+  // Display message if no recent activity yet
   if ($num_items <= 0) {
     echo "<p>No recent activity to show for $username.</p>";
   }
 
+  echo "</div>";
   echo "</div>";
   echo "</div>";
 

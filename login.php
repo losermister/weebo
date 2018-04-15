@@ -1,5 +1,14 @@
 <?php
 
+  //=============================================================================
+  // login.php
+  //
+  // Display the Signin form
+  //   - User's email
+  //   - Password
+  //   - Display error if incorrect information entered
+  //=============================================================================
+
   require('helper/functions.php');
   require_ssl();
   require('helper/header.php');

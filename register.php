@@ -1,5 +1,18 @@
 <?php
 
+  //=============================================================================
+  // register.php
+  //
+  // Display the form for users to create a Weebflix account:
+  //   - Avatar (choose from $num_of_avatars defined in helper/variables.php)
+  //   - Email
+  //   - Username
+  //   - Favourite Genre
+  //   - Password
+  //   - Hidden "honeypot" textfield to prevent spam from bots
+  //   - Display errors if incomplete/invalid information entered
+  //=============================================================================
+
   require('helper/functions.php');
   require_ssl();
   require('helper/header.php');

@@ -1,6 +1,6 @@
 <?php
 
-  //=============================================================================
+  //============================================================================
   // show.php
   //
   // Display details for each show (from its id in the URL):
@@ -8,7 +8,7 @@
   //   - Trailer video embedded in sidebar
   //   - Synopsis description in sidebar
   //   - Show info (average rating, user rating, airing date, status, genres)
-  //=============================================================================
+  //============================================================================
 
   require('helper/functions.php');
   use_http();

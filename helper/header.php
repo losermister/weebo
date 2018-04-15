@@ -24,25 +24,26 @@
 				</div>
 				<ul class="fl-right">
 
-
-					<li><a href="all-shows.php">browse</a></li>
+					<li><a href="all-shows.php">Browse</a></li>
 
 					<?php
+						// Display navigation to Browse, Favourites, User Account (dropdown) / Login and Log out
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
 	          	$avatar = avatar_from_email($db);
-	          	echo "
-							<li class='fvr-lnk'><a href=\"favourites.php\" ><span>" . get_num_favourites($db) . "</span>favourites</a></li>
-						";
+
+	          	echo "<li class='fvr-lnk'><a href=\"favourites.php\" ><span>" . get_num_favourites($db) . "</span>Favourites</a></li>";
+
 	            echo "<li class='user-act'><a id='user-click'><span class='avatar'><span class='avatar-img' style='background-image:url($avatar)'></span></span>$username <span class='fas fa-caret-down'></span></a></li>";
 
 							echo "<div class='user-dropdown'>";
-							echo "<a href=\"user.php?id=$username\">my profile</a>";
+							echo "<a href=\"user.php?id=$username\">My Profile</a>";
 							echo "<a href=\"edit-profile.php\">Edit profile</a>";
 	            echo "<a href=\"logout.php\">Logout</a>";
 							echo "</div>";
+
 	          } else {
-	            echo "<li><a href=\"login.php\">sign up/login</a></li>";
+	            echo "<li><a href=\"login.php\">Sign up/Login</a></li>";
 	          }
 			    ?>
 

@@ -1,5 +1,12 @@
 <?php
 
+  //=====================================================================================
+  // update-pages.php
+  //
+  // Script for updating the page navigation displayed when filtering in all-shows.php
+  // Shows the updated total number of pages and resets the current page to 1
+  //=====================================================================================
+
 	$filtered_year = '';
 	$filtered_genres = '';
 	$num_filtered_genres = 0;
@@ -7,6 +14,7 @@
 
 	require('helper/functions.php');
 
+	// Store all values from Ajax call
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (!empty($_POST['filter-by-year'])) {
 			$filtered_year = $_POST['filter-by-year'];
@@ -26,6 +34,7 @@
 	  }
 	}
 
+	// Construct the base query
 	$shows_query = "SELECT avg_show_rating AS 'avg_rating', shows.show_id, shows.name, shows.bg_img "
 	             . "FROM shows "
 	             . "JOIN ( SELECT shows.show_id AS show_id, AVG(rating) AS avg_show_rating "
@@ -35,10 +44,12 @@
 	             . "      ) AS avg_finder ON shows.show_id = avg_finder.show_id "
 	             . "INNER JOIN genres on shows.show_id = genres.show_id ";
 
+	// If a year is specified, add to the query
 	if (!empty($_POST['filter-by-year']) && $filtered_year != 'All') {
 	 	$shows_query .= "WHERE YEAR (airing_date) = $filtered_year ";
 	}
 
+	// If genre(s) are specified, add to the query
 	if (!empty($_POST['filter-by-multi-genre'])) {
 		for($i = 0; $i < $num_filtered_genres; $i++) {
 			if ($i == 0) {
@@ -55,12 +66,12 @@
 		}
 	}
 
+	// If a status is specified, add to the query
 	if (!empty($_POST['filter-by-status']) && $filtered_status != 'All') {
 	 	$shows_query .= "AND shows.status = '$filtered_status' ";
 	}
 
 	$shows_query .= "GROUP BY shows.show_id ";
-
 	$shows_query .= "ORDER BY shows.show_id";
 
 	$res = $db->query($shows_query);
@@ -69,15 +80,21 @@
 		 $all_show_results[] = $row;
 	}
 
+	// Get the right values for pagination
 	$num_items = $res->num_rows;
 	$pages = ceil($num_items / $items_per_page);
 
+	// Update the page navigation with new total page count
+	// Reset current page number to 1
 	add_page_nav(1, $pages, 'page-nav');
 
 ?>
 
 <script type='text/javascript'>
 
+	// Clicking the Favourite buttons on the show cards the style and adds pulse animation
+	// depending if the show has been favourited by the user already.
+	// Ajax call adds/removes to the user's favourites list and update favourites count in the header
 	function updateFavs() {
 		var show_id = $(this).closest('.show-info').attr('data-show-id')
 		var username = $('#user-click').text()

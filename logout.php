@@ -1,5 +1,11 @@
 <?php
 
+  //=============================================================================
+  // logout.php
+  //
+  // Log the user out and redirect to the homepage
+  //=============================================================================
+
   require('helper/functions.php');
   use_http();
   require('helper/header.php');

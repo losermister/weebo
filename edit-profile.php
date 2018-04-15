@@ -1,9 +1,21 @@
 <?php
 
+  //=============================================================================
+  // edit-profile.php
+  //
+  // Display the form for users to update their public profile:
+  //   - Avatar (choose from $num_of_avatars defined in helper/variables.php)
+  //   - Username
+  //   - Favourite Genre
+  //   - Password
+  //   - Display errors if incomplete/invalid information entered
+  //=============================================================================
+
   require('helper/functions.php');
   require_ssl();
   require('helper/header.php');
 
+  // Populate avatar list using the $num_of_avatars
   $avatar_list = array();
   for ($i = 0; $i < $num_of_avatars; $i++) {
     array_push($avatar_list, 'avatar-' . $i);
@@ -66,15 +78,13 @@
   }
 
   /*  1. Create form with legend
-   *  2. Add all textfields with labels
+   *  2. Add all fields with labels
    *  3. Close form, and add submit button with text
    */
-
   form_start('edit-profile.php', 'Edit public profile');
   add_radio_buttons('avatar', $avatar_list);
   add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
-
   add_textfield('password', 'Password ');
   add_textfield('password2', 'Confirm password ');
   form_end('Update');

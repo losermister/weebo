@@ -1,5 +1,13 @@
 <?php
 
+  //=================================================================================
+  // watch.php
+  //
+  // Display the embedded video link for an episode for users to watch
+  //  - Show the list of all episodes for the show in the sidebar
+  //  - Comment section for users to leave comments and see others' comments
+  //=================================================================================
+
   require('helper/functions.php');
   use_http();
   require('helper/header.php');
@@ -9,24 +17,26 @@
     $show_id = $_GET['show'];
     $show_name = showname_from_id($show_id, $db);
 
+    // Display error message if invalid episode or show ID given
     if (isset($_GET['ep']) && check_episodes_list($_GET['ep'], $_GET['show'], $db)) {
       $current_episode = $_GET['ep'];
     } else {
-      echo "Sorry! We couldn't find that video. ";
+      echo "<p>Sorry! We couldn't find that video. </p>";
       echo "<a href=\"show.php?id=$show_id\">Back to $show_name</a>";
       exit;
     }
-
   } else {
-    echo "Oops! We couldn't find that video. ";
+    echo "<p>Oops! We couldn't find that video. </p>";
     echo "<a href=\"index.php\">Back to homepage</a>";
     exit;
   }
 
+  // Identify the user by email if logged in
   if (isset($_SESSION['valid_user'])) {
     $email = $_SESSION['valid_user'];
   }
 
+  // Get the video URL for the show ID and episode number
   $episode_query = "SELECT video_url "
                  . "FROM links "
                  . "WHERE show_id = ? AND episode_num = ? "
@@ -36,6 +46,7 @@
   $episode_stmt->execute();
   $episode_stmt->bind_result($video_url);
 
+  // Embed the video
 	echo "<div class='container'>";
   echo "<div class='col-9of12'>";
   while ($episode_stmt->fetch()) {
@@ -49,12 +60,13 @@
 
   $num_comments = get_num_comments($video_url, $db);
 
+  // Display the comments section
   echo "<section class='comments'>";
   echo "<h3 id='comment-counter'>" . $num_comments . " Comments</h3>";
   echo "<div class='post-comments-container'>";
 
   if (isset($_SESSION['valid_user'])) {
-
+    // Display comments form
   	echo "<div class='row'>";
   	echo "<div class='col-1of12'>";
     echo "<img src='".avatar_from_email($db)."'>";
@@ -72,9 +84,11 @@
     echo "</div>";
 
   } else {
+    // Display message if user is not logged in
     echo "<p class='sign-in-comment'>Please <a href='login.php'> sign in </a> to comment on this episode!</p>";
   }
 
+  // Get and display the list of all comments on the video
   $comments_query = "SELECT users.user_id, users.profile_img, comment_body, date_added "
                   . "FROM comments "
                   . "INNER JOIN users ON comments.email = users.email "
@@ -103,23 +117,23 @@
   echo "</div>";
   echo "</div>";
 
-
-  $show_query = "SELECT name, bg_img, description, banner_img, anime_trailer, name_jp, status, airing_date, avg_rating "
+  // Get the background image for the show to display on the sidebar
+  $show_query = "SELECT bg_img "
               . "FROM shows "
               . "WHERE show_id = ?";
   $show_stmt = $db->prepare($show_query);
   $show_stmt->bind_param('i', $show_id);
   $show_stmt->execute();
-  $show_stmt->bind_result($show_name, $show_img, $description, $banner_img, $anime_trailer, $name_jp, $status, $airing_date, $avg_rating);
   $result = $show_stmt->get_result();
   $show_stmt->free_result();
   $show_stmt->close();
-  $results_keys = array('show_name', 'show_img', 'description', 'banner_img', 'anime_trailer', 'name_jp', 'status', 'airing_date', 'avg_rating');
+  $results_keys = array('show_img');
 
   while ($row = $result->fetch_array(MYSQLI_NUM)) {
 
     $results = array_combine($results_keys, $row);
 
+    // Get the list of episode numbers for the show
     $episodes_query = "SELECT DISTINCT episode_num "
                     . "FROM links "
                     . "WHERE show_id = ? "
@@ -133,8 +147,10 @@
     echo "<div class='col-3of12'>";
     echo "<h3>videos</h3>";
 
+    // Display the list of episodes with the show name, show image, and episode number
+    // Highlight the current episode
     while ($episodes_stmt->fetch()) {
-      display_upcoming_list($show_id, $results['show_name'], $current_episode, $episode_num, $results['show_img']);
+      display_upcoming_list($show_id, $show_name, $current_episode, $episode_num, $results['show_img']);
     }
 
     echo "</div>";
@@ -147,6 +163,7 @@
 ?>
 
 <script type='text/javascript'>
+  // Ajax call when clicking on submit comment button to dynamically update comments section
   $('#submit-comment').click(function() {
     event.preventDefault();
     var posted_comment = $('#comment-box').val()

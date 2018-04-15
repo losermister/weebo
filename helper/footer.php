@@ -1,6 +1,7 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
+      // Ajax call to dynamically search for anime and autofill
       $(document).ready(function() {
         $('.search-show input[type="text"]').on("keyup input",function() {
           var inputVal = $(this).val();
@@ -24,6 +25,7 @@
     </script>
 
     <script type="text/javascript">
+      // Show dropdown menu for logged in users
       $('#user-click').click(function() {
         $('.user-dropdown').toggle();
       });
