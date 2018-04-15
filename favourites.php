@@ -50,9 +50,7 @@
 	</div>
 </div>
 
-<?php
-	require('helper/footer.php');
-?>
+<?php require('helper/footer.php'); ?>
 
 <script type='text/javascript'>
 

@@ -5,6 +5,7 @@
   require('helper/header.php');
 
   // Store session variable if a user was logged in, and destroy the session
+  // Redirect to homepage
   if (isset($_SESSION['valid_user'])) {
     $old_user = $_SESSION['valid_user'];
     unset($_SESSION['valid_user']);
@@ -20,5 +21,7 @@
     // Display error message if they weren't logged in but came to this page somehow
     echo "You weren't logged in, so you have not been logged out!";
   }
+
+  require('helper/footer.php');
 
 ?>

@@ -2,42 +2,13 @@
 <html lang="en">
 
 <head>
+	<meta charset="utf-8">
+	<title>Weebflix</title>
 	<link href="css/main.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('.search-show input[type="text"]').on("keyup input",function(){
-
-			 // alert("no");
-				var inputVal = $(this).val();
-				 var resultDropdown = $(this).siblings(".result");
-				if(inputVal.length){
-					$.get("update-search.php", {term: inputVal}).done(function(data){
-						resultDropdown.html(data);
-					});
-					// alert('hello');
-				}
-
-				else{
-					resultDropdown.empty();
-				}
-			});
-
-
-			// Set search input value on click of result item
-	 $(document).on("click", ".result p", function(){
-			 $(this).parents(".search-show").find('input[type="text"]').val($(this).text());
-			 $(this).parent(".result").empty();
-	 });
-
-		});
-
-	</script>
-
 </head>
 
 <body>
@@ -57,7 +28,6 @@
 					<li><a href="all-shows.php">browse</a></li>
 
 					<?php
-
 	          if (isset($_SESSION['valid_user'])) {
 	          	$username = username_from_email($db);
 	          	$avatar = avatar_from_email($db);
@@ -75,11 +45,7 @@
 	            echo "<li><a href=\"login.php\">sign up/login</a></li>";
 	          }
 			    ?>
-					<script>
-						$('#user-click').click(function() {
-							$('.user-dropdown').toggle();
-						});
-					</script>
+
 				</ul>
 			</div>
 		</div>

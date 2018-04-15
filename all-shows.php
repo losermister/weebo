@@ -119,6 +119,8 @@
 		</div>
 	</div>
 
+<?php require('helper/footer.php'); ?>
+
 <script type='text/javascript'>
 
 	function updateFavs() {
@@ -237,7 +239,3 @@
 	}
 
 </script>
-
-<?php
-	require('helper/footer.php');
-?>

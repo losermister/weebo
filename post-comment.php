@@ -93,7 +93,3 @@
     });
   });
 </script>
-
-<?php
-	require('helper/footer.php');
-?>

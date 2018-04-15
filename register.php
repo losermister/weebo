@@ -76,9 +76,10 @@
   add_textfield('emailaddress', 'Email ');
   add_textfield('username', 'Username ');
   add_dropdown('your favourite genre', 'genre', all_genres_list($db), all_genres_list($db));
-
   add_textfield('password', 'Password ');
   add_textfield('password2', 'Confirm password ');
   form_end('create account');
+
+  require('helper/footer.php');
 
 ?>

@@ -79,4 +79,6 @@
   add_textfield('password2', 'Confirm password ');
   form_end('Update');
 
+  require('helper/footer.php');
+
 ?>

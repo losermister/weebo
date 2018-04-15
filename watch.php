@@ -118,30 +118,32 @@
 
   while ($row = $result->fetch_array(MYSQLI_NUM)) {
 
-  $results = array_combine($results_keys, $row);
+    $results = array_combine($results_keys, $row);
 
-  $episodes_query = "SELECT DISTINCT episode_num "
-                  . "FROM links "
-                  . "WHERE show_id = ? "
-                  . "ORDER BY episode_num ASC";
-  $episodes_stmt = $db->prepare($episodes_query);
-  $episodes_stmt->bind_param('i', $show_id);
-  $episodes_stmt->execute();
-  $episodes_stmt->bind_result($episode_num);
-  $episodes_stmt->store_result();
+    $episodes_query = "SELECT DISTINCT episode_num "
+                    . "FROM links "
+                    . "WHERE show_id = ? "
+                    . "ORDER BY episode_num ASC";
+    $episodes_stmt = $db->prepare($episodes_query);
+    $episodes_stmt->bind_param('i', $show_id);
+    $episodes_stmt->execute();
+    $episodes_stmt->bind_result($episode_num);
+    $episodes_stmt->store_result();
 
-  echo "<div class='col-3of12'>";
-  echo "<h3>videos</h3>";
+    echo "<div class='col-3of12'>";
+    echo "<h3>videos</h3>";
 
-  while ($episodes_stmt->fetch()) {
-    display_upcoming_list($show_id, $results['show_name'], $current_episode, $episode_num, $results['show_img']);
+    while ($episodes_stmt->fetch()) {
+      display_upcoming_list($show_id, $results['show_name'], $current_episode, $episode_num, $results['show_img']);
+    }
+
+    echo "</div>";
+    echo "</div>";
+
+    $db->close();
   }
 
-  echo "</div>";
-  echo "</div>";
-
-  $db->close();
-}
+  require('helper/footer.php');
 ?>
 
 <script type='text/javascript'>
@@ -162,7 +164,3 @@
     });
   });
 </script>
-
-<?php
-  require('helper/footer.php');
-?>

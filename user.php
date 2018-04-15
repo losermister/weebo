@@ -86,10 +86,10 @@
   }
 
   echo "</div>";
-
   echo "</div>";
 
-
   $db->close();
+
+  require('helper/footer.php');
 
 ?>

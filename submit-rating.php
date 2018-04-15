@@ -33,7 +33,6 @@
     }
 
     display_user_rating_for_show($email, $show_id, $db);
-
 	}
 
 ?>
@@ -54,7 +53,3 @@
     });
   });
 </script>
-
-<?php
-	require('helper/footer.php');
-?>
