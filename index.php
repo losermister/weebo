@@ -68,7 +68,7 @@
 					<div class="col-12of12">
 						<?php
 							// If user is logged in and has rated at least one show
-							if (isset($_SESSION['valid_user']) && sizeof(rated_shows_list($email, $db)) >= 1) {
+							if (isset($_SESSION['valid_user']) && sizeof(rated_shows_list($email, $db)) > 1) {
 								echo "<h3 class=\"cat\">Recommended for you</h3>";
 								echo "
 					</div>
